@@ -1,0 +1,14 @@
+{% macro shard_path(shard) -%}/shards/{{ shard.slug }}{%- endmacro %}
+
+{% macro repo_link(repo_ref, owner=none) %}
+  <a href="{{ repo_ref.to_uri }}" class="repo-ref repo-ref--{{ repo_ref.resolver }}">
+    {% if owner and owner.avatar_url %}
+      <img src="{{ owner.avatar_url }}" class="avatar avatar--github" />
+    {% else %}
+      {{ icon(repo_ref.resolver) }}
+    {% endif %}
+    {{ repo_ref.url }}</a>{% endmacro %}
+
+{% macro shard_name(shard) %}
+{{ shard.name }}{% if shard.qualifier != "" %}<span class="qualifier">~{{ shard.qualifier }}</span>{% endif %}
+{% endmacro %}

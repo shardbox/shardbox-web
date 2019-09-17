@@ -1,0 +1,53 @@
+{% extends "layout.html.j2" %}
+{% import "macros/links.j2" %}
+
+{% block page_title %}Shardbox: Stats{% endblock %}
+{% block main %}
+<header>
+  <h1> Statistics</h1>
+</header>
+
+<div class="containers">
+  <div class="container">
+    <table class="stats">
+      <tr><th>Total shards</th><td class="count">{{ stats.shards_count }}</td>
+      <tr><th>Dependencies</th><td class="count">{{ stats.dependencies_count }}</td>
+      <tr><th>Dev dependencies</th><td class="count">{{ stats.dev_dependencies_count }}</td>
+      <tr><th>Uncategorized shards</th><td class="count"><a href="/categories/Uncategorized">{{ stats.uncategorized_count }}</a></td>
+    </table>
+  </div>
+
+  <div class="container">
+    <div class="stats-container">
+      <table class="stats">
+        <tr><th>Resolvers</th><td>
+          <table class="counts">
+          {% for name, count in stats.resolver_counts %}
+            <tr><td>{{ count }}</td><th>{{ name }}</th></tr>
+          {% endfor %}
+          </table>
+        </td>
+        </tr>
+        <tr><th>Licenses</th><td>
+          <table class="counts">
+          {% for name, count in stats.license_counts %}
+            <tr><td>{{ count }}</td><th>{{ name }}</th></tr>
+          {% endfor %}
+          </table>
+        </td>
+        </tr>
+      </table>
+      <table class="stats">
+        <tr><th>Crystal Versions</th><td>
+          <table class="counts">
+          {% for name, count in stats.crystal_version_counts %}
+            <tr><td>{{ count }}</td><th>{{ name }}</th></tr>
+          {% endfor %}
+          </table>
+        </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

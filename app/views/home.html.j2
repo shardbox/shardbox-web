@@ -1,0 +1,71 @@
+{% extends "layout.html.j2" %}
+{% import "macros/date.j2" %}
+{% import "macros/links.j2" %}
+{% import "macros/shard-card.j2" %}
+
+{% block page_title %}Shardbox: A shards database{% endblock %}
+{% block main %}
+<header class="home-header">
+  <h1>Shards Database</h1>
+
+  <p class="large">
+    Listing <strong><span class="count">{{ stats.shards_count }}</span> shards</strong>
+    with <strong><span class="count">{{ stats.dependencies_count }}</span> dependencies</strong>.
+  </p>
+
+  {% if stats.uncategorized_count > 0 %}
+    <p class="large">
+      <strong><span class="count">{{ stats.uncategorized_count }}</span></strong> are <a href="/categories/Uncategorized">uncategorized</a>.
+      <a href="/contribute">Help categorize them</a>!
+    </p>
+  {% endif %}
+</header>
+
+<div class="containers">
+  <div class="container">
+    <h3>Most popular</h3>
+    <div class="shards-list">
+      {% for item in popular_shards %}
+        {{ shard_card(item.shard, item, item.categories, show_description = false) }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container">
+    <h3>Most depended upon</h3>
+    <div class="shards-list">
+      {% for item in dependent_shards %}
+        {{ shard_card(item.shard, item, item.categories, show_description = false) }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container">
+    <h3>Recently released</h3>
+    <div class="shards-list">
+      {% for item in recent_shards %}
+        {{ shard_card(item.shard, item, item.categories, show_dependents = false, show_description = true) }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container">
+    <h3>Most depended upon (development)</h3>
+    <div class="shards-list">
+      {% for item in dev_dependent_shards %}
+        {{ shard_card(item.shard, item, item.categories, show_dependents = false, dev_dependents = true) }}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container">
+    <h3>New shards</h3>
+    <div class="shards-list">
+      {% for item in new_shards %}
+        {{ shard_card(item.shard, item, item.categories, show_dependents = false, show_description = true, show_repo = true, show_created_at = true, show_released_at = false) }}
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

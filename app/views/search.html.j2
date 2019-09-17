@@ -1,0 +1,49 @@
+{% extends "layout.html.j2" %}
+{% import "macros/date.j2" %}
+{% import "macros/links.j2" %}
+
+{% block page_title %}"{{ query }}" Search on Shardbox{% endblock %}
+{% block main %}
+  <header>
+    <h1>Search for <code>"{{ query }}"</code></h1>
+  </header>
+
+  {% for result in shards %}
+    <div class="shard-preview">
+      <div class="shard-preview__main">
+        <h3 class="shard-preview__title">
+          <a href="{{ shard_path(result.shard) }}" class="shard-name">{{ shard_name(result.shard) }}</a>
+        </h3>
+
+        {% if result.shard.description %}
+          <p>{{ result.shard.description }}</p>
+        {% endif %}
+      </div>
+
+      <div class="shard-info">
+        <span class="datapoint">{{ result.version }}</span>
+        <span class="datapoint">
+          {% set owner = result.repo.metadata.owner %}
+          <a href="{{ result.repo.ref.to_uri }}" class="repo-ref repo-ref--{{ result.repo.ref.resolver }}">
+            {% if owner %}
+              <img src="{{ owner.avatar_url }}" class="avatar avatar--github" />
+            {% else %}
+              {{ icon(result.repo.ref.resolver) }}
+            {% endif %}
+            {{ result.repo.ref.url }}
+          </a>
+        </span>
+        <span class="datapoint">{{ release_date(result.released_at) }}</span>
+
+        {% for category in result.categories %}
+          <span class="datapoint">
+            <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
+          </span>
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <p class="large fat">There were no results for your search ;-(</p>
+    <p class="large">Maybe you want to <a href="/categories">browse the categories</a> instead?</p>
+  {% endfor %}
+{% endblock %}

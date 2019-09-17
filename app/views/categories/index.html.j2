@@ -1,0 +1,41 @@
+{% extends "layout.html.j2" %}
+{% import "macros/links.j2" %}
+
+{% block page_title %}Catgories on Shardbox{% endblock %}
+{% block main %}
+  <header>
+    <h1>Categories</h1>
+  </header>
+
+  <div class="categories-list">
+    {% for item in categories %}
+      <div class="category-item">
+        <span class="category-title">
+          <a href="/categories/{{ item.slug }}">{{ item.name }}</a>
+          <span class="count">{{ item.entries_count }}</span>
+        </span>
+
+        <div class="category__top-shards">
+          {% for id, shard_list in top_shards %}
+            {% if id == item.id %}
+              {% for shard in shard_list %}
+                <span class="top-shard-link">
+                  <a href="{{ shard_path(shard) }}">
+                    {{- shard.display_name -}}
+                  </a>
+                </span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% for shard in top_shards[item.id] %}
+            <span class="top-shard-link">
+              <a href="{{ shard_path(shard) }}">
+                {{- shard.display_name -}}
+              </a>
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

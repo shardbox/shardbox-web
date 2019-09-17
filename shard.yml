@@ -1,0 +1,32 @@
+name: shardbox-web
+version: 0.1.0
+
+authors:
+  - Johannes Müller <straightshoota@gmail.com>
+
+targets:
+  app:
+    main: src/app.cr
+  worker:
+    main: lib/shardbox-core/src/worker.cr
+
+crystal: 0.28.0
+
+license: MIT
+
+dependencies:
+  shardbox-core:
+    github: shardbox/shardbox-core
+    branch: fix/import-description
+  humanize_time:
+    github: mamantoha/humanize_time
+  kemal:
+    github: kemalcr/kemal
+  crinja:
+    github: straight-shoota/crinja
+  baked_file_system:
+    github: schovi/baked_file_system
+  sass:
+    github: straight-shoota/sass.cr
+  markd:
+    github: icyleaf/markd

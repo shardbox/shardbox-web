@@ -1,0 +1,109 @@
+.release-wrapper
+  display: grid
+  grid-template-columns: auto 30%
+  grid-gap: 2rem
+
+.release-header
+  margin: 0 0 3rem
+  padding: 4rem 4rem 3rem
+  border-bottom: .2rem solid #333
+  background: #fff
+
+.release-main
+  background: #ffffff
+  padding: 1em 2em 3em
+
+.release-sidebar
+  > .grouping
+    margin: 1em
+
+.shards-spec
+  font-family: monospace
+  // background-color: #f8f8f6
+  padding: 1em .8em
+  border: 1px solid #eee
+  white-space: pre
+  line-height: 1.4
+  margin-top: 2rem
+  font-weight: 600
+  color: #444
+
+.list-dependents
+  list-style: none
+  margin: 0
+  padding: 0
+  line-height: 1.6
+
+  > li
+    display: inline-block
+    padding-right: .3em
+
+.release-info
+  padding: 1em
+  background-color: #ffffff
+
+.shard-name.shard-title
+  > .qualifier
+    font-weight: 250
+    font-size: 82%
+
+.list-releases
+  list-style: none
+  margin: 0
+  padding: 0
+  line-height: 1.5
+  display: grid
+  grid-template-columns: 1fr auto 2fr
+
+  > li
+    display: contents
+
+    &.current
+      background-color: #eee
+    > a
+      display: contents
+      justify-content: space-between
+      text-decoration: none
+      line-height: 1.5rem
+
+      > *
+        border-bottom: 1px dashed #ccc
+        padding: 0 .2rem
+
+      > .release-version
+        color: #333
+        font-weight: 500
+      > .release-date
+        color: #555
+        font-family: monospace
+      > .release-span
+        color: #777
+        font-size: 90%
+        letter-spacing: -0.01em
+
+      &:hover, &:focus
+        > *
+          background-color: #F4F4F4
+
+.info-value
+  margin: .5em 0
+
+  > strong
+    display: inline-block
+    min-width: 5em
+
+  > ul
+    margin-top: .5em
+
+.sync_failed_at-notice
+  margin: 1rem
+  padding: 1rem
+  background: #ffeecc
+
+  > p:first-child
+    margin-top: 0
+
+.dependency-version
+  font-family: monospace
+  font-size: 90%
+  color: #555

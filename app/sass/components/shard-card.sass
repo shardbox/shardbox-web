@@ -1,0 +1,33 @@
+.shard-card
+  //flex-basis: 13em
+  min-width: 11em
+  flex-grow: 1
+  max-width: 19em
+  margin: .6em
+  padding: .8em
+  background: #fff
+  border-top: 4px solid #ddd
+  display: flex
+  flex-flow: column
+
+  > * + *
+    margin-top: .4em
+
+  .shard-name
+    font-size: 1.35em
+
+  .shard-data
+    display: flex
+    flex-flow: column
+    color: #555
+    font-weight: 300
+
+    line
+      > * + *
+        &::before
+          content: "• "
+  .description
+    color: #444
+    font-size: .95em
+    flex-grow: 1
+    max-width: 12em

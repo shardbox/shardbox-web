@@ -1,0 +1,40 @@
+.categories-list
+  margin: 0 -1em
+  padding: 0
+  display: flex
+  flex-wrap: wrap
+
+  > .category-item
+    flex-basis: 20em
+    border: 1px solid #ddd
+    background-color: #fff
+    padding: 1em
+    margin: 1em
+    flex-grow: 1
+
+
+    > .category-title
+      font-weight: 500
+      font-size: 1.1em
+      display: flex
+      margin-bottom: .5rem
+      justify-content: space-between
+
+      > a
+        text-decoration: none
+
+.top-shard-link
+
+  & + .top-shard-link
+    &::before
+      content: "•"
+      margin-left: .2em
+      color: #888
+
+  > a
+    text-decoration: none
+    color: #444
+    font-weight: 400
+
+.category-edit
+  margin-top: 3rem

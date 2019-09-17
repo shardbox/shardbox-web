@@ -1,0 +1,71 @@
+{% extends "layout.html.j2" %}
+{% import "macros/links.j2" %}
+
+{% block page_title %}Shardbox: Contribute{% endblock %}
+{% block main %}
+<header>
+  <h1>Contribute</h1>
+</header>
+
+<div class="containers page">
+  <div class="container">
+    <p class="large">
+      <strong>Help wanted!</strong><br/>
+      You're welcome to help improve shardbox by categorizing shards, updating
+      categories and contributing to the shardbox app.
+    </p>
+
+    <h3>Catalog</h3>
+    <p>
+      The catalog is managed at
+        <a href="https://github.com/shardbox/catalog" class="repo-ref repo-ref--github">
+          {{ icon("github") }}
+          shardbox/catalog
+        </a>.
+      Feel free to send pull requests against this repo.
+    </p>
+    <p>
+      Changes will be imported into the shardbox database.
+
+      Instructions on how to edit the catalog are available in the
+        <a href="https://github.com/shardbox/catalog/blob/master/README.md">README.md</a>.
+    </p>
+    <p>
+      Good places to start:
+    </p>
+    <ul>
+      <li>
+        Add a shard that you know, but is not yet listed in the database. Either
+        add it to an existing category, or suggest a new one.
+      </li>
+      <li>
+        Categorize <a href="/categories/Uncategorized">uncategorized</a> shards.
+        They're in the database because they were discovered as dependency
+        of another shard, but need to be inserted into the catalog.
+      </li>
+    </ul>
+
+    <h3>App</h3>
+    <p>
+      The shardbox app consist of two repositories:
+    </p>
+    <ul>
+      <li>
+        <a href="https://github.com/shardbox/shardbox-core" class="repo-ref repo-ref--github">
+          {{ icon("github") }}
+          shardbox/shardbox-core
+        </a> &ndash; models and business logic for maintaining the database, including a worker application
+      </li>
+      <li>
+        <a href="https://github.com/shardbox/shardbox-web" class="repo-ref repo-ref--github">
+          {{ icon("github") }}
+          shardbox/shardbox-web
+        </a> &ndash; Kemal-based web app that serves the website
+      </li>
+    </ul>
+  </div>
+
+  <div class="container">
+  </div>
+</div>
+{% endblock %}

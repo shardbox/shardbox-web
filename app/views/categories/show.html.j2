@@ -1,0 +1,64 @@
+{% extends "layout.html.j2" %}
+{% import "macros/date.j2" %}
+{% import "macros/links.j2" %}
+
+{% set uncategorized = category.slug == "Uncategorized" %}
+
+{% block page_title %}{{ category.name }} on Shardbox{% endblock %}
+{% block main %}
+  <header>
+    <div class="breadcrumbs">
+      <a href="/categories" class="breadcrumb">Categories</a>
+    </div>
+    <h1>{{ category.name }}</h1>
+  </header>
+
+  {% if category.description %}
+    <p>{{ category.description }}</p>
+  {% endif %}
+
+  <h2>{{ entries_count }} shards</h2>
+
+  <div class="category-shards">
+  {% for result in shards %}
+    <div class="shard-preview">
+      <div class="shard-preview__main">
+        <h3 class="shard-preview__title">
+          <a href="{{ shard_path(result.shard) }}" class="shard-name">{{ shard_name(result.shard) }}</a>
+        </h3>
+
+        {% set description = result.shard.description | default(result.release.description) | default(result.repo.metadata.description) %}
+        {% if description %}
+        <div class="shard-description">
+          <p>{{ description }}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="shard-info">
+        <span class="datapoint">{{ result.release.version }}</span>
+        <span class="datapoint">{{ repo_link(result.repo.ref, result.repo.metadata.owner) }}</a></span>
+        <span class="datapoint">{{ release_date(result.release.released_at) }}</span>
+
+        {% for cat in result.categories if category != cat %}
+          <span class="datapoint">
+            <a href="/categories/{{ cat.slug }}" class="category-link">{{ cat.name }}</a>
+          </span>
+        {% endfor %}
+      </div>
+
+      {% if uncategorized %}
+        <div class="shards-spec">{{ result.shard.name }}:
+  {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}
+{%- if result.shard.description -%}
+  description: {{ result.shard.description | tojson }}
+{%- endif -%}</div>
+        {% endif %}
+    </div>
+  {% endfor %}
+  </div>
+
+  <div class="category-edit">
+    <a href="https://github.com/shardbox/catalog/edit/master/catalog/{{ category.slug }}.yml" class="btn edit">{{ icon("edit") }} Edit this category</a>
+  </div>
+{% endblock %}

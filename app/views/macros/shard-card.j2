@@ -1,0 +1,38 @@
+{% macro shard_card(shard, data, categories) %}
+  <div class="shard-card">
+    <a href="/shards/{{ shard.slug }}" class="shard-name">{{ shard_name(shard)}}</a>
+    <div class="shard-data">
+      {% if show_dependents | default(true) %}
+        <line>
+          <span class="datapoint datapoint--dependencies">{{ data.num_dependencies }} dependents</span>
+        </line>
+      {% elif dev_dependents %}
+        <line>
+          <span class="datapoint datapoint--dependencies">{{ item.num_dependencies }} dev dependents</span>
+        </line>
+      {% endif %}
+      {% if show_released_at | default(true) %}
+        <line>
+          <span class="datapoint datapoint--version">{{ icon("recently") }} {{ data.version }}</span>
+          <span class="datapoint datapoint--released_at">{{ release_date(data.released_at) }}</span>
+        </line>
+      {% endif %}
+      {% if show_created_at %}
+        <line>
+          <span class="datapoint datapoint--version">{{ icon("recently") }} {{ data.version }}</span>
+          <span class="datapoint datapoint--created_at">{{ release_date(data.created_at) }}</span>
+        </line>
+      {% endif %}
+    </div>
+    {% if show_description and shard.description %}
+      <div class="description">
+        {{ shard.description | markdown }}
+      </div>
+    {% endif %}
+    <div class="shard-card__categories">
+      {% for category in categories %}
+        <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}

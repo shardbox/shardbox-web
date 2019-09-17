@@ -1,0 +1,78 @@
+version: 1.0
+shards:
+  any_hash:
+    github: Sija/any_hash.cr
+    version: 0.2.3
+
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: 0.9.8
+
+  crinja:
+    github: straight-shoota/crinja
+    version: 0.5.0
+
+  db:
+    github: crystal-lang/crystal-db
+    version: 0.6.0
+
+  exception_page:
+    github: crystal-loot/exception_page
+    version: 0.1.2
+
+  git:
+    github: smacker/libgit2.cr
+    commit: 3426bf335e0970852e300f7602cf6e8dd21d0867
+
+  github-cr:
+    github: arnavb/github-cr
+    commit: 119df4c747a81260b37af0878b24eab9345a94f4
+
+  humanize_time:
+    github: mamantoha/humanize_time
+    version: 0.3.0
+
+  i18n:
+    github: TechMagister/i18n.cr
+    commit: ed60fa3268a8e319c7a6c9a01dab519dd47846a7
+
+  kemal:
+    github: kemalcr/kemal
+    version: 0.26.0
+
+  kilt:
+    github: jeromegn/kilt
+    version: 0.4.0
+
+  markd:
+    github: icyleaf/markd
+    version: 0.1.2
+
+  pg:
+    github: will/crystal-pg
+    version: 0.18.1
+
+  radix:
+    github: luislavena/radix
+    version: 0.3.9
+
+  raven:
+    github: Sija/raven.cr
+    version: 1.5.0
+
+  sass:
+    github: straight-shoota/sass.cr
+    version: 0.5.0
+
+  shardbox-core:
+    github: shardbox/shardbox-core
+    commit: 43de5fbc5f81e6925a9ac2541bf796fff591c9da
+
+  shards:
+    github: crystal-lang/shards
+    commit: 81ea69333b0b020eccdfd6c8f6f427e9724e135a
+
+  taskmaster:
+    github: straight-shoota/taskmaster
+    commit: b2ef6a93ab5f85e2412aad5e1385563228e5fa06
+

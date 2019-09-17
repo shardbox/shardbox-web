@@ -1,0 +1,237 @@
+{% extends "layout.html.j2" %}
+{% import "macros/date.j2" %}
+{% import "macros/links.j2" %}
+
+{% block page_title %}{{ shard.display_name }}@{{ release.version }} on Shardbox{% endblock %}
+
+{% block main %}
+  <header class="release-header">
+    <h1 class="shard-title shard-name">
+      {{ shard_name(shard) }}
+    </h1>
+
+    <div class="shard-info shard-info--release">
+      <span class="datapoint datapoint--version">{{ release.version }}</span>
+      <span class="datapoint datapoint--date">
+        Released {{ release_date(release.released_at) }}
+      </span>
+      {% if release.latest %}
+        <span class="datapoint datapoint--latest">Latest release</span>
+      {% endif %}
+      {% if release.yanked_at %}
+        <span class="datapoint datapoint--yanked">Yanked release</span>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if repo.sync_failed_at %}
+    <div class="sync_failed_at-notice">
+      <p class="large">
+        This repo seems to be no longer available at {{ repo_link(repo.ref) }}.
+      </p>
+
+      <p>
+        Git synchronization failed {{ time_date(repo.sync_failed_at) }}.
+        {% if repo.synced_at %}
+          Last successful sync was {{ time_date(repo.synced_at) }}.
+        {% else %}
+          We could never reach it at the given location.
+        {% endif %}
+      </p>
+
+      <a class="btn help-cta" href="/contribute">Help find it again!</a>
+    </div>
+  {% endif %}
+
+  <div class="release-wrapper">
+    <div class="release-main">
+      {% set description = shard.description | default(release.description) | default(repo.metadata.description) %}
+      {% if description %}
+        <div class="shard-description description">
+          <p>{{description | markdown}}</p>
+        </div>
+      {% endif %}
+
+      <div class="shards-spec">{{ shard.name }}:
+    {{ repo.ref.resolver }}: {{ repo.ref.url }}
+    version: {{ release.version }}</div>
+
+    <div class="container">
+      <h3>Dependencies <span class="count">{{ dependencies | length }}</span></h3>
+      <ul class="dependencies dependencies--runtime">
+      {% for dep in dependencies %}
+        <li>
+          <a href="{{ shard_path(dep.shard) }}" class="dependency-name">{{ dep.shard.display_name }}</a>
+          {% if dep.dependency.version_reference %}
+            <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
+              {{ dep.dependency.version_reference[1] }}
+            </span>
+          {% endif %}
+
+          <pre>{{ dep.dependency.spec }}</pre>
+        </li>
+      {% endfor %}
+      </ul>
+
+      <h3>Development Dependencies <span class="count">{{ dev_dependencies | length }}</span></h3>
+      <ul class="dependencies dependencies--development">
+      {% for dep in dev_dependencies %}
+        <li>
+          {% if dep.shard %}
+            <a href="{{ shard_path(dep.shard) }}" class="dependency-name">{{ dep.shard.display_name }}</a>
+          {% else %}
+            <span  class="dependency-name">{{ dep.dependency.name }}</span>
+          {% endif %}
+          {% if dep.dependency.version_reference %}
+            <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
+              {{ dep.dependency.version_reference[1] }}
+            </span>
+          {% endif %}
+
+          {% if not dep.shard %}
+            {% set repo_ref = dep.dependency.repo_ref %}
+            {% if repo_ref %}
+              <span class="dependency-reference">{{ repo_ref.resolver }}: {{ repo_ref.url }}</span>
+            {% endif %}
+          {% endif %}
+
+          <pre>{{ dep.dependency.spec }}</pre>
+        </li>
+      {% endfor %}
+      </ul>
+
+      <h3>Dependents <span class="count">{{ dependents | length }}</span></h3>
+      <ul class="dependencies dependencies--dependents">
+      {% for item in dependents %}
+        <li>
+          <a href="{{ shard_path(item.shard) }}" class="dependency-name">{{ item.shard.display_name }}</a>
+          {% if item.dependents_count > 0 %}
+          ({{item.dependents_count}} dependents)
+          {% endif %}
+        </li>
+      {% endfor %}
+      </ul>
+
+      {% if mirrors | length > 0 %}
+      <h3>Mirrors</h3>
+      <ul>
+      {% for mirror in mirrors %}
+        <li>({{mirror.role}})  {{ repo_link(mirror.ref) }}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if homonymous_shards | length > 0 %}
+      <h3>Similar shards</h3>
+      <ul>
+      {% for item in homonymous_shards %}
+        <li>
+          <a href="/shards/{{ item.slug }}" class="shard-name">{{ item.display_name}}</a>
+        </li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    </div>
+
+    <div class="release-sidebar">
+      <div class="release-info">
+        {% for category in categories %}
+          <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
+        {% else %}
+          <div class="uncategorized-cta">
+            <p>This shard is not yet categorized.</p>
+            <a href="/contribute" class="btn help-cta">Help categorize it!</a>
+          </div>
+        {% endfor %}
+        <div class="info-value">
+          <strong>License:</strong>
+          {{ release.license }}
+        </div>
+
+        <div class="info-value">
+          <strong>Crystal:</strong>
+          {{ release.crystal }}
+        </div>
+
+        <div class="info-value">
+          <strong>Authors:</strong>
+          <ul>
+          {% for author in release.spec.authors %}
+            <li>{{ author }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+
+        {% set stargazers_count = repo.metadata.stargazers_count %}
+        {% if stargazers_count %}
+        <div class="info-value">
+          <strong>Stars:</strong> {{ stargazers_count }}
+            {{ icon("star") }}
+        </div>
+        {% endif %}
+
+        {% set forks_count = repo.metadata.forks_count %}
+        {% if forks_count %}
+        <div class="info-value">
+          <strong>Forks:</strong> {{ forks_count }} {{ icon("repo-forked" ) }}
+        </div>
+        {% endif %}
+
+        {% set open_issues_count = repo.metadata.open_issues_count %}
+        {% if open_issues_count %}
+        <div class="info-value">
+          <strong>Open Issues:</strong> {{ open_issues_count }} {{ icon("issue") }}
+        </div>
+        {% endif %}
+
+        {% set topics = repo.metadata.topics %}
+        {% if topics %}
+        <div class="info-value">
+          <strong>Topics:</strong>
+          <div class="topics">
+            {% for topic in topics %}
+              <span class="topic">{{ topic }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="info-value">
+          <strong>Links:</strong>
+          <ul>
+            <li>Source: <a href="{{ repo.ref.to_uri }}" class="repo.ref-ref repo.ref-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a></li>
+            {% set owner = repo.metadata.owner %}
+            {% if owner %}
+            <li>Owner: <a href="{{ owner.html_url }}"><img src="{{ owner.avatar_url }}" class="avatar avatar--github" /> {{ owner.login }}</a></li>
+            {% endif %}
+            {% set homepage = repo.metadata.homepage %}
+            {% if homepage %}
+            <li>Homepage: <a href="{{ homepage }}">{{ homepage }}</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="grouping">
+        <h3>Releases</h3>
+        <ul class="list-releases">
+        {% set current_version = release.version %}
+        {% for release in releases %}
+          <li{% if release.version == current_version %} class="current"{% endif %}>
+            <a href="/shards/{{shard.slug}}/{{release.version}}">
+              <span class="release-version">{{ release.version }}</span>
+              <span class="release-date">{{ release.released_at | date('%Y-%m-%d') }}</span>
+              <span class="release-span">{{ release_date(release.released_at) }}</span>
+            </a>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+
+      <div class="grouping">
+        Last synced {{ time_date(repo.synced_at) }}.
+      </div>
+    </div>
+  </div>
+{% endblock %}

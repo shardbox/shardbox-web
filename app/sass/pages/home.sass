@@ -1,0 +1,69 @@
+.home-header
+  > p
+    margin: 0
+
+  > h1 + p
+    margin-top: 1.5rem
+
+.shards-lists
+  display: flex
+  flex-wrap: wrap
+  flex-direction: row
+
+.shards-list
+  flex-grow: 1
+  min-width: 25em
+  flex-basis: 25em
+  margin: 0 -.6em
+  display: flex
+  flex-flow: row wrap
+
+.stats-container
+  display: flex
+
+table.stats
+  width: 100%
+  > tbody > tr
+    > th, > td
+      padding-bottom: .3em
+      padding-top: .3em
+      border-bottom: 1px dashed #ddd
+    > th
+      text-align: right
+      vertical-align: top
+      width: 10em
+    > td
+      padding-left: .5em
+      vertical-align: top
+
+table.counts
+  with: 100%
+  > tbody > tr
+    > td
+      text-align: right
+      color: #555
+      font-weight: 500
+      vertical-align: top
+    > th
+      text-align: left
+      font-weight: 500
+      color: #888
+      vertical-align: top
+      padding-left: .8em
+
+      &::before
+        content: "·"
+        margin-left: -.7em
+        margin-right: .3em
+        color: #888
+        font-weight: bold
+
+.count
+  color: #555
+  font-weight: 500
+
+.container
+  h3
+    font-size: 3rem
+    font-weight: 300
+    color: #666

@@ -1,0 +1,27 @@
+.shard-info
+  color: #555
+  font-weight: 300
+  margin: 0
+  font-size: 1.3rem
+
+  >* + *
+    margin-left: .6em
+    &::before
+      content: "• "
+      margin-left: -.5em
+      position: absolute
+      line-height: 1.5
+
+  &--release
+    .datapoint--version
+      font-size: 1.5rem
+
+
+  &--list
+    .datapoint--dependencies
+      width: 100%
+
+      + .datapoint
+        margin-left: 0
+        &::before
+          display: none

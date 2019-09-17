@@ -1,0 +1,29 @@
+.shard-preview > .shard-info
+  font-size: .9em
+  color: #444
+
+.shard-preview
+  background: #fff
+  padding: 1rem
+  border: 1px solid #eee
+
+  + .shard-preview
+    margin-top: 1rem
+
+  &__main
+    display: flex
+    align-items: baseline
+    margin-bottom: .5rem
+
+    > *
+      margin: 0
+      + *
+        margin-left: .7rem
+
+  &__title
+    > a
+      text-decoration: none
+      color: #222
+      font-weight: 600
+      font-size: 1.5rem
+      margin-bottom: .5rem
