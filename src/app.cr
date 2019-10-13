@@ -15,7 +15,7 @@ def crinja
   crinja.loader = Crinja::Loader::FileSystemLoader.new("app/views/")
   crinja
 
-  crinja.filters["humanize_time_span"] = Crinja.filter({now: Time.utc_now}) do
+  crinja.filters["humanize_time_span"] = Crinja.filter({now: Time.utc}) do
     time = target.as_time
     now = arguments["now"].as_time
     formatted = HumanizeTime.distance_of_time_in_words(time, now)

@@ -14,7 +14,7 @@ shards:
 
   db:
     github: crystal-lang/crystal-db
-    version: 0.6.0
+    version: 0.7.0
 
   exception_page:
     github: crystal-loot/exception_page
@@ -30,11 +30,11 @@ shards:
 
   humanize_time:
     github: mamantoha/humanize_time
-    version: 0.3.0
+    version: 0.4.0
 
   i18n:
     github: TechMagister/i18n.cr
-    commit: ed60fa3268a8e319c7a6c9a01dab519dd47846a7
+    commit: 7e8168f2a0d567d3722a70b3a3a1028930e1c47e
 
   kemal:
     github: kemalcr/kemal
@@ -46,11 +46,11 @@ shards:
 
   markd:
     github: icyleaf/markd
-    version: 0.1.2
+    version: 0.2.0
 
   pg:
     github: will/crystal-pg
-    version: 0.18.1
+    version: 0.19.0
 
   radix:
     github: luislavena/radix
@@ -58,7 +58,7 @@ shards:
 
   raven:
     github: Sija/raven.cr
-    version: 1.5.0
+    version: 1.5.1
 
   sass:
     github: straight-shoota/sass.cr
@@ -66,11 +66,11 @@ shards:
 
   shardbox-core:
     github: shardbox/shardbox-core
-    commit: 43de5fbc5f81e6925a9ac2541bf796fff591c9da
+    commit: 8d898d190a23fa11e47019cf7be18ce2d601bee7
 
   shards:
     github: crystal-lang/shards
-    commit: 81ea69333b0b020eccdfd6c8f6f427e9724e135a
+    commit: a60c6947efbf436e0fde8532ae808e5b97795dda
 
   taskmaster:
     github: straight-shoota/taskmaster

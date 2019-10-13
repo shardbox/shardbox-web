@@ -29,8 +29,8 @@
 
         {% set description = result.shard.description | default(result.release.description) | default(result.repo.metadata.description) %}
         {% if description %}
-        <div class="shard-description">
-          <p>{{ description }}</p>
+        <div class="description">
+          <p>{{ description | markdown }}</p>
         </div>
         {% endif %}
       </div>
@@ -45,13 +45,26 @@
             <a href="/categories/{{ cat.slug }}" class="category-link">{{ cat.name }}</a>
           </span>
         {% endfor %}
+        {% if result.shard.archived %}
+          <span class="datapoint">
+            <span class="label label__archived">
+              archived
+            </span>
+          </span>
+        {% endif %}
+        {% if result.repo.sync_failed_at %}
+          <span class="datapoint">
+            <span class="label label__sync_failed">
+              unavailable
+            </span>
+          </span>
+        {% endif %}
       </div>
 
-      {% if uncategorized %}
-        <div class="shards-spec">{{ result.shard.name }}:
-  {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}
-{%- if result.shard.description -%}
-  description: {{ result.shard.description | tojson }}
+      {% if uncategorized -%}
+        <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}
+{%- if description -%}
+  description: {{ description | tojson }}
 {%- endif -%}</div>
         {% endif %}
     </div>

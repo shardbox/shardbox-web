@@ -24,8 +24,18 @@
     </div>
   </header>
 
+  {% if shard.archived %}
+    <div class="shard-notice shard-notice__archived">
+      <p class="large">Archived shard</p>
+      <p>
+        This shard has been archived {{ time_date(shard.archived_at)}}.
+        It is no longer maintained or has been discontinued for other reasons.
+      </p>
+    </div>
+  {% endif %}
+
   {% if repo.sync_failed_at %}
-    <div class="sync_failed_at-notice">
+    <div class="shard-notice shard-notice__sync_failed_at">
       <p class="large">
         This repo seems to be no longer available at {{ repo_link(repo.ref) }}.
       </p>

@@ -95,10 +95,13 @@
   > ul
     margin-top: .5em
 
-.sync_failed_at-notice
+.shard-notice
   margin: 1rem
   padding: 1rem
-  background: #ffeecc
+  &__archived
+    background: $color-archived
+  &__sync_failed_at
+    background: $color-sync_failed
 
   > p:first-child
     margin-top: 0

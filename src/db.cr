@@ -1,9 +1,9 @@
 class ShardsDB
   # HOME
   def recent_shards
-    results = connection.query_all <<-SQL, as: {Int64, String, String, String?, String, Time, Array(Array(String))?}
+    results = connection.query_all <<-SQL, as: {Int64, String, String, String?, Time?, String, Time, Array(Array(String))?}
       SELECT
-        shards.id, name::text, qualifier::text, shards.description, version, released_at,
+        shards.id, name::text, qualifier::text, shards.description, archived_at, version, released_at,
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id])
       FROM shards
       JOIN releases ON releases.shard_id = shards.id
@@ -13,20 +13,20 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      id, name, qualifier, description, version, released_at, categories = result
+      id, name, qualifier, description, archived_at, version, released_at, categories = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, id: id), version: version, released_at: released_at, categoires: categories}
+      {shard: Shard.new(name, qualifier, description, archived_at, id: id), version: version, released_at: released_at, categoires: categories}
     end
   end
 
   def new_shards
-    results = connection.query_all <<-SQL, as: {Int64, String, String, String?, String, Time, String, String}
+    results = connection.query_all <<-SQL, as: {Int64, String, String, String?, Time?, String, Time, String, String}
       WITH newest_shards AS (
         SELECT shard_id, MIN(released_at) AS released_at FROM releases WHERE version <> 'HEAD' GROUP BY shard_id ORDER BY MIN(released_at) DESC LIMIT 10
       )
       SELECT
-        shards.id, name::text, qualifier::text, shards.description,
+        shards.id, name::text, qualifier::text, shards.description, archived_at,
         version, releases.released_at,
         repos.resolver::text, repos.url::text
       FROM
@@ -42,16 +42,16 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      id, name, qualifier, description, version, created_at, resolver, url = result
-      {shard: Shard.new(name, qualifier, description, id: id), version: version, created_at: created_at, repo_ref: Repo::Ref.new(resolver, url)}
+      id, name, qualifier, description, archived_at, version, created_at, resolver, url = result
+      {shard: Shard.new(name, qualifier, description, archived_at, id: id), version: version, created_at: created_at, repo_ref: Repo::Ref.new(resolver, url)}
     end
   end
 
   def dependent_shards(scope : Dependency::Scope = :runtime)
     column_name = scope.development? ? "dev_dependents_count" : "dependents_count"
-    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Int32, Array(Array(String))?, String, Time}
+    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Time?, Int32, Array(Array(String))?, String, Time}
       SELECT
-        shards.id, name::text, qualifier::text, shards.description,
+        shards.id, name::text, qualifier::text, shards.description, archived_at,
         metrics.#{column_name},
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id]),
         releases.version, releases.released_at
@@ -63,17 +63,17 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      id, name, qualifier, description, num_dependencies, categories, version, released_at = result
+      id, name, qualifier, description, archived_at, num_dependencies, categories, version, released_at = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, id: id), num_dependencies: num_dependencies, categories: categories, version: version, released_at: released_at}
+      {shard: Shard.new(name, qualifier, description, archived_at, id: id), num_dependencies: num_dependencies, categories: categories, version: version, released_at: released_at}
     end
   end
 
   def popular_shards
-    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Int32, Array(Array(String))?, String, Time}
+    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Time?, Int32, Array(Array(String))?, String, Time}
       SELECT
-        shards.id, name::text, qualifier::text, shards.description,
+        shards.id, name::text, qualifier::text, shards.description, archived_at,
         metrics.dependents_count,
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id]),
         releases.version, releases.released_at
@@ -85,18 +85,18 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      id, name, qualifier, description, num_dependencies, categories, version, released_at = result
+      id, name, qualifier, description, archived_at, num_dependencies, categories, version, released_at = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, id: id), num_dependencies: num_dependencies, categories: categories, version: version, released_at: released_at}
+      {shard: Shard.new(name, qualifier, description, archived_at, id: id), num_dependencies: num_dependencies, categories: categories, version: version, released_at: released_at}
     end
   end
 
   # SHARD
 
   def find_shard?(name : String, qualifier : String)
-    result = connection.query_one? <<-SQL, name, qualifier, as: {Int64, String, String, String?}
-      SELECT id, name::text, qualifier::text, description
+    result = connection.query_one? <<-SQL, name, qualifier, as: {Int64, String, String, String?, Time?}
+      SELECT id, name::text, qualifier::text, description, archived_at
       FROM shards
       WHERE
         name = $1 AND qualifier = $2;
@@ -104,20 +104,20 @@ class ShardsDB
 
     return unless result
 
-    id, name, qualifier, description = result
-    Shard.new(name, qualifier, description, id: id)
+    id, name, qualifier, description, archived_at = result
+    Shard.new(name, qualifier, description, archived_at, id: id)
   end
 
   def find_homonymous_shards(name : String)
     results = [] of Shard
     connection.query_all <<-SQL, name do |result|
-      SELECT id, name::text, qualifier::text, description
+      SELECT id, name::text, qualifier::text, description, archived_at
       FROM shards
       WHERE
         name = $1;
       SQL
-      id, name, qualifier, description = result.read Int64, String, String, String?
-      results << Shard.new(name, qualifier, description, id: id)
+      id, name, qualifier, description, archived_at = result.read Int64, String, String, String?, Time?
+      results << Shard.new(name, qualifier, description, archived_at, id: id)
     end
     results
   end
@@ -143,10 +143,10 @@ class ShardsDB
   end
 
   def dependencies(release_id : Int64, scope : Dependency::Scope)
-    results = connection.query_all <<-SQL, release_id, scope, as: {String, JSON::Any, String, Int64?, String?, String?, String?}
+    results = connection.query_all <<-SQL, release_id, scope, as: {String, JSON::Any, String, Int64?, String?, String?, String?, Time?}
       SELECT
         dependencies.name::text, dependencies.spec, dependencies.scope::text,
-        shards.id, shards.name::text, shards.qualifier::text, description::text
+        shards.id, shards.name::text, shards.qualifier::text, description::text, archived_at
       FROM
         dependencies
       LEFT JOIN
@@ -158,11 +158,11 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      name, spec, scope, shard_id, shard_name, qualifier, description = result
+      name, spec, scope, shard_id, shard_name, qualifier, description, archived_at = result
       scope = Dependency::Scope.parse(scope)
 
       if shard_id
-        shard = Shard.new(shard_name.not_nil!, qualifier.not_nil!, description, id: shard_id)
+        shard = Shard.new(shard_name.not_nil!, qualifier.not_nil!, description, archived_at, id: shard_id)
       end
 
       {dependency: Dependency.new(name, spec, scope), shard: shard}
@@ -170,9 +170,9 @@ class ShardsDB
   end
 
   def dependents(shard_id : Int64)
-    results = connection.query_all <<-SQL, shard_id, as: {Int64, String, String, String?, Int32}
+    results = connection.query_all <<-SQL, shard_id, as: {Int64, String, String, String?, Time?, Int32}
       SELECT
-        shards.id, shards.name::text, shards.qualifier::text, description::text,
+        shards.id, shards.name::text, shards.qualifier::text, description::text, archived_at,
         metrics.dependents_count
       FROM
         shards
@@ -187,9 +187,9 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      shard_id, shard_name, qualifier, description, dependents_count = result
+      shard_id, shard_name, qualifier, description, archived_at, dependents_count = result
 
-      {shard: Shard.new(shard_name, qualifier, description, id: shard_id), dependents_count: dependents_count}
+      {shard: Shard.new(shard_name, qualifier, description, archived_at, id: shard_id), dependents_count: dependents_count}
     end
   end
 
@@ -209,18 +209,6 @@ class ShardsDB
 
       Category.new(slug, name, description, entries_count, id: id)
     end
-  end
-
-  # TODO: Remove, implemented in core
-  def find_canonical_repo(shard_id : Int64)
-    id, resolver, url, metadata, synced_at, sync_failed_at = connection.query_one <<-SQL, shard_id, as: {Int64, String, String, String, Time?, Time?}
-      SELECT id, resolver::text, url::text, metadata::text, synced_at, sync_failed_at
-      FROM repos
-      WHERE
-        shard_id = $1 AND role = 'canonical'
-      SQL
-
-    Repo.new(resolver, url, shard_id, "canonical", Repo::Metadata.from_json(metadata), synced_at, sync_failed_at, id: id)
   end
 
   record Metrics, shard_id : Int64, popularity : Float32?, likes_count : Int32?, watchers_count : Int32?, forks_count : Int32?,
@@ -266,6 +254,8 @@ class ShardsDB
                 shards.id
               FROM
                 shards
+              WHERE
+                archived_at IS NULL
             ) s
           JOIN
             shard_metrics_current AS metrics ON s.id = metrics.shard_id
@@ -302,13 +292,13 @@ class ShardsDB
       args = [category_id]
       where = "$1 = ANY(categories)"
     else
-      args = [] of String
+      args = [] of Int64
       where = "categories = '{}'::bigint[]"
     end
 
-    results = connection.query_all <<-SQL, args, as: {Int64, String, String, String?, String, Time, String, String, String, Array(Array(String))?}
+    results = connection.query_all <<-SQL, args: args, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Array(Array(String))?}
       SELECT
-        shards.id, name::text, qualifier::text, shards.description,
+        shards.id, name::text, qualifier::text, shards.description, archived_at,
         releases.version, releases.released_at,
         repos.resolver::text, repos.url::text, repos.metadata::text,
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id])
@@ -327,11 +317,11 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      shard_id, name, qualifier, description, version, released_at, resolver, url, metadata, categories = result
+      shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, categories = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
       {
-        shard: Shard.new(name, qualifier, description, id: shard_id),
+        shard: Shard.new(name, qualifier, description, archived_at, id: shard_id),
         repo:  Repo.new(resolver, url, shard_id,
           metadata: Repo::Metadata.from_json(metadata)),
         release: Release.new(version, released_at),
@@ -362,9 +352,9 @@ class ShardsDB
 
   def search(query)
     query = "%#{query}%"
-    results = connection.query_all <<-SQL, query, as: {Int64, String, String, String?, String, Time, String, String, String, Array(Array(String))?}
+    results = connection.query_all <<-SQL, query, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Array(Array(String))?}
       SELECT
-        shards.id, name::text, qualifier::text, shards.description,
+        shards.id, name::text, qualifier::text, shards.description, archived_at,
         releases.version, releases.released_at,
         repos.resolver::text, repos.url::text, repos.metadata::text,
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id])
@@ -384,10 +374,10 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      shard_id, name, qualifier, description, version, released_at, resolver, url, metadata, categories = result
+      shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, categories = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, id: shard_id), repo: Repo.new(resolver, url, shard_id, metadata: Repo::Metadata.from_json(metadata)), version: version, released_at: released_at, categories: categories}
+      {shard: Shard.new(name, qualifier, description, archived_at, id: shard_id), repo: Repo.new(resolver, url, shard_id, metadata: Repo::Metadata.from_json(metadata)), version: version, released_at: released_at, categories: categories}
     end
   end
 

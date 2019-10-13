@@ -6,6 +6,11 @@ end
 @[Crinja::Attributes]
 class Shard
   include Crinja::Object::Auto
+
+  @[Crinja::Attribute]
+  def archived
+    archived?
+  end
 end
 
 @[Crinja::Attributes]
