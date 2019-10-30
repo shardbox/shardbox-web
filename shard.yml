@@ -17,7 +17,6 @@ license: MIT
 dependencies:
   shardbox-core:
     github: shardbox/shardbox-core
-    branch: feature/archived-shard
   humanize_time:
     github: mamantoha/humanize_time
   kemal:

@@ -3,6 +3,10 @@ require "raven/integrations/kemal"
 
 # Perform basic raven configuration, none of it is required though
 Raven.configure do |config|
+  if env_var = ENV["SENTRY_DSN_VAR"]?
+    config.dsn = ENV[env_var]
+  end
+
   # Keep main fiber responsive by sending the events in the background
   config.async = true
   # Set the environment name using `Kemal.config.env`, which uses `KEMAL_ENV` variable under-the-hood
