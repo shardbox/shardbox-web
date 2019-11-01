@@ -10,6 +10,13 @@
       {{ shard_name(shard) }}
     </h1>
 
+    {% set description = shard.description | default(release.description) | default(repo.metadata.description) %}
+    {% if description %}
+      <div class="shard-description description">
+        {{description | markdown}}
+      </div>
+    {% endif %}
+
     <div class="shard-info shard-info--release">
       <span class="datapoint datapoint--version">{{ release.version }}</span>
       <span class="datapoint datapoint--date">
@@ -55,16 +62,18 @@
 
   <div class="release-wrapper">
     <div class="release-main">
-      {% set description = shard.description | default(release.description) | default(repo.metadata.description) %}
-      {% if description %}
-        <div class="shard-description description">
-          <p>{{description | markdown}}</p>
-        </div>
-      {% endif %}
+      {#<nav class="release-nav">
+        <a href="{{ release_path(shard, release) }" class="active">Main</a>
+        <a href="{{ release_path(shard, release) }/readme">README</a>
+        <a href="{{ release_path(shard, release) }/shard.yml">shard.yml</a>
+        <a href="{{ release_path(shard, release) }/dependents">dependents</a>
+      </nav>#}
 
+      <p>You can add this shard as a dependency by adding the following lines
+        to the <code>dependencies</code> section in your <code>shard.yml</code>:</p>
       <div class="shards-spec">{{ shard.name }}:
     {{ repo.ref.resolver }}: {{ repo.ref.url }}
-    version: {{ release.version }}</div>
+    version: ~> {{ release.version }}</div>
 
     <div class="container">
       <h3>Dependencies <span class="count">{{ dependencies | length }}</span></h3>
@@ -76,6 +85,10 @@
             <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
               {{ dep.dependency.version_reference[1] }}
             </span>
+          {% endif %}
+
+          {% if dep.shard.description %}
+            <span class="shard-description">{{ dep.shard.description }}</span>
           {% endif %}
 
           <pre>{{ dep.dependency.spec }}</pre>
@@ -105,16 +118,34 @@
             {% endif %}
           {% endif %}
 
+          {% if dep.shard.description %}
+            <span class="shard-description">{{ dep.shard.description }}</span>
+          {% endif %}
+
           <pre>{{ dep.dependency.spec }}</pre>
         </li>
       {% endfor %}
       </ul>
 
+      {% set libraries = release.spec["libraries"] %}
+      {% if libraries %}
+      <div class="shard-libraries">
+        <h3>Libraries <span class="count">{{ libraries | count }}</span></h3>
+        <ul>
+          {% for name, version in libraries %}
+            <li><code>{{ name }}</code>: <code>{{ version }}</code></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="container">
       <h3>Dependents <span class="count">{{ dependents | length }}</span></h3>
       <ul class="dependencies dependencies--dependents">
       {% for item in dependents %}
         <li>
-          <a href="{{ shard_path(item.shard) }}" class="dependency-name">{{ item.shard.display_name }}</a>
+          <a href="{{ shard_path(item.shard) }}" class="dependency-name"{% if item.shard.description %} title="{{ item.shard.description }}"{% endif %}>{{ item.shard.display_name }}</a>
           {% if item.dependents_count > 0 %}
           ({{item.dependents_count}} dependents)
           {% endif %}
@@ -145,83 +176,7 @@
     </div>
 
     <div class="release-sidebar">
-      <div class="release-info">
-        {% for category in categories %}
-          <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
-        {% else %}
-          <div class="uncategorized-cta">
-            <p>This shard is not yet categorized.</p>
-            <a href="/contribute" class="btn help-cta">Help categorize it!</a>
-          </div>
-        {% endfor %}
-        <div class="info-value">
-          <strong>License:</strong>
-          {{ release.license }}
-        </div>
-
-        <div class="info-value">
-          <strong>Crystal:</strong>
-          {{ release.crystal }}
-        </div>
-
-        <div class="info-value">
-          <strong>Authors:</strong>
-          <ul>
-          {% for author in release.spec.authors %}
-            <li>{{ author }}</li>
-          {% endfor %}
-          </ul>
-        </div>
-
-        {% set stargazers_count = repo.metadata.stargazers_count %}
-        {% if stargazers_count %}
-        <div class="info-value">
-          <strong>Stars:</strong> {{ stargazers_count }}
-            {{ icon("star") }}
-        </div>
-        {% endif %}
-
-        {% set forks_count = repo.metadata.forks_count %}
-        {% if forks_count %}
-        <div class="info-value">
-          <strong>Forks:</strong> {{ forks_count }} {{ icon("repo-forked" ) }}
-        </div>
-        {% endif %}
-
-        {% set open_issues_count = repo.metadata.open_issues_count %}
-        {% if open_issues_count %}
-        <div class="info-value">
-          <strong>Open Issues:</strong> {{ open_issues_count }} {{ icon("issue") }}
-        </div>
-        {% endif %}
-
-        {% set topics = repo.metadata.topics %}
-        {% if topics %}
-        <div class="info-value">
-          <strong>Topics:</strong>
-          <div class="topics">
-            {% for topic in topics %}
-              <span class="topic">{{ topic }}</span>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %}
-
-        <div class="info-value">
-          <strong>Links:</strong>
-          <ul>
-            <li>Source: <a href="{{ repo.ref.to_uri }}" class="repo.ref-ref repo.ref-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a></li>
-            {% set owner = repo.metadata.owner %}
-            {% if owner %}
-            <li>Owner: <a href="{{ owner.html_url }}"><img src="{{ owner.avatar_url }}" class="avatar avatar--github" /> {{ owner.login }}</a></li>
-            {% endif %}
-            {% set homepage = repo.metadata.homepage %}
-            {% if homepage %}
-            <li>Homepage: <a href="{{ homepage }}">{{ homepage }}</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
+    {% include "releases/_infobox.html.j2" %}
 
       <div class="grouping">
         <h3>Releases</h3>
@@ -244,4 +199,15 @@
       </div>
     </div>
   </div>
+
+  {% if categories %}
+    <div class="category-edit">
+      {% set category = categories[0] %}
+      <a href="https://github.com/shardbox/catalog/edit/master/catalog/{{ category.slug }}.yml" class="btn edit"
+        title="You can edit the category including this shard on GitHub">
+        {{ icon("edit") }} Edit in category {{ category.name }}
+      </a>
+      <a href="/contribute" class="help">?</a>
+    </div>
+  {% endif %}
 {% endblock %}

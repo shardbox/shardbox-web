@@ -3,6 +3,7 @@ html
   color: #222
   font-size: 12pt
   background: #fafafa
+  line-height: 1.4
 
 body
   margin: 0
@@ -15,6 +16,30 @@ main
   margin: 0 $main-margin 3rem
   max-width: 95em
 
+a
+  text-decoration: none
+
+  &.help
+    display: inline-block
+    border-radius: 50%
+    font-weight: 700
+    margin: .2em
+    width: 1.2em
+    line-height: 1.2
+    text-align: center
+    background-color: #ddd
+    color: #888
+    border: 2px solid #888
+    transform: scale(0.8)
+
+    &:hover, &:focus
+      background-color: #888
+      color: #fff
+
+  &.legal-link
+    color: #888
+    font-weight: 300
+
 h1
   font-weight: 500
   color: #222
@@ -23,8 +48,6 @@ h1
 
 pre
   white-space: pre-wrap
-
-.shard-description
 
 header
   margin: 2rem 0
@@ -51,22 +74,19 @@ h3
   height: 1.4em
   border-radius: 50%
 
-.dependencies
-  pre
-    display: none
-
-  span.dependency-name
-    font-style: italic
-
 .shard-name, .dependency-name
   font-weight: 500
   text-decoration: none
 
 .topic
   display: inline-block
-  background: #ddd
-  padding: .1em .4em
-  border-radius: .3em
+  //#background: #ddd
+  padding: .1em .2em
+  font-weight: 400
+  //color: #777
+  //#border-radius: .3em
+  &:hover
+    background-color: #F4F4F4
 
 .large
   font-size: 1.5rem
@@ -75,15 +95,16 @@ h3
   font-weight: 500
 
 .btn
-  background: #ddd
-  border-radius: .3em
-  padding: .4em .5em
+  padding: .3em .4em
   color: #555
   text-decoration: none
   font-weight: 500
+  display: inline-block
+  border: 2px solid #555
 
   &:hover, &:focus
-    background-color: #ccc
+    background-color: #555
+    color: #fff
 
 .icon
   display: inline-block
@@ -114,5 +135,5 @@ h3
 p
   margin: 0
 
-  + p
+  &:not(:empty) + p:not(:empty)
     margin-top: .7rem

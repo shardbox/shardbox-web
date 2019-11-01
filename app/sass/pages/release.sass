@@ -5,13 +5,20 @@
 
 .release-header
   margin: 0 0 3rem
-  padding: 4rem 4rem 3rem
+  padding: 4rem 4rem 2rem
   border-bottom: .2rem solid #333
   background: #fff
 
+  .shard-description
+    font-size: 1.3rem
+    margin-bottom: .5rem
+
 .release-main
   background: #ffffff
-  padding: 1em 2em 3em
+  padding: 2em 2em 3em
+
+  > .container > h3
+    font-size: 2rem
 
 .release-sidebar
   > .grouping
@@ -23,10 +30,26 @@
   padding: 1em .8em
   border: 1px solid #eee
   white-space: pre
-  line-height: 1.4
-  margin-top: 2rem
+  margin-top: 1rem
   font-weight: 600
   color: #444
+
+.dependencies
+  pre
+    display: none
+
+  span.dependency-name
+    font-style: italic
+
+  > li + li
+    margin-top: .3em
+
+  .shard-description
+    font-size: 94%
+    line-height: 1.4
+    color: #555
+    font-weight: 300
+    display: block
 
 .list-dependents
   list-style: none
@@ -38,9 +61,26 @@
     display: inline-block
     padding-right: .3em
 
-.release-info
-  padding: 1em
+.infobox
   background-color: #ffffff
+
+  > .container
+    padding: .7rem 1rem .3rem 1.3rem
+
+    > h3
+      font-weight: 300
+      font-size: 1rem
+      margin: 0
+      margin-left: -0.5rem
+      color: #222
+
+    > ul
+      margin: 0
+      padding: 0
+      > li
+        list-style: none
+    > .category-link
+      display: block
 
 .shard-name.shard-title
   > .qualifier
@@ -85,16 +125,6 @@
         > *
           background-color: #F4F4F4
 
-.info-value
-  margin: .5em 0
-
-  > strong
-    display: inline-block
-    min-width: 5em
-
-  > ul
-    margin-top: .5em
-
 .shard-notice
   margin: 1rem
   padding: 1rem
@@ -110,3 +140,32 @@
   font-family: monospace
   font-size: 90%
   color: #555
+
+.release-nav
+  display: flex
+  flex-direction: row
+  margin-top: -3rem
+  margin-bottom: 2rem
+
+  > a
+    display: block
+    padding: .4em .3em .2em
+    background: #eee
+    margin: 0 .2em
+    text-decoration: none
+    color: #777
+
+    &.active
+      background-color: #fff
+      color: #444
+      font-weight: bold
+
+    &:hover, &:focus
+      color: #444
+
+.community-stats
+  display: flex
+  flex-direction: row
+
+  > span
+    padding: .1em .5em
