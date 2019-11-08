@@ -19,6 +19,20 @@ main
 a
   text-decoration: none
 
+  &.btn
+    padding: .2em .4em
+    color: #444
+    font-weight: 500
+    display: inline-block
+    border: 2px solid #888
+    border-radius: 3px
+    background: #ccc
+
+    &:hover, &:focus
+      background-color: #555
+      border-color: #555
+      color: #fff
+
   &.help
     display: inline-block
     border-radius: 50%
@@ -93,18 +107,6 @@ h3
 
 .fat
   font-weight: 500
-
-.btn
-  padding: .3em .4em
-  color: #555
-  text-decoration: none
-  font-weight: 500
-  display: inline-block
-  border: 2px solid #555
-
-  &:hover, &:focus
-    background-color: #555
-    color: #fff
 
 .icon
   display: inline-block
