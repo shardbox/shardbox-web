@@ -22,18 +22,16 @@
   <div class="category-shards">
   {% for result in shards %}
     <div class="shard-preview">
-      <div class="shard-preview__main">
-        <h3 class="shard-preview__title">
-          <a href="{{ shard_path(result.shard) }}" class="shard-name">{{ shard_name(result.shard) }}</a>
-        </h3>
+      <h3 class="shard-preview__title">
+        <a href="{{ shard_path(result.shard) }}" class="shard-name">{{ shard_name(result.shard) }}</a>
+      </h3>
 
-        {% set description = result.shard.description | default(result.release.description) | default(result.repo.metadata.description) %}
-        {% if description %}
-        <div class="description">
-          <p>{{ description | markdown }}</p>
-        </div>
-        {% endif %}
+      {% set description = result.shard.description | default(result.release.description) | default(result.repo.metadata.description) %}
+      {% if description %}
+      <div class="description">
+        <p>{{ description | markdown }}</p>
       </div>
+      {% endif %}
 
       <div class="shard-info">
         <span class="datapoint">{{ result.release.version }}</span>
