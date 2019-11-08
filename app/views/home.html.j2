@@ -16,7 +16,12 @@
   {% if stats.uncategorized_count > 0 %}
     <p class="large">
       <strong><span class="count">{{ stats.uncategorized_count }}</span></strong> are <a href="/categories/Uncategorized">uncategorized</a>.
-      <a href="/contribute">Help categorize them</a>!
+      <a href="/contribute" class="btn">Help categorize them</a>
+    </p>
+  {% else %}
+    <p class="large">
+      You can help adding and improving the catalog.
+      <a href="/contribute" class="btn">Contribute</a>
     </p>
   {% endif %}
 </header>
