@@ -3,6 +3,11 @@ TEST_DATABASE_NAME ?= $(shell echo $(TEST_DATABASE_URL) | grep -o -P '[^/]+$$')
 PG_USER ?= postgres
 BIN ?= bin
 
+worker_cr = lib/shardbox-core/src/worker.cr
+
+.PHONY: build
+build: $(BIN)/worker $(BIN)/app
+
 .PHONY: DATABASE_URL
 DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
@@ -12,8 +17,8 @@ TEST_DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
 
 .PHONY: $(BIN)/worker
-$(BIN)/worker: src/worker.cr
-	crystal build src/worker.cr -o $(@)
+$(BIN)/worker: $(worker_cr)
+	crystal build $(worker_cr) -o $(@)
 
 .PHONY: $(BIN)/app
 $(BIN)/app: src/app.cr
@@ -22,3 +27,7 @@ $(BIN)/app: src/app.cr
 .PHONY: test
 test:
 	crystal spec
+
+.PHONY: clean
+clean:
+	rm -rm $(BIN)/worker $(BIN)/app
