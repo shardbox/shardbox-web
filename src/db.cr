@@ -216,7 +216,7 @@ class ShardsDB
     transitive_dependencies_count : Int32?, dev_dependencies_count : Int32?, dependencies_count : Int32?, created_at : Time
 
   def get_current_metrics(shard_id : Int64)
-    result = connection.query_one <<-SQL, shard_id, as: {Float32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Time}
+    result = connection.query_one? <<-SQL, shard_id, as: {Float32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Time}
       SELECT
         popularity, likes_count, watchers_count, forks_count,
         clones_count, dependents_count, transitive_dependents_count, dev_dependents_count,
@@ -226,6 +226,7 @@ class ShardsDB
       WHERE
         shard_id = $1
     SQL
+    return unless result
     Metrics.new(shard_id, *result)
   end
 
