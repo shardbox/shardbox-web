@@ -6,7 +6,7 @@ BIN ?= bin
 worker_cr = lib/shardbox-core/src/worker.cr
 
 .PHONY: build
-build: $(BIN)/worker $(BIN)/app
+build: $(BIN)/app $(BIN)/worker
 
 .PHONY: DATABASE_URL
 DATABASE_URL:
@@ -30,4 +30,4 @@ test:
 
 .PHONY: clean
 clean:
-	rm -rm $(BIN)/worker $(BIN)/app
+	rm -rf $(BIN)/worker $(BIN)/app
