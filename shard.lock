@@ -66,13 +66,9 @@ shards:
 
   shardbox-core:
     github: shardbox/shardbox-core
-    commit: 0c2b1df53c894662f885897d704596e53bf7a995
+    commit: c85283be0b6aceb01ac6404641d410939dcc79d0
 
   shards:
     github: crystal-lang/shards
     commit: 43ae0adbad8d07776139b55ac69a3819008518cb
-
-  taskmaster:
-    github: straight-shoota/taskmaster
-    commit: b2ef6a93ab5f85e2412aad5e1385563228e5fa06
 
