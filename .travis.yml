@@ -1,0 +1,46 @@
+language: crystal
+
+addons:
+  postgresql: "12"
+
+env:
+  TEST_DATABASE_URL: "postgres://postgres:@localhost/shardbox"
+
+services:
+- postgresql
+
+before_script:
+- crystal --version
+- shards --version
+- shards check || shards install
+- |
+  sudo apt update
+  sudo apt-get --yes remove postgresql\*
+  sudo apt-get install -y postgresql-12 postgresql-client-12
+  sudo cp /etc/postgresql/{9.6,12}/main/pg_hba.conf
+  sudo service postgresql restart 12
+- |
+  sudo apt install --yes cmake
+  if [ ! -f "~/lib/libgit2" ]; then
+    scripts/build_libgit2.sh ~ maint/v0.27
+  fi
+  export LIBRARY_PATH=$LIBRARY_PATH:~/lib
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
+- make -C lib/shardbox-core test_db
+- |
+  mkdir -p vendor/bin
+  wget -qO vendor/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-amd64
+  chmod +x vendor/bin/dbmate
+  export PATH="$PATH:$(pwd)/vendor/bin"
+- psql $TEST_DATABASE_URL -c 'SELECT version()'
+- sudo apt install --yes libsass-dev
+
+script:
+- crystal spec
+- make bin/app
+- |
+  export DATABASE_URL=$TEST_DATABASE_URL
+  bin/app &
+  sleep 3
+- curl http://localhost:3000/
+- crystal tool format src spec

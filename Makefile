@@ -16,13 +16,14 @@ DATABASE_URL:
 TEST_DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
 
-.PHONY: $(BIN)/worker
-$(BIN)/worker: $(worker_cr)
+$(BIN)/worker: $(worker_cr) $(BIN)
 	crystal build $(worker_cr) -o $(@)
 
-.PHONY: $(BIN)/app
-$(BIN)/app: src/app.cr
+$(BIN)/app: src/app.cr $(BIN)
 	crystal build src/app.cr -o $(@)
+
+$(BIN):
+	mkdir -p $(@)
 
 .PHONY: test
 test:
