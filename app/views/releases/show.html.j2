@@ -195,7 +195,9 @@
       </div>
 
       <div class="grouping">
-        Last synced {{ time_date(repo.synced_at) }}.
+        {% if repo.synced_at %}
+          Last synced {{ time_date(repo.synced_at) }}.
+        {% endif %}
       </div>
     </div>
   </div>
