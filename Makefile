@@ -2,6 +2,7 @@ DATABASE_NAME ?= $(shell echo $(DATABASE_URL) | grep -o -P '[^/]+$$')
 TEST_DATABASE_NAME ?= $(shell echo $(TEST_DATABASE_URL) | grep -o -P '[^/]+$$')
 PG_USER ?= postgres
 BIN ?= bin
+SHARDS := shards
 
 worker_cr = lib/shardbox-core/src/worker.cr
 
@@ -16,14 +17,17 @@ DATABASE_URL:
 TEST_DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
 
-$(BIN)/worker: $(worker_cr) $(BIN)
+$(BIN)/worker: $(worker_cr) $(BIN) shard.lock
 	crystal build $(worker_cr) -o $(@)
 
-$(BIN)/app: src/app.cr $(BIN)
+$(BIN)/app: src/app.cr $(BIN) shard.lock
 	crystal build src/app.cr -o $(@)
 
 $(BIN):
 	mkdir -p $(@)
+
+shard.lock: shard.yml
+	$(SHARDS) update
 
 .PHONY: test
 test:
