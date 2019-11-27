@@ -1,0 +1,29 @@
+{% extends "releases/_layout.html.j2" %}
+
+{% block page_title %}{{ shard.display_name }}@{{ release.version }} on Shardbox{% endblock %}
+
+{% block release_main %}
+  <div class="container">
+    <h2>Releases</h2>
+    <ul class="list-releases">
+    {% set current_version = release.version %}
+    {% for release in all_releases %}
+      <li{% if release.version == current_version %} class="current"{% endif %}>
+        <a href="/shards/{{shard.slug}}/{{release.version}}">
+          <span class="release-version">
+            {% if release.yanked_at %}
+              <del title="Yanked at {{ release.yanked_at | date('%Y-%m-%d') }}">
+            {% endif %}
+            {{ release.version }}
+            {% if release.yanked_at %}
+              </del>
+            {% endif %}
+          </span>
+          <span class="release-date">{{ release.released_at | date('%Y-%m-%d') }}</span>
+          <span class="release-span">{{ release_date(release.released_at) }}</span>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

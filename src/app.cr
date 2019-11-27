@@ -9,24 +9,11 @@ require "./db"
 require "./raven"
 require "./crinja_models"
 require "./crinja_lib"
+require "./page"
+require "./shard_page"
 
 def crinja
-  crinja = Crinja.new
-  crinja.loader = Crinja::Loader::FileSystemLoader.new("app/views/")
-  crinja
-
-  crinja.filters["humanize_time_span"] = Crinja.filter({now: Time.utc}) do
-    time = target.as_time
-    now = arguments["now"].as_time
-    formatted = HumanizeTime.distance_of_time_in_words(time, now)
-    if time <= now
-      "#{formatted} ago"
-    else
-      "in #{formatted}"
-    end
-  end
-
-  crinja
+  Page.crinja
 end
 
 get "/" do |context|
@@ -102,6 +89,36 @@ get "/shards/:name/:version" do |context|
   show_release(context)
 end
 
+get "/shards/:name/releases" do |context|
+  ShardsDB.connect do |db|
+    page = ShardPage.new(db, context, "releases")
+    case page
+    when String
+      halt context, 404, page
+    when Nil
+      next
+    when ShardPage
+      page.render(context.response)
+      nil
+    end
+  end
+end
+
+get "/shards/:name/:version/dependencies" do |context|
+  ShardsDB.connect do |db|
+    page = ShardPage.new(db, context, "dependencies")
+    case page
+    when String
+      halt context, 404, page
+    when Nil
+      next
+    when ShardPage
+      page.render(context.response)
+      nil
+    end
+  end
+end
+
 get "/style.css" do |context|
   context.response.headers["Content-Type"] = "text/css"
   Sass.compile_file("app/sass/main.sass", include_path: "app/sass/")
@@ -157,64 +174,18 @@ get "/webhook/import_catalog" do |context|
 end
 
 def show_release(context)
-  name = context.params.url["name"]
-  name, _, qualifier = name.partition('~')
-
   ShardsDB.connect do |db|
-    shard = db.find_shard?(name, qualifier)
-
-    unless shard
-      unqualified_shard = db.find_shard?(name, "")
-
-      if unqualified_shard
-        context.redirect "/shards/#{name}", 301
-        return
-      else
-        halt context, 404, "Shard not found"
-      end
+    page = ShardPage.new(db, context, "readme")
+    case page
+    when String
+      halt context, 404, page
+    when Nil
+      next
+    when ShardPage
+      page.context["readme"] = db.fetch_file(page.release.id, "README.md")
+      page.render(context.response, "releases/show.html.j2")
+      nil
     end
-
-    releases = db.all_releases(shard.id)
-
-    version = context.params.url["version"]?
-    if version
-      release = releases.find { |r| r.version == version }
-
-      unless release
-        halt context, 404, "Release not available"
-      end
-    else
-      release = releases.find(&.latest?) || releases.last?
-
-      unless release
-        halt context, 404, "Shard has no release"
-      end
-    end
-
-    dependencies = db.dependencies(release.id, :runtime)
-    dev_dependencies = db.dependencies(release.id, :development)
-    dependents = db.dependents(shard.id)
-
-    canonical_repo = db.find_canonical_repo(shard.id)
-    metrics = db.get_current_metrics(shard.id)
-    mirrors = db.find_mirror_repos(shard.id)
-
-    homonymous_shards = db.find_homonymous_shards(shard.name).reject { |s| s.id == shard.id }
-
-    template = crinja.get_template("releases/show.html.j2")
-    template.render({
-      "repo"              => canonical_repo,
-      "metrics"           => metrics,
-      "mirrors"           => mirrors,
-      "release"           => release,
-      "shard"             => shard,
-      "dependencies"      => dependencies,
-      "dev_dependencies"  => dev_dependencies,
-      "dependents"        => dependents,
-      "releases"          => releases,
-      "categories"        => db.find_categories(shard.id),
-      "homonymous_shards" => homonymous_shards,
-    })
   end
 end
 

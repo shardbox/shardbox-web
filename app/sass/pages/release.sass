@@ -1,26 +1,65 @@
-.release-wrapper
-  display: grid
-  grid-template-columns: auto 30%
-  grid-gap: 2rem
-
 .release-header
-  margin: 0 0 3rem
-  padding: 4rem 4rem 2rem
+  margin: 0 0 2rem
+  padding: 2.1rem 2rem 2rem
   border-bottom: .2rem solid #333
   background: #fff
+  display: grid
+  grid-template-columns: 1fr min-content
 
-  .shard-description
-    font-size: 1.3rem
+  > *
+    grid-column: 1
+
+  > .site-title
+    grid-column-end: 3
+
+  > .shard-description
     margin-bottom: .5rem
+    grid-column-end: 3
+
+    > p
+      display: inline
+      font-size: 1.3rem
+
+  > .categories
+    order: -1
+    margin-bottom: .7rem
+
+  > .repo-link
+    grid-column: 2
+    grid-row: 1
+    text-align: right
+    white-space: nowrap
+
+  > .links
+    grid-column: 2
+    grid-row: 4
+    grid-row-end: 5
+    display: flex
+    align-items: flex-end
+    justify-content: flex-end
+
+    > a
+      margin: 0 .1em
+
+.release-wrapper
+  display: flex
 
 .release-main
-  background: #ffffff
-  padding: 2em 2em 3em
+  width: 60%
+  flex-grow: 1
 
-  > .container > h3
-    font-size: 2rem
+.release-body
+  background: #ffffff
+  overflow: hidden
+
+  > .container
+    margin: 2em 2em 3em
 
 .release-sidebar
+  margin-left: 2rem
+  width: 32%
+  max-width: 25em
+
   > .grouping
     margin: 1em
 
@@ -33,6 +72,35 @@
   margin-top: 1rem
   font-weight: 600
   color: #444
+  word-break: break-word
+  white-space: pre-wrap
+  cursor: copy
+  position: relative
+
+  &::before
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    content: "COPIED"
+    text-align: center
+    line-height: 6rem
+    font-size: 3em
+    background: rgba(0,0,0,.5)
+    color: #ddd
+    opacity: 0
+    transition: opacity .2s ease-in-out
+
+  &.copied::before
+      opacity: 1
+      transition: opacity .4s ease-in-out
+
+
+  .token.atrule
+    color: #666
+
+
 
 .dependencies
   pre
@@ -41,7 +109,7 @@
   span.dependency-name
     font-style: italic
 
-  > li + li
+  &:not(.dependencies--infobox) > li + li
     margin-top: .3em
 
   .shard-description
@@ -98,7 +166,7 @@
   > li
     display: contents
 
-    &.current
+    &.current > a > *
       background-color: #eee
     > a
       display: contents
@@ -138,6 +206,10 @@
 
 .dependency-version
   font-family: monospace
+  font-size: 90%
+  color: #555
+
+.recursive_dependents
   font-size: 90%
   color: #555
 

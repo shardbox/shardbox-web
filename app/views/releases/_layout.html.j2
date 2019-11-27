@@ -1,0 +1,72 @@
+{% extends "layout.html.j2" %}
+{% import "macros/date.j2" %}
+{% import "macros/links.j2" %}
+
+{% block main %}
+  {% include "releases/_header.html.j2" %}
+
+  <div class="release-wrapper">
+    <div class="release-main">
+      <nav class="tabs">
+        <a href="{{ release_path(shard, release) }}/"{% if page.name == "readme" %} class="current"{% endif %}>Readme</a>
+        <a href="{{ release_path(shard, release) }}/dependencies"{% if page.name == "dependencies" %} class="current"{% endif %}>Dependencies</a>
+        <a href="{{ shard_path(shard) }}/releases"{% if page.name == "releases" %} class="current"{% endif %}>Releases</a>
+      </nav>
+      <div class="release-body">
+        {% block release_main %}
+        {% endblock %}
+      </div>
+    </div>
+
+    <div class="release-sidebar">
+    {% include "releases/_infobox.html.j2" %}
+    {% include "releases/_dependencies.html.j2" %}
+
+      <div class="grouping">
+        <h3>Releases</h3>
+        <ul class="list-releases">
+        {% set current_version = release.version %}
+        {% for release in releases %}
+          <li{% if release.version == current_version %} class="current"{% endif %}>
+            <a href="{{ release_path(shard, release) }}">
+              <span class="release-version">
+                {% if release.yanked_at %}
+                  <del title="Yanked at {{ release.yanked_at | date('%Y-%m-%d') }}">
+                {% endif %}
+                {{ release.version }}
+                {% if release.yanked_at %}
+                  </del>
+                {% endif %}
+              </span>
+              <span class="release-date">{{ release.released_at | date('%Y-%m-%d') }}</span>
+              <span class="release-span">{{ release_date(release.released_at) }}</span>
+            </a>
+          </li>
+        {% endfor %}
+        </ul>
+        {% if remaining_releases_count > 0 %}
+        <a href="{{ shard_path(shard) }}/releases">Show all {{ all_releases | length }} releases</a>
+        {% endif %}
+      </div>
+
+      <div class="grouping">
+        {% if repo.synced_at %}
+          Last synced {{ time_date(repo.synced_at) }}.
+        {% endif %}
+      </div>
+      {% set category = categories[0] %}
+      {% if category %}
+        <div class="category-edit">
+            <a href="https://github.com/shardbox/catalog/edit/master/catalog/{{ category.slug }}.yml" class="btn edit"
+              title="You can edit this shard in the shardbox catalog">
+              {{ icon("edit") }} Edit catalog entry
+            </a>
+            <a href="/contribute" class="help">?</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script src="/prism.js"></script>
+  <link rel="stylesheet" href="/prism.css" />
+{% endblock %}

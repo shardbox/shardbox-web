@@ -2,7 +2,7 @@ html
   font-family: Roboto
   color: #222
   font-size: 12pt
-  background: #fafafa
+  background: #f8f8f8
   line-height: 1.4
 
 body
@@ -13,7 +13,11 @@ body
 $main-margin: 3rem
 
 main
-  margin: 0 $main-margin 3rem
+  margin: 0 0 3rem
+  @media(min-width: 1024px)
+    margin: 0 $main-margin / 2 3rem
+  @media(min-width: 1200px)
+    margin: 0 $main-margin 3rem
   max-width: 95em
 
 a
@@ -62,20 +66,29 @@ h1
 
 pre
   white-space: pre-wrap
+  background: #e4e4e4
+  padding: .5em
+  color: #444
 
 header
   margin: 2rem 0
 
-h3
+h2
+  font-size: 2.5rem
+  font-weight: 300
+  color: #666
+
   margin-bottom: .5rem
+  margin-top: 1rem
 
   > .count
     font-weight: normal
     color: #444
 
+h3
+  font-size: 1.5rem
+
 .category-link
-  // padding: .2em .5em
-  // border-radius: .2em
   text-decoration: none
   font-weight: 500
 
@@ -94,13 +107,10 @@ h3
 
 .topic
   display: inline-block
-  //#background: #ddd
-  padding: .1em .2em
   font-weight: 400
-  //color: #777
-  //#border-radius: .3em
-  &:hover
-    background-color: #F4F4F4
+  color: #555
+  &:before
+    content: "#"
 
 .large
   font-size: 1.5rem
@@ -139,3 +149,6 @@ p
 
   &:not(:empty) + p:not(:empty)
     margin-top: .7rem
+
+img
+  max-width: 100%

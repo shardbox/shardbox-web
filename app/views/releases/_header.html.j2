@@ -1,0 +1,90 @@
+<header class="release-header">
+  <h1 class="shard-title shard-name">
+    {{ shard_name(shard) }}
+  </h1>
+
+  {% set description = shard.description | default(release.description) | default(repo.metadata.description) %}
+  {% if description %}
+    <div class="shard-description description">
+      {{description | markdown}}
+
+      {% set topics = repo.metadata.topics %}
+      {% if topics %}
+        <span class="topics">
+          {% for topic in topics %}
+            <a href="/search/?q={{ topic }}" class="topic">{{ topic }}</a>
+          {% endfor %}
+        </span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="categories">
+    {% for category in categories %}
+      {% if not loop.first %}·{% endif %}
+      <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
+    {% else %}
+      <a href="/contribute" class="btn help-cta" title="This shard is not categorized, you can add it to the catalog.">Help categorize this shard!</a>
+    {% endfor %}
+  </div>
+
+  <div class="shard-info shard-info--release">
+    <span class="datapoint datapoint--version">{{ release.version }}</span>
+    <span class="datapoint datapoint--date">
+      Released {{ release_date(release.released_at) }}
+    </span>
+    {% if release.latest %}
+      <span class="datapoint datapoint--latest">Latest release</span>
+    {% endif %}
+    {% if release.yanked_at %}
+      <span class="datapoint datapoint--yanked">Yanked release</span>
+    {% endif %}
+  </div>
+
+  <div class="repo-link">
+    <a href="{{ repo.ref.to_uri }}" class="repo.ref-ref repo.ref-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a>
+  </div>
+  <div class="links">
+    {% set owner = repo.metadata.owner %}
+    {% if owner %}
+    <a href="{{ owner.html_url }}" class="btn"><img src="{{ owner.avatar_url }}" class="avatar avatar--github" /> {{ owner.login }}</a>
+    {% endif %}
+    {% set homepage = release.spec["homepage"] %}
+    {% if homepage %}
+    <a href="{{ homepage }}" class="btn">Homepage</a>
+    {% endif %}
+    {% set documentation = release.spec["documentation"] %}
+    {% if documentation %}
+    <a href="{{ documentation }}" class="btn">Docs</a>
+    {% endif %}
+  </div>
+</header>
+
+{% if shard.archived %}
+  <div class="shard-notice shard-notice__archived">
+    <p class="large">Archived shard</p>
+    <p>
+      This shard has been archived {{ time_date(shard.archived_at)}}.
+      It is no longer maintained or has been discontinued for other reasons.
+    </p>
+  </div>
+{% endif %}
+
+{% if repo.sync_failed_at %}
+  <div class="shard-notice shard-notice__sync_failed_at">
+    <p class="large">
+      This repo seems to be no longer available at {{ repo_link(repo.ref) }}.
+    </p>
+
+    <p>
+      Git synchronization failed {{ time_date(repo.sync_failed_at) }}.
+      {% if repo.synced_at %}
+        Last successful sync was {{ time_date(repo.synced_at) }}.
+      {% else %}
+        We could never reach it at the given location.
+      {% endif %}
+    </p>
+
+    <a class="btn help-cta" href="/contribute">Help find it again!</a>
+  </div>
+{% endif %}

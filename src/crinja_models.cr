@@ -41,11 +41,14 @@ class Release
   include Crinja::Object::Auto
 
   def crinja_attribute(attr : Crinja::Value)
-    if attr.to_string == "latest"
-      return Crinja::Value.new(latest?)
+    case attr.to_string
+    when "latest"
+      Crinja::Value.new(latest?)
+    when "yanked_at"
+      Crinja::Value.new(yanked_at?)
+    else
+      super
     end
-
-    super
   end
 
   @[Crinja::Attributes]

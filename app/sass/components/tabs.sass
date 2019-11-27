@@ -1,0 +1,24 @@
+.tabs
+  display: flex
+  flex-direction: row
+
+  > a
+    padding: .4em .6em .2em
+    color: #222
+    background: #eee
+    margin-right: 0px
+    border-top: 4px solid #eee
+    border-bottom: 1px solid #ddd
+
+    + a
+      border-left: 1px solid #ddd
+
+    &.current
+      font-weight: bold
+      background: white
+      border-top-color: #ddd
+      border-bottom-color: transparent
+
+    &:hover, &:focus
+      border-top-color: #ddd
+

@@ -4,18 +4,19 @@
   margin: 0
   font-size: 1.3rem
 
-  >* + *
+  > * + *
     margin-left: .6em
     &::before
       content: "• "
       margin-left: -.5em
       position: absolute
-      line-height: 1.5
+  &--release > * + *
+    &::before
+      line-height: 1.7
 
   &--release
     .datapoint--version
       font-size: 1.5rem
-
 
   &--list
     .datapoint--dependencies

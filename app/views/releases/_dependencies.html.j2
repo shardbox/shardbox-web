@@ -1,0 +1,106 @@
+<div class="infobox">
+  {% set libraries = release.spec["libraries"] %}
+  {% if libraries %}
+    <div class="container">
+      <h3>Libraries <span class="count">{{ libraries | count }}</span></h3>
+      <ul>
+        {% for name, version in libraries %}
+          <li><code>{{ name }}</code>: <code>{{ version }}</code></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <div class="container">
+    <h3>Dependencies <span class="count">{{ dependencies | length }}</span></h3>
+    <ul class="dependencies dependencies--runtime dependencies--infobox">
+    {% for dep in dependencies %}
+      <li>
+        <a href="{{ shard_path(dep.shard) }}" class="shard-name shard-name--dependency">{{ shard_name(dep.shard) }}</a>
+        {% if dep.dependency.version_reference %}
+          <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
+            {{ dep.dependency.version_reference[1] }}
+          </span>
+        {% endif %}
+
+        <pre>{{ dep.dependency.spec }}</pre>
+      </li>
+    {% endfor %}
+    {% if dependencies | length > 0 %}
+    {#<a href="{{ release_path(shard, release) }/dependencies">Show recursive dependencies</a>#}
+    {% endif %}
+    </ul>
+  </div>
+
+  <div class="container">
+    <h3>Development Dependencies <span class="count">{{ dev_dependencies | length }}</span></h3>
+    <ul class="dependencies dependencies--development dependencies--infobox">
+    {% for dep in dev_dependencies %}
+      <li>
+        {% if dep.shard %}
+          <a href="{{ shard_path(dep.shard) }}" class="shard-name shard-name--dependency">{{ shard_name(dep.shard) }}</a>
+        {% else %}
+          <span  class="shard-name shard-name--dependency">{{ dep.dependency.name }}</span>
+        {% endif %}
+        {% if dep.dependency.version_reference %}
+          <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
+            {{ dep.dependency.version_reference[1] }}
+          </span>
+        {% endif %}
+
+        {% if not dep.shard %}
+          {% set repo_ref = dep.dependency.repo_ref %}
+          {% if repo_ref %}
+            <span class="dependency-reference">{{ repo_ref.resolver }}: {{ repo_ref.url }}</span>
+          {% endif %}
+        {% endif %}
+
+        <pre>{{ dep.dependency.spec }}</pre>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+
+  <div class="container">
+    <h3>Dependents <span class="count">{{ all_dependents | length }}</span></h3>
+    <ul class="dependencies dependencies--dependents dependencies--infobox">
+    {% for item in dependents %}
+      <li>
+        <a href="{{ shard_path(item.shard) }}" class="shard-name shard-name--dependency"{% if item.shard.description %} title="{{ item.shard.description }}"{% endif %}>
+          {{ shard_name(item.shard) }}
+        </a>
+        {% if item.dependents_count > 0 %}
+          <span class="recursive_dependents">({{item.dependents_count}} dependents)</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+    {% if remaining_dependents_count > 0 %}
+    <a href="{{ release_path(shard, release) }}/dependents">Show all {{ all_dependents | length }} dependents</a>
+    {% endif %}
+  </div>
+
+  {% if mirrors | length > 0 %}
+  <div class="container">
+    <h3>Mirrors <span class="count">{{ mirrors | length }}</span></h3>
+    <ul>
+    {% for mirror in mirrors %}
+      <li>({{mirror.role}})  {{ repo_link(mirror.ref) }}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if homonymous_shards | length > 0 %}
+  <div class="container">
+    <h3>Similar shards</h3>
+    <ul>
+    {% for item in homonymous_shards %}
+      <li>
+        <a href="/shards/{{ item.slug }}" class="shard-name">{{ item.display_name}}</a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>

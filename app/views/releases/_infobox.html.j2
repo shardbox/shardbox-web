@@ -1,46 +1,23 @@
 <div class="infobox">
-  <div class="container">
-    <h3>Links</h3>
-    <ul>
-      <li>Code: <a href="{{ repo.ref.to_uri }}" class="repo.ref-ref repo.ref-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a></li>
-      {% set owner = repo.metadata.owner %}
-      {% if owner %}
-      <li>Owner: <a href="{{ owner.html_url }}"><img src="{{ owner.avatar_url }}" class="avatar avatar--github" /> {{ owner.login }}</a></li>
-      {% endif %}
-      {% set homepage = release.spec["homepage"] %}
-      {% if homepage %}
-      <li>Homepage: <a href="{{ homepage }}">{{ homepage | replace("https://", "") | replace("https://", "") }}</a></li>
-      {% endif %}
-      {% set documentation = release.spec["documentation"] %}
-      {% if documentation %}
-      <li>Docs: <a href="{{ documentation }}">{{ documentation | replace("https://", "") | replace("https://", "") }}</a></li>
-      {% endif %}
-    </ul>
-  </div>
+  <pre class="shards-spec"><span class="token key atrule">{{ shard.name }}</span>:
+  <span class="token key atrule">{{ repo.ref.resolver }}</span>: {{ repo.ref.url }}
+  <span class="token key atrule">version</span>: ~> {{ release.version }}</pre>
 
-  <div class="container">
-    <h3>Categories</h3>
-    {% for category in categories %}
-      <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
-    {% else %}
-      <div class="uncategorized-cta">
-        <p>This shard is not yet categorized.</p>
-        <a href="/contribute" class="btn help-cta">Help categorize it!</a>
-      </div>
-    {% endfor %}
-  </div>
+  <script>
+  document.querySelector(".shards-spec").addEventListener("click", function(event){
+    var elem = event.currentTarget;
+    selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.selectAllChildren(elem);
+    document.execCommand("copy");
+    elem.classList.add("copied")
+    selection.removeAllRanges();
+    setTimeout(function(){
+      elem.classList.remove("copied");
 
-  {% set topics = repo.metadata.topics %}
-  {% if topics %}
-    <div class="container">
-      <h3>Topics</h3>
-      <div class="topics">
-        {% for topic in topics %}
-          <span class="topic">{{ topic }}</span>
-        {% endfor %}
-      </div>
-    </div>
-  {% endif %}
+    }, 1000);
+  })
+  </script>
 
   {% if release.spec.authors %}
     <div class="container">
