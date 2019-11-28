@@ -1,6 +1,17 @@
+:root
+  --color-body: #222
+  --color-link: #20b
+  --color-link-hover: #30a
+  --color-light: #555
+  --color-light-link: #666
+  --color-light-hover: #999
+  --color-lighter: #888
+  --color-archived: #ddccbb
+  --color-sync-failed: #ffeecc
+
 html
   font-family: Roboto
-  color: #222
+  color: var(--color-body)
   font-size: 12pt
   background: #f8f8f8
   line-height: 1.4
@@ -8,7 +19,6 @@ html
 body
   margin: 0
   padding: 0
-
 
 $main-margin: 3rem
 
@@ -23,18 +33,24 @@ main
 a
   text-decoration: none
 
+  &:link, &:visited
+    color: var(--color-link)
+
+  &:hover, &:focus
+    color: var(--color-link-hover)
+
   &.btn
     padding: .2em .4em
-    color: #444
+    color: var(--color-light)
     font-weight: 500
     display: inline-block
-    border: 2px solid #888
+    border: 2px solid var(--color-lighter)
     border-radius: 3px
     background: #ccc
 
     &:hover, &:focus
-      background-color: #555
-      border-color: #555
+      background-color: var(--color-light)
+      border-color: var(--color-light)
       color: #fff
 
   &.help
@@ -46,21 +62,21 @@ a
     line-height: 1.2
     text-align: center
     background-color: #ddd
-    color: #888
-    border: 2px solid #888
+    color: var(--color-lighter)
+    border: 2px solid var(--color-lighter)
     transform: scale(0.8)
 
     &:hover, &:focus
-      background-color: #888
+      background-color: var(--color-lighter)
       color: #fff
 
   &.legal-link
-    color: #888
+    --color-link: var(--color-light-hover)
+    --color-link-hover: var(--color-light-link)
     font-weight: 300
 
 h1
   font-weight: 500
-  color: #222
   font-size: 5em
   margin: 0
 
@@ -68,7 +84,7 @@ pre
   white-space: pre-wrap
   background: #e4e4e4
   padding: .5em
-  color: #444
+  color: var(--color-light)
 
 header
   margin: 2rem 0
@@ -76,14 +92,14 @@ header
 h2
   font-size: 2.5rem
   font-weight: 300
-  color: #666
+  color: var(--color-light)
 
   margin-bottom: .5rem
   margin-top: 1rem
 
   > .count
     font-weight: normal
-    color: #444
+    color: var(--color-light)
 
 h3
   font-size: 1.5rem
@@ -93,8 +109,9 @@ h3
   font-weight: 500
 
 .repo-ref
-  color: #666
-  text-decoration: none
+  --color-link: var(--color-light-link)
+  --color-link-hover: var(--color-light-hover)
+  font-weight: 400
 
 .avatar
   vertical-align: middle
@@ -108,7 +125,6 @@ h3
 .topic
   display: inline-block
   font-weight: 400
-  color: #555
   &:before
     content: "#"
 
@@ -127,22 +143,19 @@ h3
 
 
 .shard-name
+  --color-link: #333
+  --color-link-hover: var(--color-light)
   white-space: nowrap
-  color: #333
   font-weight: 500
 
   > .qualifier
     font-weight: 300
-    color: #555
+    color: var(--color-light)
     font-size: 95%
 
-.description a
-  text-decoration: none
-
-  &:link, &:visited
-    color: #666
-  &:hover, &:focus
-    color: #444
+.description
+  --color-link: var(--color-light-link)
+  --color-link-hover: var(--color-light-hover)
 
 p
   margin: 0

@@ -71,7 +71,7 @@
   white-space: pre
   margin-top: 1rem
   font-weight: 600
-  color: #444
+  color: var(--color-light)
   word-break: break-word
   white-space: pre-wrap
   cursor: copy
@@ -100,9 +100,8 @@
   .token.atrule
     color: #666
 
-
-
 .dependencies
+
   pre
     display: none
 
@@ -115,7 +114,7 @@
   .shard-description
     font-size: 94%
     line-height: 1.4
-    color: #555
+    color: var(--color-light)
     font-weight: 300
     display: block
 
@@ -140,7 +139,6 @@
       font-size: 1rem
       margin: 0
       margin-left: -0.5rem
-      color: #222
 
     > ul
       margin: 0
@@ -182,10 +180,10 @@
         color: #333
         font-weight: 500
       > .release-date
-        color: #555
+        color: var(--color-light)
         font-family: monospace
       > .release-span
-        color: #777
+        color: var(--color-lighter)
         font-size: 90%
         letter-spacing: -0.01em
 
@@ -197,9 +195,9 @@
   margin: 1rem
   padding: 1rem
   &__archived
-    background: $color-archived
+    background: var(--color-archived)
   &__sync_failed_at
-    background: $color-sync_failed
+    background: var(--color-sync-failed)
 
   > p:first-child
     margin-top: 0
@@ -207,11 +205,11 @@
 .dependency-version
   font-family: monospace
   font-size: 90%
-  color: #555
+  color: var(--color-light)
 
 .recursive_dependents
   font-size: 90%
-  color: #555
+  color: var(--color-light)
 
 .release-nav
   display: flex
@@ -225,19 +223,18 @@
     background: #eee
     margin: 0 .2em
     text-decoration: none
-    color: #777
+    --color-link: var(--color-lighter)
+    --color-hover: var(--color-light-hover)
 
     &.active
       background-color: #fff
-      color: #444
+      color: var(--color-light)
       font-weight: bold
-
-    &:hover, &:focus
-      color: #444
 
 .community-stats
   display: flex
   flex-direction: row
+  color: var(--color-lighter)
 
   > span
     padding: .1em .5em

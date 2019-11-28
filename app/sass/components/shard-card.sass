@@ -19,15 +19,16 @@
   .shard-data
     display: flex
     flex-flow: column
-    color: #555
+    color: var(--color-light)
     font-weight: 300
 
     line
       > * + *
         &::before
           content: "• "
+  
   .description
-    color: #444
+    color: var(--color-light)
     font-size: .95em
     flex-grow: 1
     max-width: 12em
