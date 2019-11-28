@@ -20,9 +20,8 @@
 
     <div class="release-sidebar">
     {% include "releases/_infobox.html.j2" %}
-    {% include "releases/_dependencies.html.j2" %}
 
-      <div class="grouping">
+      <div class="container">
         <h3>Releases</h3>
         <ul class="list-releases">
         {% set current_version = release.version %}
@@ -49,14 +48,14 @@
         {% endif %}
       </div>
 
-      <div class="grouping">
+      <div class="container">
         {% if repo.synced_at %}
           Last synced {{ time_date(repo.synced_at) }}.
         {% endif %}
       </div>
       {% set category = categories[0] %}
       {% if category %}
-        <div class="category-edit">
+        <div class="container category-edit">
             <a href="https://github.com/shardbox/catalog/edit/master/catalog/{{ category.slug }}.yml" class="btn edit"
               title="You can edit this shard in the shardbox catalog">
               {{ icon("edit") }} Edit catalog entry

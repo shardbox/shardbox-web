@@ -46,6 +46,10 @@
   width: 60%
   flex-grow: 1
 
+  > .tabs
+    @media(max-width: 1024px)
+      padding-left: .3em
+
 .release-body
   background: #ffffff
   overflow: hidden
@@ -58,8 +62,14 @@
   width: 32%
   max-width: 25em
 
-  > .grouping
-    margin: 1em
+  > .container
+    margin-top: 1rem
+    margin-bottom: 1rem
+
+    &.category-edit
+      margin-top: 3rem
+      margin-left: 1rem
+      margin-right: 1rem
 
 .shards-spec
   font-family: monospace
@@ -128,6 +138,7 @@
 
 .infobox
   background-color: #ffffff
+  padding-bottom: .7em
 
   > .container
     padding: .7rem 1rem .3rem 1.3rem
