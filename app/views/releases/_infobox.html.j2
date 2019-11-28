@@ -31,33 +31,6 @@
   {% endif %}
 
   <div class="container">
-    <h3>Community</h3>
-
-    <div class="community-stats">
-      {% set stargazers_count = repo.metadata.stargazers_count %}
-      {% if stargazers_count %}
-      <span title="Stars">
-        {{ stargazers_count }} {{ icon("star") }}
-      </span>
-      {% endif %}
-
-      {% set forks_count = repo.metadata.forks_count %}
-      {% if forks_count %}
-      <span title="Forks">
-        {{ forks_count }} {{ icon("repo-forked" ) }}
-      </span>
-      {% endif %}
-
-      {% set open_issues_count = repo.metadata.open_issues_count %}
-      {% if open_issues_count %}
-      <span title="Open Issues">
-        {{ open_issues_count }} {{ icon("issue") }}
-      </span>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="container">
     <h3>License</h3>
     {{ release.license }}
   </div>

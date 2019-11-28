@@ -5,35 +5,33 @@
   background: #fff
   display: grid
   grid-template-columns: 1fr min-content
+  grid-template-areas: "categories repo-info" "name repo-info" "description description" "shard-info links"
 
-  > *
-    grid-column: 1
-
-  > .site-title
-    grid-column-end: 3
+  > .shard-title
+    grid-area: name
 
   > .shard-description
+    grid-area: description
     margin-bottom: .5rem
-    grid-column-end: 3
 
     > p
       display: inline
       font-size: 1.3rem
 
   > .categories
-    order: -1
+    grid-area: categories
     margin-bottom: .7rem
 
-  > .repo-link
-    grid-column: 2
-    grid-row: 1
+  > .repo-info
+    grid-area: repo-info
     text-align: right
     white-space: nowrap
 
+  > .shard-info
+    grid-area: shard-info
+
   > .links
-    grid-column: 2
-    grid-row: 4
-    grid-row-end: 5
+    grid-area: links
     display: flex
     align-items: flex-end
     justify-content: flex-end
@@ -234,7 +232,10 @@
 .community-stats
   display: flex
   flex-direction: row
+  justify-content: flex-end
+  margin-top: .2em
+  font-size: 90%
   color: var(--color-lighter)
 
   > span
-    padding: .1em .5em
+    padding: .1em .3em

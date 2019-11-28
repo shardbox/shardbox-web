@@ -11,7 +11,7 @@
       {% set topics = repo.metadata.topics %}
       {% if topics %}
         <span class="topics">
-          {% for topic in topics %}
+          {% for topic in topics if topic != 'crystal' and topic != 'crystal-lang' and topic != 'crystal-language' %}
             <a href="/search/?q={{ topic }}" class="topic">{{ topic }}</a>
           {% endfor %}
         </span>
@@ -41,8 +41,31 @@
     {% endif %}
   </div>
 
-  <div class="repo-link">
-    <a href="{{ repo.ref.to_uri }}" class="repo.ref-ref repo.ref-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a>
+  <div class="repo-info">
+    <a href="{{ repo.ref.to_uri }}" class="repo-ref repo-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a>
+
+    <div class="community-stats">
+      {% set stargazers_count = repo.metadata.stargazers_count %}
+      {% if stargazers_count %}
+      <span title="Stars">
+        {{ stargazers_count }} {{ icon("star") }}
+      </span>
+      {% endif %}
+
+      {% set forks_count = repo.metadata.forks_count %}
+      {% if forks_count %}
+      <span title="Forks">
+        {{ forks_count }} {{ icon("repo-forked" ) }}
+      </span>
+      {% endif %}
+
+      {% set open_issues_count = repo.metadata.open_issues_count %}
+      {% if open_issues_count %}
+      <span title="Open Issues">
+        {{ open_issues_count }} {{ icon("issue") }}
+      </span>
+      {% endif %}
+    </div>
   </div>
   <div class="links">
     {% set owner = repo.metadata.owner %}
