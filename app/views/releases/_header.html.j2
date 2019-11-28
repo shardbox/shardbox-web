@@ -96,18 +96,17 @@
 {% if repo.sync_failed_at %}
   <div class="shard-notice shard-notice__sync_failed_at">
     <p class="large">
-      This repo seems to be no longer available at {{ repo_link(repo.ref) }}.
+      This repo seems to be {% if repo.synced_at %}no longer{% else %}not{% endif %} available at {{ repo_link(repo.ref) }}.
     </p>
 
     <p>
-      Git synchronization failed {{ time_date(repo.sync_failed_at) }}.
       {% if repo.synced_at %}
-        Last successful sync was {{ time_date(repo.synced_at) }}.
+        Git synchronization failed {{ time_date(repo.sync_failed_at) }}. Last successful sync was {{ time_date(repo.synced_at) }}.
       {% else %}
-        We could never reach it at the given location.
+        This repo could never be reached at the given location. First unsuccessful sync was {{ time_date(repo.sync_failed_at) }}.
       {% endif %}
     </p>
 
-    <a class="btn help-cta" href="/contribute">Help find it again!</a>
+    <a class="btn help-cta" href="/contribute">Help find it again!</a> &hellip; or have it archived.
   </div>
 {% endif %}
