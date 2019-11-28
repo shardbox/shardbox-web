@@ -12,7 +12,6 @@
     margin: 1em
     flex-grow: 1
 
-
     > .category-title
       font-weight: 500
       font-size: 1.1em
@@ -20,11 +19,7 @@
       margin-bottom: .5rem
       justify-content: space-between
 
-      > a
-        text-decoration: none
-
 .top-shard-link
-
   & + .top-shard-link
     &::before
       content: "•"
@@ -32,9 +27,19 @@
       color: var(--color-lighter)
 
   > a
-    text-decoration: none
     color: var(--color-light)
     font-weight: 400
 
 .category-edit
   margin-top: 3rem
+
+.category-shards
+  > .shard-card
+    display: grid
+    grid-template-columns: 1fr min-content
+    grid-template-areas: "name repo-info" "description description" "shard-info shard-info"
+    & + &
+      margin-top: 1rem
+
+  > .shards-spec
+    margin-bottom: 1rem

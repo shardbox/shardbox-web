@@ -31,7 +31,9 @@
     <h3>Most popular</h3>
     <div class="shards-list">
       {% for item in popular_shards %}
-        {{ shard_card(item.shard, item, item.categories, show_description = false) }}
+        {{ shard_card(item.shard, item, item.categories,
+          version = item.version,
+          released_at = item.released_at) }}
       {% endfor %}
     </div>
   </div>
@@ -40,7 +42,9 @@
     <h3>Most depended upon</h3>
     <div class="shards-list">
       {% for item in dependent_shards %}
-        {{ shard_card(item.shard, item, item.categories, show_description = false) }}
+        {{ shard_card(item.shard, item, item.categories, show_description = false,
+          version = item.version,
+          released_at = item.released_at) }}
       {% endfor %}
     </div>
   </div>
@@ -49,7 +53,9 @@
     <h3>Recently released</h3>
     <div class="shards-list">
       {% for item in recent_shards %}
-        {{ shard_card(item.shard, item, item.categories, show_dependents = false, show_description = true) }}
+        {{ shard_card(item.shard, item, item.categories, show_dependents = false, show_description = true,
+          version = item.version,
+          released_at = item.released_at) }}
       {% endfor %}
     </div>
   </div>
@@ -58,7 +64,9 @@
     <h3>Most depended upon (development)</h3>
     <div class="shards-list">
       {% for item in dev_dependent_shards %}
-        {{ shard_card(item.shard, item, item.categories, show_dependents = false, dev_dependents = true) }}
+        {{ shard_card(item.shard, item, item.categories, show_dependents = false, dev_dependents = true,
+          version = item.version,
+          released_at = item.released_at) }}
       {% endfor %}
     </div>
   </div>
@@ -68,7 +76,6 @@
     <div class="shards-list">
       {% for item in new_shards %}
         {{ shard_card(item.shard, item, item.categories, show_dependents = false, show_description = true, show_repo = true, show_created_at = true, show_released_at = false) }}
-
       {% endfor %}
     </div>
   </div>

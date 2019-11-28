@@ -1,0 +1,8 @@
+
+.search-results
+  > .shard-card
+    display: grid
+    grid-template-columns: 1fr min-content
+    grid-template-areas: "categories repo-info" "name repo-info" "description description" "shard-info shard-info"
+    & + &
+      margin-top: 1rem

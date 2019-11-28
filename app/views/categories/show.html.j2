@@ -1,6 +1,7 @@
 {% extends "layout.html.j2" %}
 {% import "macros/date.j2" %}
 {% import "macros/links.j2" %}
+{% import "macros/shard-card.j2" %}
 
 {% set uncategorized = category.slug == "Uncategorized" %}
 
@@ -21,51 +22,14 @@
 
   <div class="category-shards">
   {% for result in shards %}
-    <div class="shard-preview">
-      <h3 class="shard-preview__title">
-        <a href="{{ shard_path(result.shard) }}" class="shard-name">{{ shard_name(result.shard) }}</a>
-      </h3>
-
-      {% set description = result.shard.description | default(result.release.description) | default(result.repo.metadata.description) %}
-      {% if description %}
-      <div class="description">
-        <p>{{ description | markdown }}</p>
-      </div>
-      {% endif %}
-
-      <div class="shard-info">
-        <span class="datapoint">{{ result.release.version }}</span>
-        <span class="datapoint">{{ repo_link(result.repo.ref, result.repo.metadata.owner) }}</a></span>
-        <span class="datapoint">{{ release_date(result.release.released_at) }}</span>
-
-        {% for cat in result.categories if category != cat %}
-          <span class="datapoint">
-            <a href="/categories/{{ cat.slug }}" class="category-link">{{ cat.name }}</a>
-          </span>
-        {% endfor %}
-        {% if result.shard.archived %}
-          <span class="datapoint">
-            <span class="label label__archived">
-              archived
-            </span>
-          </span>
-        {% endif %}
-        {% if result.repo.sync_failed_at %}
-          <span class="datapoint">
-            <span class="label label__sync_failed">
-              unavailable
-            </span>
-          </span>
-        {% endif %}
-      </div>
-
-      {% if uncategorized -%}
-        <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}
-{%- if description -%}
-  description: {{ description | tojson }}
-{%- endif -%}</div>
-        {% endif %}
-    </div>
+    {{ shard_card(result.shard, result, result.categories,
+      repo_ref = result.repo.ref,
+      released_at = result.release.released_at,
+      version = result.release.version,
+      show_dependents = false, show_description = true, show_created_at = false) }}
+    {% if uncategorized -%}
+      <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}</div>
+    {% endif %}
   {% endfor %}
   </div>
 

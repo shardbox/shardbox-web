@@ -1,34 +1,30 @@
 .shard-card
   //flex-basis: 13em
-  min-width: 11em
-  flex-grow: 1
-  max-width: 19em
-  margin: .6em
-  padding: .8em
+  padding: .5em .8em
   background: #fff
   border-top: 4px solid #ddd
-  display: flex
-  flex-flow: column
 
   > * + *
     margin-top: .4em
 
-  .shard-name
+  > .shard-name
     font-size: 1.35em
+    grid-area: name
+    margin-top: .3em
 
-  .shard-data
+  > .shard-infos
+    grid-area: shard-info
     display: flex
     flex-flow: column
-    color: var(--color-light)
-    font-weight: 300
 
-    line
-      > * + *
-        &::before
-          content: "• "
-  
-  .description
+  > .description
     color: var(--color-light)
     font-size: .95em
     flex-grow: 1
-    max-width: 12em
+    grid-area: description
+
+  > .repo-info
+    grid-area: repo-info
+
+  > .categories
+    grid-area: categories
