@@ -242,13 +242,20 @@
       color: var(--color-light)
       font-weight: bold
 
+.repo-activity, .community-stats
+  font-size: 90%
+  color: var(--color-lighter)
+
 .community-stats
   display: flex
   flex-direction: row
   justify-content: flex-end
   margin-top: .2em
-  font-size: 90%
-  color: var(--color-lighter)
 
   > span
     padding: .1em .3em
+    white-space: nowrap
+    line-height: 1em
+
+    > .icon
+      vertical-align: top

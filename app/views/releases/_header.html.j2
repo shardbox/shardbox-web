@@ -42,8 +42,14 @@
   </div>
 
   <div class="repo-info">
-    <a href="{{ repo.ref.to_uri }}" class="repo-ref repo-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url }}</a>
+    <a href="{{ repo.ref.to_uri }}" class="repo-ref repo-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url | replace("https://", "") | replace("http://", "") }}</a>
 
+    {% set latest_activity = repo.metadata.pushed_at %}
+    {% if latest_activity %}
+    <div class="repo-activity">
+      {{ time_date(latest_activity, title="Latest activity on {{date}}") }}
+    </div>
+    {% endif %}
     <div class="community-stats">
       {% set stargazers_count = repo.metadata.stargazers_count %}
       {% if stargazers_count %}
