@@ -1,4 +1,6 @@
 class ShardsDB
+  self.statement_timeout = "30s"
+
   # HOME
   def recent_shards
     results = connection.query_all <<-SQL, as: {Int64, String, String, String?, Time?, String, Time, Array(Array(String))?}
