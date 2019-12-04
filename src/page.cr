@@ -5,13 +5,15 @@ module Page
     crinja = Crinja.new
     crinja.loader = Crinja::Loader::FileSystemLoader.new("app/views/")
 
-    crinja.filters["humanize_time_span"] = Crinja.filter({now: Time.utc}) do
+    crinja.filters["humanize_time_span"] = Crinja.filter({now: Crinja::UNDEFINED}) do
       time = target.as_time
-      now = arguments["now"].as_time
-      formatted = HumanizeTime.distance_of_time_in_words(time, now)
+      now = arguments["now"]
+      now = now.undefined? ? Time.utc : now.as_time
       if time <= now
+        formatted = HumanizeTime.distance_of_time_in_words(time, now)
         "#{formatted} ago"
       else
+        formatted = HumanizeTime.distance_of_time_in_words(now, time)
         "in #{formatted}"
       end
     end
