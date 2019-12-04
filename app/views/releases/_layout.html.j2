@@ -50,7 +50,7 @@
 
       <div class="container">
         {% if repo.synced_at %}
-          Last synced {{ time_date(repo.synced_at) }}.
+          Last synced {{ time_date(repo.synced_at, title = "Last synced on  {{date}}") }}.
         {% endif %}
       </div>
       {% set category = categories[0] %}

@@ -94,7 +94,7 @@
   <div class="shard-notice shard-notice__archived">
     <p class="large">Archived shard</p>
     <p>
-      This shard has been archived {{ time_date(shard.archived_at)}}.
+      This shard has been archived {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}.
       It is no longer maintained or has been discontinued for other reasons.
     </p>
   </div>
@@ -108,9 +108,11 @@
 
     <p>
       {% if repo.synced_at %}
-        Git synchronization failed {{ time_date(repo.sync_failed_at) }}. Last successful sync was {{ time_date(repo.synced_at) }}.
+        Git synchronization failed {{ time_date(repo.sync_failed_at, title = "Synchronization failed on {{date}}") }}.
+        Last successful sync was {{ time_date(repo.synced_at, title = "Last successful sync on {{date}}") }}.
       {% else %}
-        This repo could never be reached at the given location. First unsuccessful sync was {{ time_date(repo.sync_failed_at) }}.
+        This repo could never be reached at the given location.
+        First unsuccessful sync was {{ time_date(repo.sync_failed_at, title = "Synchronization failed on {{date}}") }}.
       {% endif %}
     </p>
 

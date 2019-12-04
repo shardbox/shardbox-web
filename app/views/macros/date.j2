@@ -1,9 +1,7 @@
-{% macro release_date(released_at) %}
-  <time datetime="{{ released_at | date("%Y-%m-%d %H:%M:%S")}}" title="Released on {{ released_at | date("%Y-%m-%d %H:%M:%S")}}">
-    {{ released_at | humanize_time_span }}
-  </time>
-{% endmacro %}
+{% macro release_date(released_at) -%}
+{{ time_date(released_at, title="Released on {{date}}") }}
+{%- endmacro %}
 
-{% macro time_date(date) %}
-  <time datetime="{{ date | date("%Y-%m-%d %H:%M:%S")}}" title="{{ date | date("%Y-%m-%d %H:%M:%S")}}">
-    {{ date | humanize_time_span }}</time>{% endmacro %}
+{% macro time_date(date) -%}
+<time datetime="{{ date | date("%Y-%m-%d %H:%M:%S")}}" title="{{ title | default("{{date}}") | replace("{{date}}", date | date("%Y-%m-%d %H:%M:%S")) }}">
+  {{ date | humanize_time_span }}</time>{%- endmacro %}
