@@ -372,6 +372,7 @@ class ShardsDB
   def stats
     Stats.new(
       shards_count: connection.query_one("SELECT COUNT(*) FROM shards", as: Int64),
+      repos_count: connection.query_one("SELECT COUNT(*) FROM repos WHERE role <> 'obsolete'", as: Int64),
       dependencies_count: connection.query_one(
         "SELECT COUNT(*) FROM dependencies JOIN releases ON release_id = releases.id WHERE releases.latest = true AND scope = 'runtime'", as: Int64),
       dev_dependencies_count: connection.query_one(
@@ -381,6 +382,7 @@ class ShardsDB
       license_counts: count_table("SELECT spec->>'license', COUNT(*) FROM releases WHERE latest = true GROUP BY spec->>'license' ORDER BY count DESC"),
       uncategorized_count: uncategorized_count,
       shards_without_dependencies_count: connection.query_one("SELECT COUNT(*) FROM shards LEFT JOIN shard_dependencies ON shard_id = shards.id WHERE shard_dependencies.depends_on_repo_id IS NULL", as: Int64),
+      shard_yml_keys_counts: count_table("SELECT jsonb_object_keys(spec) AS key, COUNT(*) AS count FROM releases WHERE latest GROUP BY key ORDER BY count DESC"),
     )
   end
 
@@ -400,11 +402,13 @@ class ShardsDB
 
   record Stats,
     shards_count : Int64,
+    repos_count : Int64,
     dependencies_count : Int64,
     dev_dependencies_count : Int64,
     resolver_counts : Hash(String, Int64),
     crystal_version_counts : Hash(String, Int64),
     license_counts : Hash(String, Int64),
     uncategorized_count : Int64,
-    shards_without_dependencies_count : Int64
+    shards_without_dependencies_count : Int64,
+    shard_yml_keys_counts : Hash(String, Int64)
 end
