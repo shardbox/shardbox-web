@@ -33,13 +33,22 @@
 .category-edit
   margin-top: 3rem
 
-.category-shards
-  > .shard-card
-    display: grid
-    grid-template-columns: 1fr min-content
-    grid-template-areas: "name repo-info" "description description" "shard-info shard-info"
-    & + &
-      margin-top: 1rem
+.category-entries
+  display: flex
+  flex-wrap: wrap
 
-  > .shards-spec
-    margin-bottom: 1rem
+  > .category-entry
+    @media(min-width: 1200px)
+      width: 50%
+      padding: .6rem
+    @media(max-width: 1200px)
+      width: 100%
+      margin-bottom: .6rem
+
+    > .shard-card
+      display: grid
+      grid-template-columns: 1fr min-content
+      grid-template-areas: "name repo-info" "description description" "shard-info shard-info"
+
+    > .shards-spec
+      margin-bottom: 1rem

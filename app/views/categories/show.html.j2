@@ -20,16 +20,18 @@
 
   <h2>{{ entries_count }} shards</h2>
 
-  <div class="category-shards">
+  <div class="category-entries">
   {% for result in shards %}
-    {{ shard_card(result.shard, result, result.categories,
-      repo_ref = result.repo.ref,
-      released_at = result.release.released_at,
-      version = result.release.version,
-      show_dependents = false, show_description = true, show_created_at = false) }}
-    {% if uncategorized -%}
-      <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}</div>
-    {% endif %}
+    <div class="category-entry">
+      {{ shard_card(result.shard, result, result.categories,
+        repo_ref = result.repo.ref,
+        released_at = result.release.released_at,
+        version = result.release.version,
+        show_dependents = false, show_description = true, show_created_at = false) }}
+      {% if uncategorized -%}
+        <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}</div>
+      {% endif %}
+    </div>
   {% endfor %}
   </div>
 
