@@ -4,8 +4,6 @@ PG_USER ?= postgres
 BIN ?= bin
 SHARDS := shards
 
-worker_cr = lib/shardbox-core/src/worker.cr
-
 .PHONY: build
 build: $(BIN)/app $(BIN)/worker
 
@@ -17,11 +15,11 @@ DATABASE_URL:
 TEST_DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
 
-$(BIN)/worker: $(worker_cr) $(BIN) shard.lock
-	crystal build $(worker_cr) -o $(@)
+$(BIN)/worker: $(BIN) shard.lock
+	$(SHARDS) build worker
 
-$(BIN)/app: src/app.cr $(BIN) shard.lock
-	crystal build src/app.cr -o $(@)
+$(BIN)/app: src/* $(BIN) shard.lock
+	$(SHARDS) build app
 
 $(BIN):
 	mkdir -p $(@)
