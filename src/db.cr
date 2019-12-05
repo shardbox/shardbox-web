@@ -355,7 +355,7 @@ class ShardsDB
       WHERE
         name LIKE $1 OR qualifier LIKE $1 OR shards.description LIKE $1 OR releases.spec->>'description' = $1 OR repos.metadata->>'description' = $1
       ORDER BY
-        metrics.transitive_dependents_count DESC
+        metrics.popularity DESC
       LIMIT 100
       SQL
 
