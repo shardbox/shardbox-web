@@ -10,11 +10,11 @@ shards:
 
   crinja:
     github: straight-shoota/crinja
-    commit: 6f3aa24bec9c6dbb7a8639e3eae2ed50658fc96a
+    version: 0.5.0
 
   db:
     github: crystal-lang/crystal-db
-    version: 0.7.0
+    version: 0.8.0
 
   exception_page:
     github: crystal-loot/exception_page
@@ -30,15 +30,19 @@ shards:
 
   humanize_time:
     github: mamantoha/humanize_time
-    version: 0.4.0
+    version: 0.6.0
 
   i18n:
     github: TechMagister/i18n.cr
-    commit: 7e8168f2a0d567d3722a70b3a3a1028930e1c47e
+    version: 0.3.1
+
+  i18n_plural_rules:
+    github: mamantoha/i18n_plural_rules
+    version: 0.1.0
 
   kemal:
     github: kemalcr/kemal
-    version: 0.26.0
+    version: 0.26.1
 
   kilt:
     github: jeromegn/kilt
@@ -50,7 +54,7 @@ shards:
 
   pg:
     github: will/crystal-pg
-    version: 0.19.0
+    version: 0.20.0
 
   radix:
     github: luislavena/radix
@@ -58,7 +62,7 @@ shards:
 
   raven:
     github: Sija/raven.cr
-    version: 1.5.4
+    version: 1.5.5
 
   sass:
     github: straight-shoota/sass.cr
