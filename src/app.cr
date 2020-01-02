@@ -121,7 +121,7 @@ end
 
 get "/style.css" do |context|
   context.response.headers["Content-Type"] = "text/css"
-  Sass.compile_file("app/sass/main.sass", include_path: "app/sass/")
+  Sass.compile_file("app/sass/main.sass", is_indented_syntax_src: true, include_path: "app/sass/")
 end
 
 get "/deploy_status" do
