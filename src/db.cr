@@ -1,5 +1,5 @@
 class ShardsDB
-  self.statement_timeout = "30s"
+  # self.statement_timeout = "30s"
 
   # HOME
   def recent_shards
