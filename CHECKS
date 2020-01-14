@@ -2,3 +2,4 @@ WAIT=1
 ATTEMPTS=3
 
 /deploy_status OK
+/shards/crinja crinja
