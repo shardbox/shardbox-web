@@ -50,7 +50,7 @@ shards:
 
   markd:
     github: icyleaf/markd
-    version: 0.2.0
+    commit: 411f979697c57e9b7081b941c7ed3801b6d61261
 
   pg:
     github: will/crystal-pg

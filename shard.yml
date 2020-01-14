@@ -10,7 +10,7 @@ targets:
   worker:
     main: lib/shardbox-core/src/worker.cr
 
-crystal: 0.28.0
+crystal: 0.32.1
 
 license: MIT
 
@@ -29,3 +29,4 @@ dependencies:
     github: straight-shoota/sass.cr
   markd:
     github: icyleaf/markd
+    branch: master

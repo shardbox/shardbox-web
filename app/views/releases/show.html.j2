@@ -5,7 +5,7 @@
 {% block release_main %}
 {% if readme %}
 <div class="container">
-  {{ readme | markdown }}
+  {{ readme | markdown_repo_content(repo_ref = repo.ref, revision = release.revision_identifier) }}
 </div>
 {% else %}
 <div class="container install-instructions">
