@@ -21,7 +21,6 @@
 
   <div class="categories">
     {% for category in categories %}
-      {% if not loop.first %}·{% endif %}
       <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
     {% else %}
       <a href="/contribute" class="btn help-cta" title="This shard is not categorized, you can add it to the catalog.">Help categorize this shard!</a>
