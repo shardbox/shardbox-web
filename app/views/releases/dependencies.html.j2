@@ -35,7 +35,7 @@ fooo
         <pre>{{ dep.dependency.spec }}</pre>
       </li>
     {% else %}
-    No dependencies.
+      No dependencies.
     {% endfor %}
     </ul>
   </div>
@@ -70,7 +70,7 @@ fooo
         <pre>{{ dep.dependency.spec }}</pre>
       </li>
     {% else %}
-    No development dependencies.
+      No development dependencies.
     {% endfor %}
     </ul>
   </div>
@@ -90,6 +90,8 @@ fooo
           <span class="shard-description">{{ item.shard.description | markdown }}</span>
         {% endif %}
       </li>
+    {% else %}
+      No shards depend on this.
     {% endfor %}
     </ul>
   </div>
