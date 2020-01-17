@@ -3,5 +3,5 @@
 {%- endmacro %}
 
 {% macro time_date(date) -%}
-<time datetime="{{ date | date("%Y-%m-%d %H:%M:%S")}}" title="{{ title | default("{{date}}") | replace("{{date}}", date | date("%Y-%m-%d %H:%M:%S")) }}">
+<time datetime="{{ date | date("%Y-%m-%d %H:%M:%S")}}" title="{{ title | default("{{date}}") | replace("{{date}}", date | date("%Y-%m-%d %H:%M")) }}">
   {{ date | humanize_time_span }}</time>{%- endmacro %}

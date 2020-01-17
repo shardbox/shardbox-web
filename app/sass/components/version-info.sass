@@ -1,0 +1,31 @@
+.version-info
+  display: flex
+  align-items: center
+
+  .shard-card &
+      align-items: baseline
+
+  > .icon
+    font-size: 80%
+    align-self: center
+
+  > .version
+    margin-left: .2rem
+    margin-right: .3rem
+
+  > .badge--latest,
+  > .badge--yanked
+    @extend .badge
+    margin-left: .2rem
+    margin-right: .2rem
+    font-size: 70%
+
+  > .badge--latest
+    color: var(--color-latest)
+  > .badge--yanked
+    color: var(--color-yanked)
+
+  > .released_at,
+  > .created_at
+    margin-left: .3rem
+    font-size: 80%

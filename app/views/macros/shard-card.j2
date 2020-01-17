@@ -16,14 +16,16 @@
           <span class="datapoint datapoint--dependencies">{{ item.num_dependencies }} dev dependents</span>
         {% endif %}
       </div>
-      <div class="shard-info">
+      <div class="version-info">
         {% if released_at and version %}
-          <span class="datapoint datapoint--version">{{ icon("recently") }} {{ version }}</span>
-          <span class="datapoint datapoint--released_at">{{ release_date(released_at) }}</span>
+          {{ icon("tag") }}
+          <span class="version">{{ version }}</span>
+          <span class="released_at">{{ release_date(released_at) }}</span>
         {% endif %}
         {% if show_created_at %}
-          <span class="datapoint datapoint--version">{{ icon("recently") }} {{ data.version }}</span>
-          <span class="datapoint datapoint--created_at">{{ release_date(data.created_at) }}</span>
+          {{ icon("tag") }}
+          <span class="version">{{ data.version }}</span>
+          <span class="created_at">{{ release_date(data.created_at) }}</span>
         {% endif %}
       </div>
     </div>

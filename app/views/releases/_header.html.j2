@@ -28,16 +28,17 @@
   </div>
 
   <div class="shard-info shard-info--release">
-    <span class="datapoint datapoint--version">{{ release.version }}</span>
-    <span class="datapoint datapoint--date">
-      Released {{ release_date(release.released_at) }}
+    <span class="version-info">
+      {{ icon("tag") }}
+      <span class="version">{{ release.version }}</span>
+      {% if release.latest %}
+        <span class="badge--latest">Latest release</span>
+      {% endif %}
+      {% if release.yanked_at %}
+        <span class="badge--yanked">Yanked release</span>
+      {% endif %}
+      <span class="released_at">released {{ release_date(release.released_at) }}</span>
     </span>
-    {% if release.latest %}
-      <span class="datapoint datapoint--latest">Latest release</span>
-    {% endif %}
-    {% if release.yanked_at %}
-      <span class="datapoint datapoint--yanked">Yanked release</span>
-    {% endif %}
   </div>
 
   <div class="repo-info">
