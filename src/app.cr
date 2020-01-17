@@ -85,7 +85,29 @@ get "/shards/:name" do |context|
   show_release(context)
 end
 
+# Redirect /shards/:name/:version to /shards/releases/:version
 get "/shards/:name/:version" do |context|
+  # only redirect when version looks like a version
+  unless context.params.url["version"] =~ /^\d+\.\d/
+    halt context, 404
+    next
+  end
+
+  ShardsDB.connect do |db|
+    release = ShardPage.find_release(db, context)
+    case release
+    when String
+      halt context, 404, release
+    when Nil
+      next
+    else
+      # Found release, redirect to /releases/:version path
+      context.redirect "/shards/#{context.params.url["name"]}/releases/#{context.params.url["version"]}"
+    end
+  end
+end
+
+get "/shards/:name/releases/:version" do |context|
   show_release(context)
 end
 
@@ -104,7 +126,7 @@ get "/shards/:name/releases" do |context|
   end
 end
 
-get "/shards/:name/:version/dependencies" do |context|
+get "/shards/:name/releases/:version/dependencies" do |context|
   ShardsDB.connect do |db|
     page = ShardPage.new(db, context, "dependencies")
     case page

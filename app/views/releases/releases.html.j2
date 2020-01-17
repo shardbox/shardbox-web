@@ -9,7 +9,7 @@
     {% set current_version = release.version %}
     {% for release in all_releases %}
       <li{% if release.version == current_version %} class="current"{% endif %}>
-        <a href="/shards/{{shard.slug}}/{{release.version}}">
+        <a href="{{ release_path(shard, release) }}">
           <span class="release-version">
             {% if release.yanked_at %}
               <del title="Yanked at {{ release.yanked_at | date('%Y-%m-%d') }}">
