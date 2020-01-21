@@ -1,5 +1,5 @@
 @[Crinja::Attributes]
-struct ShardPage
+struct Page::Shard
   include Page
 
   NUM_RELEASES_SHOWN   =  8
@@ -13,7 +13,7 @@ struct ShardPage
   end
 
   getter db : ShardsDB
-  getter shard : Shard
+  getter shard : ::Shard
   getter all_releases : Array(Release)
   getter name : String
   @release : Release?

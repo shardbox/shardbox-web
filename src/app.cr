@@ -10,7 +10,7 @@ require "./raven"
 require "./crinja_models"
 require "./crinja_lib"
 require "./page"
-require "./shard_page"
+require "./page/*"
 
 def crinja
   Page.crinja
@@ -94,7 +94,7 @@ get "/shards/:name/:version" do |context|
   end
 
   ShardsDB.connect do |db|
-    release = ShardPage.find_release(db, context)
+    release = Page::Shard.find_release(db, context)
     case release
     when String
       halt context, 404, release
@@ -113,13 +113,13 @@ end
 
 get "/shards/:name/releases" do |context|
   ShardsDB.connect do |db|
-    page = ShardPage.new(db, context, "releases")
+    page = Page::Shard.new(db, context, "releases")
     case page
     when String
       halt context, 404, page
     when Nil
       next
-    when ShardPage
+    when Page::Shard
       page.render(context.response)
       nil
     end
@@ -128,13 +128,13 @@ end
 
 get "/shards/:name/releases/:version/dependencies" do |context|
   ShardsDB.connect do |db|
-    page = ShardPage.new(db, context, "dependencies")
+    page = Page::Shard.new(db, context, "dependencies")
     case page
     when String
       halt context, 404, page
     when Nil
       next
-    when ShardPage
+    when Page::Shard
       page.render(context.response)
       nil
     end
@@ -197,13 +197,13 @@ end
 
 def show_release(context)
   ShardsDB.connect do |db|
-    page = ShardPage.new(db, context, "readme")
+    page = Page::Shard.new(db, context, "readme")
     case page
     when String
       halt context, 404, page
     when Nil
       next
-    when ShardPage
+    when Page::Shard
       page.context["readme"] = db.fetch_file(page.release.id, "README.md")
       page.render(context.response, "releases/show.html.j2")
       nil
