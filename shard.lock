@@ -10,7 +10,7 @@ shards:
 
   crinja:
     github: straight-shoota/crinja
-    version: 0.5.0
+    version: 0.5.1
 
   db:
     github: crystal-lang/crystal-db
@@ -74,5 +74,5 @@ shards:
 
   shards:
     github: crystal-lang/shards
-    commit: 43ae0adbad8d07776139b55ac69a3819008518cb
+    commit: 35303e1232f150677a5ff0e1713ced9171ee928a
 
