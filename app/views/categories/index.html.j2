@@ -16,17 +16,7 @@
         </span>
 
         <div class="category__top-shards">
-          {% for id, shard_list in top_shards %}
-            {% if id == item.id %}
-              {% for shard in shard_list %}
-                <span class="top-shard-link">
-                  <a href="{{ shard_path(shard) }}">
-                    {{- shard.display_name -}}
-                  </a>
-                </span>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
+          {# TODO: For some reason this accessor doesn't work: top_shards[item.id] #}
           {% for shard in top_shards[item.id] %}
             <span class="top-shard-link">
               <a href="{{ shard_path(shard) }}">
