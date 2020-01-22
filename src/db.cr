@@ -279,12 +279,11 @@ class ShardsDB
       where = "categories = '{}'::bigint[]"
     end
 
-    results = connection.query_all <<-SQL, args: args, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Time?, Time?, Int64, Array(Array(String))?}
+    results = connection.query_all <<-SQL, args: args, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Time?, Time?, Int64}
       SELECT
         shards.id, name::text, qualifier::text, shards.description, archived_at,
         releases.version, releases.released_at,
-        repos.resolver::text, repos.url::text, repos.metadata::text, repos.synced_at, repos.sync_failed_at, repos.id,
-        (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id])
+        repos.resolver::text, repos.url::text, repos.metadata::text, repos.synced_at, repos.sync_failed_at, repos.id
       FROM
         shards
       JOIN
@@ -300,9 +299,7 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, synced_at, sync_failed_at, repo_id, categories = result
-      categories ||= [] of Array(String)
-      categories = categories.map { |(name, slug)| Category.new(name, slug) }
+      shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, synced_at, sync_failed_at, repo_id = result
       {
         shard: Shard.new(name, qualifier, description, archived_at, id: shard_id),
         repo:  Repo.new(resolver, url, shard_id,
