@@ -63,21 +63,9 @@ get "/categories/:slug" do |context|
       halt context, 404
     end
 
-    if slug == "Uncategorized"
-      # category = Category.new("Uncategorized", "Uncategorized")
-      category_id = nil
-      entries_count = db.uncategorized_count
-    else
-      category_id = category.id
-      entries_count = category.entries_count
-    end
-
-    template = crinja.get_template("categories/show.html.j2")
-    template.render({
-      "category"      => category,
-      "entries_count" => entries_count,
-      "shards"        => db.shards_in_category_with_releases(category_id),
-    })
+    page = Page::Category.new(db, category)
+    page.render(context.response)
+    nil
   end
 end
 

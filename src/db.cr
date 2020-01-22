@@ -215,7 +215,7 @@ class ShardsDB
   # CATEGORY
 
   def all_categories_top_shards
-    results = Hash(Int64, Array(Shard)).new { |hash, key| hash[key] = [] of Shard }
+    results = {} of Int64 => Array(Shard)
     connection.query_all <<-SQL do |rs|
       SELECT
         *
@@ -248,7 +248,8 @@ class ShardsDB
       SQL
       category_id, name, qualifier = rs.read Int64, String, String, Int64
 
-      results[category_id] << Shard.new(name, qualifier)
+      list = results[category_id] ||= [] of Shard
+      list << Shard.new(name, qualifier)
     end
     results
   end
