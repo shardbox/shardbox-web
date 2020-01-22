@@ -270,6 +270,8 @@ class ShardsDB
     Category.new(slug, name, description, entries_count, id: id)
   end
 
+  record CategoryResult, shard : Shard, repo : Repo, release : Release
+
   def shards_in_category_with_releases(category_id : Int64?)
     if category_id
       args = [category_id]
@@ -300,7 +302,7 @@ class ShardsDB
 
     results.map do |result|
       shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, synced_at, sync_failed_at, repo_id = result
-      {
+      CategoryResult.new(
         shard: Shard.new(name, qualifier, description, archived_at, id: shard_id),
         repo:  Repo.new(resolver, url, shard_id,
           metadata: Repo::Metadata.from_json(metadata),
@@ -308,7 +310,7 @@ class ShardsDB
           sync_failed_at: sync_failed_at,
           id: repo_id),
         release: Release.new(version, released_at),
-      }
+      )
     end
   end
 

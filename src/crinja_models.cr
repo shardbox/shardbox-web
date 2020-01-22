@@ -18,6 +18,16 @@ class Category
   include Crinja::Object::Auto
 end
 
+@[Crinja::Attributes]
+struct ShardsDB::CategoryResult
+  include Crinja::Object::Auto
+
+  @[Crinja::Attribute(ignore: true)]
+  def clone
+    previous_def
+  end
+end
+
 @[Crinja::Attributes(exclude: scope)]
 class Dependency
   include Crinja::Object::Auto
