@@ -28,6 +28,15 @@
           <span class="created_at">{{ release_date(data.created_at) }}</span>
         {% endif %}
       </div>
+      <div class="shard-info">
+        {% if shard.archived %}
+          <span class="datapoint datapoint--archived">Archived {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}</span>
+        {% endif %}
+
+        {% if repo and repo.sync_failed_at %}
+          <span class="datapoint datapoint--sync_failed">Sync failed</span>
+        {% endif %}
+      </div>
     </div>
 
     {% if repo_ref %}

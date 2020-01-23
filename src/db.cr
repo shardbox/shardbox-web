@@ -124,6 +124,30 @@ class ShardsDB
     results
   end
 
+  def find_homonymous_shards(names)
+    results = {} of String => Array(Shard)
+    connection.query_all <<-SQL, names do |result|
+      SELECT
+        id,
+        name::text,
+        qualifier::text,
+        description,
+        archived_at
+      FROM
+        shards
+      WHERE
+        name = ANY($1)
+      ORDER BY
+        name,
+        qualifier
+      SQL
+      id, name, qualifier, description, archived_at = result.read Int64, String, String, String?, Time?
+      list = results[name] ||= [] of Shard
+      list << Shard.new(name, qualifier, description, archived_at, id: id)
+    end
+    results
+  end
+
   def dependencies(release_id : Int64, scope : Dependency::Scope)
     results = connection.query_all <<-SQL, release_id, scope, as: {String, JSON::Any, String, Int64?, String?, String?, String?, Time?}
       SELECT

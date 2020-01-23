@@ -25,6 +25,11 @@ struct Page::Category
 
   private def initialize_context_uncategorized(context)
     context["entries_count"] = @db.uncategorized_count
+    context["homonymous_shards"] = homonymous_shards
+  end
+
+  private def homonymous_shards
+    db.find_homonymous_shards(entries.map(&.shard.name))
   end
 
   def render(io)

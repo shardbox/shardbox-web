@@ -38,6 +38,8 @@
   flex-wrap: wrap
 
   > .category-entry
+    margin-bottom: .5rem
+
     @media(min-width: 1200px)
       width: 50%
       padding: .6rem
@@ -51,4 +53,13 @@
       grid-template-areas: "name repo-info" "description description" "shard-info shard-info"
 
     > .shards-spec
-      margin-bottom: 1rem
+
+    > .homonymous_shards
+      padding: .5em
+
+      > small
+        color: var(--color-lighter)
+
+      > .shard-name + .shard-name::before
+        content: "•"
+        color: var(--color-lighter)
