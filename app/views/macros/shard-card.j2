@@ -5,6 +5,13 @@
     {% if show_description | default(true) and shard.description %}
       <div class="description">
         {{ shard.description | markdown }}
+        {% if show_topics %}
+          {{ list_topics(repo.metadata.topics) }}
+        {% endif %}
+      </div>
+    {% elif show_topics %}
+      <div class="description">
+        {{ list_topics(repo.metadata.topics) }}
       </div>
     {% endif %}
 
@@ -51,4 +58,14 @@
       {% endfor %}
     </div>
   </div>
+{% endmacro %}
+
+{% macro list_topics(topics) %}
+  {% if topics %}
+    <span class="topics">
+      {% for topic in topics if topic != 'crystal' and topic != 'crystal-lang' and topic != 'crystal-language' %}
+        <a href="/search/?q={{ topic }}" class="topic">{{ topic }}</a>
+      {% endfor %}
+    </span>
+  {% endif %}
 {% endmacro %}

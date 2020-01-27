@@ -1,3 +1,5 @@
+{% import "macros/shard-card.j2" %}
+
 <header class="release-header">
   <h1 class="shard-title shard-name">
     {{ shard_name(shard) }}
@@ -8,14 +10,7 @@
     <div class="shard-description description">
       {{description | markdown}}
 
-      {% set topics = repo.metadata.topics %}
-      {% if topics %}
-        <span class="topics">
-          {% for topic in topics if topic != 'crystal' and topic != 'crystal-lang' and topic != 'crystal-language' %}
-            <a href="/search/?q={{ topic }}" class="topic">{{ topic }}</a>
-          {% endfor %}
-        </span>
-      {% endif %}
+      {{ list_topics(repo.metadata.topics) }}
     </div>
   {% endif %}
 
