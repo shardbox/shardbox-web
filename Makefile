@@ -15,14 +15,11 @@ DATABASE_URL:
 TEST_DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
 
-$(BIN)/worker: $(BIN) shard.lock
+$(BIN)/worker: shard.lock
 	$(SHARDS) build worker
 
-$(BIN)/app: src/* $(BIN) shard.lock
+$(BIN)/app: src/* shard.lock
 	$(SHARDS) build app
-
-$(BIN):
-	mkdir -p $(@)
 
 shard.lock: shard.yml
 	$(SHARDS) update
