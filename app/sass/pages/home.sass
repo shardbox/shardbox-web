@@ -1,9 +1,24 @@
 .home-header
+  @media(min-width: 768px)
+    display: grid
+    grid-template-columns: 3fr 1fr
+
+  font-size: 1.3em
+
+  > h1
+    grid-column-start: 1
+    grid-column-end: 3
+    font-size: 3.8rem
+    margin-bottom: 1.5rem
+
+.home-stats
   > p
     margin: 0
 
-  > h1 + p
-    margin-top: 1.5rem
+.home-nav
+  display: flex
+  align-items: flex-end
+  justify-content: flex-end
 
 .containers, .home-header
   margin-left: 1rem

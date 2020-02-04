@@ -6,24 +6,28 @@
 {% block page_title %}Shardbox: A shards database{% endblock %}
 {% block main %}
 <header class="home-header">
-  <h1>Shards Database</h1>
+  <h1>A Database of Crystal Shards</h1>
 
-  <p class="large">
-    Listing <strong><span class="count">{{ stats.shards_count }}</span> shards</strong>
-    with <strong><span class="count">{{ stats.dependencies_count }}</span> dependencies</strong>.
-  </p>
+  <div class="home-stats">
+    <p class="large">
+      Listing <strong><span class="count">{{ stats.shards_count }}</span> shards</strong>
+      with <strong><span class="count">{{ stats.dependencies_count }}</span> dependencies</strong>.
+    </p>
 
-  {% if stats.uncategorized_count > 0 %}
-    <p class="large">
-      <strong><span class="count">{{ stats.uncategorized_count }}</span></strong> are <a href="/categories/Uncategorized">uncategorized</a>.
-      <a href="/contribute" class="btn">Help categorize them</a>
+    <p>
+      {% if stats.uncategorized_count > 0 %}
+        <strong><span class="count">{{ stats.uncategorized_count }}</span></strong> are <a href="/categories/Uncategorized">uncategorized</a>.
+        <a href="/contribute" class="btn btn-inline">Help categorize them</a>
+      {% else %}
+        You can help adding and improving the catalog.
+        <a href="/contribute" class="btn btn-inline">Contribute</a>
+      {% endif %}
     </p>
-  {% else %}
-    <p class="large">
-      You can help adding and improving the catalog.
-      <a href="/contribute" class="btn">Contribute</a>
-    </p>
-  {% endif %}
+  </div>
+
+  <div class="home-nav">
+    <a class="btn" href="/categories">Browse Categories</a>
+  </div>
 </header>
 
 <div class="containers">
