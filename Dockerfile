@@ -1,19 +1,10 @@
-FROM alpine:3.11 AS builder
+FROM crystallang/crystal:0.32.1-alpine AS builder
 
 RUN apk add --no-cache --update-cache \
-      crystal libc-dev \
-      libgit2-dev libsass-dev libssh2-static libressl-dev libxml2-dev yaml-dev zlib-static openssl-dev
-
-# Workaround to install shards 0.8.1 from official package because shards 9.0.0
-# provided by apk is broken
-RUN wget -qO- https://github.com/crystal-lang/crystal/releases/download/0.31.1/crystal-0.31.1-1-linux-x86_64.tar.gz \
-  | tar -xz \
-  && ln -s /crystal-0.31.1-1/bin/shards /usr/local/bin/shards \
-  && apk add --no-cache git
+      libgit2-dev libsass-dev libssh2-static
 
 WORKDIR /src
-ADD shard.yml shard.yml
-ADD shard.lock shard.lock
+ADD shard.yml shard.lock ./
 RUN shards install --production
 
 ADD . ./
@@ -22,8 +13,8 @@ ADD . ./
 # specifying the static libraries available
 #RUN shards build \
 #  --production \
-RUN mkdir -p bin && crystal build src/app.cr -o bin/app \
-  --no-debug --progress\
+RUN mkdir -p bin && shards build app \
+  --progress\
   --stats \
   --link-flags='/usr/lib/libyaml.a /usr/lib/libpcre.a /usr/lib/libm.a /usr/lib/libgc.a' \
   --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a' \
