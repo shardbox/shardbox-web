@@ -199,4 +199,3 @@ def show_release(context)
   end
 end
 
-Kemal.run

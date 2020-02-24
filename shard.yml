@@ -6,7 +6,7 @@ authors:
 
 targets:
   app:
-    main: src/app.cr
+    main: src/cli.cr
   worker:
     main: lib/shardbox-core/src/worker.cr
 
