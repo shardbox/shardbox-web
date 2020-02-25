@@ -198,4 +198,3 @@ def show_release(context)
     end
   end
 end
-

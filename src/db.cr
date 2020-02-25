@@ -329,7 +329,7 @@ class ShardsDB
       shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, synced_at, sync_failed_at, repo_id = result
       CategoryResult.new(
         shard: Shard.new(name, qualifier, description, archived_at, id: shard_id),
-        repo:  Repo.new(resolver, url, shard_id,
+        repo: Repo.new(resolver, url, shard_id,
           metadata: Repo::Metadata.from_json(metadata),
           synced_at: synced_at,
           sync_failed_at: sync_failed_at,
