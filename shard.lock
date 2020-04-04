@@ -18,7 +18,7 @@ shards:
 
   exception_page:
     github: crystal-loot/exception_page
-    version: 0.1.2
+    version: 0.1.4
 
   git:
     github: smacker/libgit2.cr
@@ -52,6 +52,10 @@ shards:
     github: icyleaf/markd
     commit: 411f979697c57e9b7081b941c7ed3801b6d61261
 
+  molinillo:
+    github: crystal-lang/crystal-molinillo
+    version: 0.1.0
+
   pg:
     github: will/crystal-pg
     version: 0.20.0
@@ -62,7 +66,7 @@ shards:
 
   raven:
     github: Sija/raven.cr
-    version: 1.5.5
+    version: 1.6.0
 
   sass:
     github: straight-shoota/sass.cr
