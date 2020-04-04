@@ -1,3 +1,4 @@
+dist: bionic
 language: crystal
 
 addons:
@@ -29,7 +30,6 @@ before_install:
   wget -qO vendor/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-amd64
   chmod +x vendor/bin/dbmate
   export PATH="$PATH:$(pwd)/vendor/bin"
-- make -C lib/shardbox-core test_db
 
 before_script:
 - |
@@ -37,6 +37,7 @@ before_script:
   if [ ! -f "~/lib/libgit2" ]; then
     lib/shardbox-core/scripts/build_libgit2.sh ~ maint/v0.27
   fi
+- make -C lib/shardbox-core test_db
 - export LIBRARY_PATH=$LIBRARY_PATH:~/lib
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
 - psql $TEST_DATABASE_URL -c 'SELECT version()'
