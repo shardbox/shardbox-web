@@ -20,6 +20,7 @@ env:
   TEST_DATABASE_URL: "postgres://postgres:@localhost/shardbox"
 
 before_install:
+- sudo apt-get install -y libgit2-dev
 - |
   sudo apt-get --yes remove postgresql\*
   sudo apt-get install -y postgresql-12 postgresql-client-12
@@ -32,16 +33,16 @@ before_install:
   export PATH="$PATH:$(pwd)/vendor/bin"
 
 before_script:
-- |
-  sudo apt install --yes cmake
-  if [ ! -f "~/lib/libgit2" ]; then
-    lib/shardbox-core/scripts/build_libgit2.sh ~ maint/v0.27
-  fi
-- make -C lib/shardbox-core test_db
+# - |
+#   sudo apt install --yes cmake
+#   if [ ! -f "~/lib/libgit2" ]; then
+#     lib/shardbox-core/scripts/build_libgit2.sh ~ maint/v0.27
+#   fi
 - export LIBRARY_PATH=$LIBRARY_PATH:~/lib
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
-- psql $TEST_DATABASE_URL -c 'SELECT version()'
 - sudo apt install --yes libsass-dev
+- psql $TEST_DATABASE_URL -c 'SELECT version()'
+- make -C lib/shardbox-core test_db
 
 script:
 - crystal spec
