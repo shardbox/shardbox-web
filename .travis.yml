@@ -27,7 +27,7 @@ before_install:
   sudo cp /etc/postgresql/{9.6,12}/main/pg_hba.conf
   #sudo service postgresql restart 12
   pg_ctlcluster 12 main start
-  sleep 2
+  sleep 20
 - |
   mkdir -p vendor/bin
   wget -qO vendor/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-amd64
