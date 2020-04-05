@@ -44,7 +44,7 @@ before_script:
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib
 - sudo apt install --yes libsass-dev
 - psql $TEST_DATABASE_URL -c 'SELECT version()'
-- make -C lib/shardbox-core test_db
+- make -C lib/shardbox-core test_db PG_USER=postgres
 
 script:
 - crystal spec
