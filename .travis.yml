@@ -48,12 +48,8 @@ jobs:
     env:
       DEPLOY_IMAGE: dokku/shardbox
     script: docker build -t $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER .
-    before_deploy:
-    -
     deploy:
       provider: script
-      script:
-      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > private_ssh_key
-      - docker save $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER | ssh -i private_ssh_key dokku@shardbox.org "docker load | dokku tags:deploy shardbox b$TRAVIS_BUILD"
+      script: .travis/deploy.sh
       on:
         branch: master
