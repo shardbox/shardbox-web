@@ -18,11 +18,11 @@ shards:
 
   exception_page:
     github: crystal-loot/exception_page
-    version: 0.1.2
+    version: 0.1.4
 
   git:
     github: smacker/libgit2.cr
-    commit: 3426bf335e0970852e300f7602cf6e8dd21d0867
+    commit: 1d42ffdcf6f885a49ece5b2baac00a5146d0a556
 
   github-cr:
     github: arnavb/github-cr
@@ -50,7 +50,11 @@ shards:
 
   markd:
     github: icyleaf/markd
-    commit: 411f979697c57e9b7081b941c7ed3801b6d61261
+    commit: 83dff3bcd8d27a22038121114a0eba19dbb2b4af
+
+  molinillo:
+    github: crystal-lang/crystal-molinillo
+    version: 0.1.0
 
   pg:
     github: will/crystal-pg
@@ -62,7 +66,7 @@ shards:
 
   raven:
     github: Sija/raven.cr
-    version: 1.5.5
+    version: 1.6.0
 
   sass:
     github: straight-shoota/sass.cr
@@ -74,5 +78,5 @@ shards:
 
   shards:
     github: crystal-lang/shards
-    commit: 35303e1232f150677a5ff0e1713ced9171ee928a
+    commit: 2c98f787fdffbe9903d27ec92aafef1cd98e1ba5
 
