@@ -41,9 +41,19 @@ jobs:
     script: ./.travis/integration-spec.sh
   - stage: build docker image
     language: generic
-    script: docker build -t $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER .
     services:
     - docker
+    addons:
+      ssh_known_hosts: shardbox.org
+    env:
+      DEPLOY_IMAGE: dokku/shardbox
+    script: docker build -t $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER .
+    before_deploy:
+    -
     deploy:
-      script: docker save $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER | ssh $DEPLOY_HOST "$DEPLOY_COMMAND"
-      branch: master
+      provider: script
+      script:
+      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > private_ssh_key
+      - docker save $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER | ssh -i private_ssh_key dokku@shardbox.org "docker load | dokku tags:deploy shardbox b$TRAVIS_BUILD"
+      on:
+        branch: master
