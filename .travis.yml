@@ -13,12 +13,16 @@ build_addons: &build_addons
 crystal:
 - latest
 
-cache: shards
+cache:
+- shards
+- directories:
+  - vendor/
 
 env:
   global:
     - PGPORT: 5433
     - TEST_DATABASE_URL: "postgres://postgres:@localhost:5433/shardbox"
+    - DBMATE: "vendor/bin/dbmate"
 
 jobs:
   include:
@@ -27,18 +31,26 @@ jobs:
     services:
     - postgresql
     addons: *build_addons
-    before_script: ./.travis/setup-database.sh
-    script: crystal spec
+    before_script:
+    - ./lib/shardbox-core/.travis/setup-database.sh
+    - make -C ./lib/shardbox-core test_db
+    script: make test
+
   - stage: test
     name: crystal format
     install: skip
     script: crystal tool format src spec --check
-  - stage: integration_test
+
+  - stage: test
+    name: integration test
     services:
     - postgresql
     addons: *build_addons
-    before_script: ./.travis/setup-database.sh
+    before_script:
+    - ./lib/shardbox-core/.travis/setup-database.sh
+    - make -C ./lib/shardbox-core test_db
     script: ./.travis/integration-spec.sh
+
   - stage: build docker image
     language: generic
     services:
