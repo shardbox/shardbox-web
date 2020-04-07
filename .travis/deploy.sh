@@ -1,8 +1,5 @@
 #! /usr/bin/env bash
 set -e
-
-ssh-keyscan -H shardbox.org 2>&1 | tee -a ${TRAVIS_HOME}/.ssh/known_hosts
-
 echo -e "$SSH_PRIVATE_KEY" > private_ssh_key
 chmod 0700 private_ssh_key
 

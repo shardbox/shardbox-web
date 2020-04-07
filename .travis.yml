@@ -56,12 +56,14 @@ jobs:
     language: generic
     services:
     - docker
+    addons:
+      ssh_known_hosts: shardbox.org
     env:
       DEPLOY_IMAGE: dokku/shardbox
     script: docker build -t $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER .
     deploy:
       provider: script
-      script: sudo .travis/deploy.sh
+      script: .travis/deploy.sh
       on:
         branch: master
     if: branch = master
