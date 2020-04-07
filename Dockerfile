@@ -32,7 +32,8 @@ RUN apk add --no-cache --update-cache  \
       git openssh \
 # Couldn't get libsass and libgit2 with openssl to link statically, so they're
 # needed as runtime dependencies
-      libsass libgit2
+      libsass libgit2 \
+      gc
 
 RUN wget -qO /usr/local/bin/dbmate https://github.com/amacneil/dbmate/releases/download/v1.7.0/dbmate-linux-musl-amd64 \
   && chmod +x /usr/local/bin/dbmate
