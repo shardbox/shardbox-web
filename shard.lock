@@ -58,7 +58,7 @@ shards:
 
   pg:
     github: will/crystal-pg
-    version: 0.20.0
+    commit: c6448b7577bd0db5e5a578f73cab93b63a48055a
 
   radix:
     github: luislavena/radix
@@ -74,9 +74,9 @@ shards:
 
   shardbox-core:
     github: shardbox/shardbox-core
-    commit: d68198b721457d05e33e6125ceca274fe4ccd8dd
+    commit: 543919fa1ddd13e78a62a0bdbd213261af417614
 
   shards:
     github: crystal-lang/shards
-    commit: 2c98f787fdffbe9903d27ec92aafef1cd98e1ba5
+    version: 0.10.0
 
