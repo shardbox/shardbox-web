@@ -8,9 +8,9 @@
   <div class="release-wrapper">
     <div class="release-main">
       <nav class="tabs">
-        <a href="{{ release_path(shard, release) }}/"{% if page.name == "readme" %} class="current"{% endif %}>Readme</a>
-        <a href="{{ release_path(shard, release) }}/dependencies"{% if page.name == "dependencies" %} class="current"{% endif %}>Dependencies</a>
-        <a href="{{ shard_path(shard) }}/releases"{% if page.name == "releases" %} class="current"{% endif %}>Releases</a>
+        <a href="{{ release_path(shard, release) }}/"{% if page.name == "readme" %} class="current"{% endif %}>{{ icon("book") }} Readme</a>
+        <a href="{{ release_path(shard, release) }}/dependencies"{% if page.name == "dependencies" %} class="current"{% endif %}>{{ icon("workflow") }} Dependencies</a>
+        <a href="{{ shard_path(shard) }}/releases"{% if page.name == "releases" %} class="current"{% endif %}>{{ icon("versions") }} Releases</a>
       </nav>
       <div class="release-body">
         {% block release_main %}
@@ -56,7 +56,7 @@
       {% set category = categories[0] %}
       {% if category %}
         <div class="container category-edit">
-            <a href="https://github.com/shardbox/catalog/edit/master/catalog/{{ category.slug }}.yml" class="btn edit"
+            <a href="https://github.com/shardbox/catalog/edit/master/catalog/{{ category.slug }}.yml" class="btn btn-inverted edit"
               title="You can edit this shard in the shardbox catalog">
               {{ icon("edit") }} Edit catalog entry
             </a>

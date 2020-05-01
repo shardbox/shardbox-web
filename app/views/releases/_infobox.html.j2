@@ -21,7 +21,7 @@
 
   {% if release.spec.authors %}
     <div class="container">
-      <h3>Authors</h3>
+      <h3>{{ icon("person") }} Authors</h3>
       <ul>
       {% for author in release.spec.authors %}
         <li>{{ author | striptags }}</li>
@@ -31,12 +31,12 @@
   {% endif %}
 
   <div class="container">
-    <h3>License</h3>
+    <h3>{{ icon("law") }} License</h3>
     {{ release.license }}
   </div>
 
   <div class="container">
-    <h3>Crystal</h3>
+    <h3>{{ icon("crystal") }} Crystal</h3>
     {{ release.crystal }}
   </div>
 

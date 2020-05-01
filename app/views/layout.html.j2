@@ -9,14 +9,14 @@
   <body>
     <header role="nav" class="site-header">
       <a href="/" class="site-title">Shardbox</a>
-      <form action="/search" method="GET">
-        <input type="search" name="q" placeholder="Search…" value="{{ query }}" />
+      <form action="/search" method="GET" class="search-field">
         <button type="submit">{{ icon("search") }}</button>
+        <input type="search" name="q" placeholder="Search…" value="{{ query }}" autofocus />
       </form>
       <div class="header-nav">
-        <a href="/categories">Browse</a>
-        <a href="/stats">Statistics</a>
-        <a href="/contribute">Contribute</a>
+        <a href="/categories">{{ icon("telescope") }} Browse</a>
+        <a href="/stats">{{ icon("graph") }} Statistics</a>
+        <a href="/contribute">{{ icon("tools") }} Contribute</a>
       </div>
     </header>
     <main>

@@ -72,15 +72,15 @@
   <div class="links">
     {% set owner = repo.metadata.owner %}
     {% if owner %}
-    <a href="{{ owner.html_url }}" class="btn"><img src="{{ owner.avatar_url }}" class="avatar avatar--github" /> {{ owner.login }}</a>
+    <a href="{{ owner.html_url }}" class="btn"><img src="{{ owner.avatar_url }}" class="avatar avatar--github" />{{ icon("star") }} {{ owner.login }}</a>
     {% endif %}
     {% set homepage = release.spec["homepage"] %}
     {% if homepage %}
-    <a href="{{ homepage }}" class="btn">Homepage</a>
+    <a href="{{ homepage }}" class="btn">{{ icon("globe") }} Homepage</a>
     {% endif %}
     {% set documentation = release.spec["documentation"] %}
     {% if documentation %}
-    <a href="{{ documentation }}" class="btn">Docs</a>
+    <a href="{{ documentation }}" class="btn">{{ icon("mortar-board") }} Docs</a>
     {% endif %}
   </div>
 </header>

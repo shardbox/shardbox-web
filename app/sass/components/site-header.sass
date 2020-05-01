@@ -9,56 +9,70 @@
   border-width: 0 2rem
   min-height: 4rem
 
-  > form
-    display: flex
-    flex-direction: row
-    align-items: center
-    margin: 0
-    padding: .3em 0
-    align-self: center
-
-    > input[type=search]
-      padding: .3em
-      border: none
-      background: var(--color-light)
-      color: #eee
-      font-size: 1.1em
-      font-family: Roboto
-      letter-spacing: 0.02em
-      &::placeholder
-        color: #bbb
-
-    > button
-      border: none
-      background: transparent
-      padding: 0
-      color: inherit
-      cursor: pointer
-      font-size: 1.5rem
-
-      &:hover, &:focus
-        color: var(--color-lighter)
-
-      > .icon
-        display: block
-        width: 1.4em
-        height: 1.4em
-        padding: .3em
   a
     text-decoration: none
     padding: .3em .5em
     font-size: 1.2rem
     color: inherit
+    white-space: nowrap
 
     &:hover, &:focus
       color: #fff
+
+.search-field
+  display: flex
+  flex-direction: row
+  align-items: stretch
+  margin: 0
+  padding: .3em 0
+  flex-grow: 1
+  max-width: 30em
+  --search-border-color: #222
+
+  > input[type=search]
+    padding: .3em
+    border: none
+    background: var(--color-light)
+    color: #eee
+    font-size: 1.1em
+    font-family: Roboto
+    letter-spacing: 0.02em
+    border-top-right-radius: .5rem
+    border-bottom-right-radius: .5rem
+    border: 2px solid var(--search-border-color)
+    border-left: none
+    flex-grow: 1
+    &::placeholder
+      color: #bbb
+
+  > button
+    border: none
+    background: transparent
+    padding: 0
+    color: inherit
+    cursor: pointer
+    font-size: 1.5rem
+    border-top-left-radius: .5rem
+    border-bottom-left-radius: .5rem
+    background: var(--search-border-color)
+
+    > .icon
+      margin: 0
+
+    &:hover, &:focus
+      color: var(--color-lighter)
+
+    > .icon
+      display: block
+      width: 1.4em
+      height: 1.4em
+      padding: .3em
 
 .header-nav
   margin: .5em
 
   a
     font-size: 1rem
-    background: var(--color-light)
     border-radius: .3em
     font-size: 1.2em
     font-weight: 200

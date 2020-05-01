@@ -17,16 +17,16 @@
     <p>
       {% if stats.uncategorized_count > 0 %}
         <strong><span class="count">{{ stats.uncategorized_count }}</span></strong> are <a href="/categories/Uncategorized">uncategorized</a>.
-        <a href="/contribute" class="btn btn-inline">Help categorize them</a>
+        <a href="/contribute" class="btn btn-inline btn-inverted">{{ icon("tools") }} Help categorize them</a>
       {% else %}
         You can help adding and improving the catalog.
-        <a href="/contribute" class="btn btn-inline">Contribute</a>
+        <a href="/contribute" class="btn btn-inline">{{ icon("tools") }} Contribute</a>
       {% endif %}
     </p>
   </div>
 
   <div class="home-nav">
-    <a class="btn" href="/categories">Browse Categories</a>
+    <a class="btn" href="/categories">{{ icon("telescope") }} Browse Categories</a>
   </div>
 </header>
 

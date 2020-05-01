@@ -2,7 +2,7 @@
 {% set libraries = release.spec["libraries"] %}
 {% if libraries %}
   <div class="container">
-    <h3>Libraries <span class="count">{{ libraries | count }}</span></h3>
+    <h3>{{ icon("package") }} Libraries <span class="count">{{ libraries | count }}</span></h3>
     <ul>
       {% for name, version in libraries %}
         <li><code>{{ name }}</code>: <code>{{ version }}</code></li>
@@ -82,7 +82,7 @@
 
 {% if mirrors | length > 0 %}
 <div class="container">
-  <h3>Mirrors <span class="count">{{ mirrors | length }}</span></h3>
+  <h3>{{ icon("mirror") }} Mirrors <span class="count">{{ mirrors | length }}</span></h3>
   <ul>
   {% for mirror in mirrors %}
     <li>({{mirror.role}})  {{ repo_link(mirror.ref) }}</li>
