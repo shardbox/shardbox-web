@@ -4,7 +4,7 @@
 html
   font-family: Roboto
   color: var(--color-body)
-  font-size: 12pt
+  font-size: 13pt
   background: #f8f8f8
   line-height: 1.4
 
@@ -20,7 +20,7 @@ main
     margin: 0 $main-margin / 2 3rem
   @media(min-width: 1200px)
     margin: 0 $main-margin 3rem
-  max-width: 95em
+  max-width: 80em
 
 a
   text-decoration: none
@@ -85,18 +85,27 @@ pre
 header
   margin: 2rem 0
 
+h2
+  > .count
+    font-weight: normal
+    color: var(--color-light)
+
 h2,
 .release-body h1
-  font-size: 2.5rem
+  font-size: 2rem
   font-weight: 300
   color: var(--color-light)
 
   margin-bottom: .5rem
   margin-top: 1rem
 
-  > .count
-    font-weight: normal
-    color: var(--color-light)
+.release-body h2
+  font-size: 1.5rem
+  font-weight: 300
+  color: var(--color-light)
+
+  margin-bottom: .5rem
+  margin-top: 1rem
 
 h3
   font-size: 1.5rem
@@ -189,3 +198,6 @@ img
   border: 1px solid
   font-weight: 400
   border-radius: 2px
+
+%monospace
+  font-family: "Roboto Mono", monospace

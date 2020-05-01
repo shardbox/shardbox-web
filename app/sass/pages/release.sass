@@ -193,11 +193,10 @@
         font-weight: 500
       > .release-date
         color: var(--color-light)
-        font-family: monospace
+        @extend %monospace
       > .release-span
         color: var(--color-lighter)
         font-size: 90%
-        letter-spacing: -0.01em
 
       &:hover, &:focus
         > *
@@ -215,7 +214,7 @@
     margin-top: 0
 
 .dependency-version
-  font-family: monospace
+  @extend %monospace
   font-size: 90%
   color: var(--color-light)
 
