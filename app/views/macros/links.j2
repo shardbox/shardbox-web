@@ -8,7 +8,7 @@
     {% else %}
       {{ icon(repo_ref.resolver) }}
     {% endif %}
-    {{ repo_ref.url }}</a>{% endmacro %}
+    {{ repo_ref.nice_url }}</a>{% endmacro %}
 
 {% macro shard_name(shard) %}
 {{ shard.name }}{% if shard.qualifier != "" %}<span class="qualifier">~{{ shard.qualifier }}</span>{% endif %}

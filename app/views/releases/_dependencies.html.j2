@@ -96,8 +96,9 @@
   <h3>Similar shards</h3>
   <ul>
   {% for item in homonymous_shards %}
-    <li>
-      <a href="/shards/{{ item.slug }}" class="shard-name">{{ item.display_name}}</a>
+    <li class="homonymous-shard">
+      <a href="/shards/{{ item.shard.slug }}" class="shard-name">{{ item.shard.display_name}}</a>
+      {{ repo_link(item.repo_ref) }}
     </li>
   {% endfor %}
   </ul>

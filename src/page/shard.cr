@@ -52,7 +52,7 @@ struct Page::Shard
     context["metrics"] = db.get_current_metrics(shard.id)
     context["mirrors"] = db.find_mirror_repos(shard.id)
 
-    context["homonymous_shards"] = db.find_homonymous_shards(shard.name).reject { |s| s.id == shard.id }
+    context["homonymous_shards"] = db.find_homonymous_shards(shard.name).reject { |s| s[:shard].id == shard.id }
 
     context["categories"] = db.find_categories(shard.id)
   end

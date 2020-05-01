@@ -37,7 +37,7 @@
   </div>
 
   <div class="repo-info">
-    <a href="{{ repo.ref.to_uri }}" class="repo-ref repo-ref--{{ repo.ref.resolver }}">{{ icon(repo.ref.resolver) }} {{ repo.ref.url | replace("https://", "") | replace("http://", "") }}</a>
+    {{ repo_link(repo.ref) }}
 
     {% set latest_activity = repo.metadata.pushed_at %}
     {% if latest_activity %}

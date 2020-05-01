@@ -111,15 +111,21 @@ class ShardsDB
   end
 
   def find_homonymous_shards(name : String)
-    results = [] of Shard
+    results = [] of {shard: Shard, repo_ref: Repo::Ref, category: String?}
     connection.query_all <<-SQL, name do |result|
-      SELECT id, name::text, qualifier::text, description, archived_at
+      SELECT shards.id, shards.name::text, qualifier::text, shards.description, archived_at,
+      resolver::text, url::text, categories.slug::text
       FROM shards
+      JOIN repos
+        ON repos.shard_id = shards.id
+        AND repos.role = 'canonical'
+      LEFT JOIN categories
+        ON categories.id = shards.categories[1]
       WHERE
-        name = $1;
+        shards.name = $1;
       SQL
-      id, name, qualifier, description, archived_at = result.read Int64, String, String, String?, Time?
-      results << Shard.new(name, qualifier, description, archived_at, id: id)
+      id, name, qualifier, description, archived_at, resolver, url, category = result.read Int64, String, String, String?, Time?, String, String, String?
+      results << {shard: Shard.new(name, qualifier, description, archived_at, id: id), repo_ref: Repo::Ref.new(resolver, url), category: category}
     end
     results
   end
