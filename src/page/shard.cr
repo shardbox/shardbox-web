@@ -55,6 +55,12 @@ struct Page::Shard
     context["homonymous_shards"] = db.find_homonymous_shards(shard.name).reject { |s| s[:shard].id == shard.id }
 
     context["categories"] = db.find_categories(shard.id)
+
+    case @name
+    when "activity"
+      context["activities"] = db.get_activity(shard.id).group_by(&.created_at).values.reverse
+    else
+    end
   end
 
   def render(io)

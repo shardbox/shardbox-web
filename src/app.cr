@@ -114,6 +114,21 @@ get "/shards/:name/releases" do |context|
   end
 end
 
+get "/shards/:name/activity" do |context|
+  ShardsDB.connect do |db|
+    page = Page::Shard.new(db, context, "activity")
+    case page
+    when String
+      halt context, 404, page
+    when Nil
+      next
+    when Page::Shard
+      page.render(context.response)
+      nil
+    end
+  end
+end
+
 get "/shards/:name/releases/:version/dependencies" do |context|
   ShardsDB.connect do |db|
     page = Page::Shard.new(db, context, "dependencies")

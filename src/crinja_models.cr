@@ -114,3 +114,12 @@ end
 struct ShardsDB::Metrics
   include Crinja::Object::Auto
 end
+
+@[Crinja::Attributes]
+struct Activity
+  include Crinja::Object::Auto
+  @[Crinja::Attribute(ignore: true)]
+  def clone
+    previous_def
+  end
+end

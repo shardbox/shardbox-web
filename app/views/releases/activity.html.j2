@@ -1,0 +1,42 @@
+{% extends "releases/_layout.html.j2" %}
+
+{% block page_title %}{{ shard.display_name }}@{{ release.version }} activity on Shardbox{% endblock %}
+
+{% block release_main %}
+<div class="container">
+  <h1>Activity</h1>
+  {% for activity_set in activities %}
+    <div class="activity-set" id="activity-">
+      {% for activity in activity_set %}
+        {% if not loop.first and activity.event == "sync_release:created" %}
+          </div>
+          <div class="activity-set">
+        {% endif %}
+        <div class="activity" id="activity-">
+          {% if activity.event == "sync_dependencies:created" %}
+            {% if activity.scope == "development" %}development {% endif %}dependency:
+            <a href="{{ release_path(activity.metadata.name, activity.metadata.release) }}">
+              {{ activity.metadata.name }}
+              <span class="dependency-version">{{ activity.metadata.release }}</span>
+            </a>
+          {% elif activity.event == "sync_release:created" %}
+            {{ icon("star") }} New release {{ icon("tag") }}
+            <a href="{{ release_path(shard, activity.metadata.version) }}"><span class="version">{{ activity.metadata.version }}</span></a>
+          {% elif activity.event == "update_shard:description_changed" %}
+            Updated description
+          {% elif activity.event == "import_catalog:mirror:switched" %}
+            Mirror switched: {{ repo_link(activity.repo_ref) }} from {{ activity.metadata.old_role }} to  {{ activity.metadata.role }}
+          {% elif activity.event == "import_shard:created" %}
+            Shard added to database
+          {% else %}
+            {{ activity.event }} {{ activity.metadata }}
+          {% endif %}
+          {% if loop.first or activity.event == "sync_release:created" %}
+            <a href="#activity-{{activity.id}}">{{ time_date(activity.created_at) }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

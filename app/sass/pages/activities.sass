@@ -1,0 +1,13 @@
+.activity-set
+  margin: .5em 0
+
+  + .activity-set::before
+    content: ""
+    width: 4em
+    border-top: 3px dotted #ccc
+    display: block
+    margin-bottom: .5em
+
+.activity:not(:first-child)
+  margin-left: 2rem
+  color: #555

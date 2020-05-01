@@ -1,3 +1,12 @@
+record Activity,
+  event : String,
+  created_at : Time = Time.utc,
+  metadata : JSON::Any? = nil,
+  shard_id : Int64? = nil,
+  repo_ref : Repo::Ref? = nil,
+  id : Int64? = nil do
+end
+
 class ShardsDB
   # self.statement_timeout = "30s"
 
@@ -394,6 +403,28 @@ class ShardsDB
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
       {shard: Shard.new(name, qualifier, description, archived_at, id: shard_id), repo: Repo.new(resolver, url, shard_id, metadata: Repo::Metadata.from_json(metadata)), version: version, released_at: released_at, categories: categories}
+    end
+  end
+
+  # ACTIVITY
+  def get_activity(shard_id : Int64)
+    results = connection.query_all(<<-SQL, args: [shard_id], as: {Int64, Int64?, String, JSON::Any?, Time, Int64?, String?, String?})
+        SELECT log.id, log.repo_id, log.event, log.metadata, log.created_at, log.shard_id,
+          repos.url::text, repos.resolver::text
+        FROM activity_log log
+        LEFT JOIN repos
+          ON repos.id = log.repo_id
+        WHERE
+          log.shard_id = $1
+        SQL
+    results.map do |result|
+      id, repo_id, event, metadata, created_at, shard_id, url, resolver = result
+      if resolver && url
+        repo_ref = Repo::Ref.new(resolver, url)
+      else
+        repo_ref = nil
+      end
+      Activity.new(event, created_at, metadata, shard_id, repo_ref, id: id)
     end
   end
 

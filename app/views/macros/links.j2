@@ -1,5 +1,5 @@
-{% macro shard_path(shard, release = none) -%}/shards/{{ shard.slug }}{% if release %}/releases/{{ release }}{% endif %}{%- endmacro %}
-{% macro release_path(shard, release) -%}{{ shard_path(shard, release.version) }}{%- endmacro %}
+{% macro shard_path(shard, release = none) -%}/shards/{{ shard.slug | default(shard) }}{% if release %}/releases/{{ release }}{% endif %}{%- endmacro %}
+{% macro release_path(shard, release) -%}{{ shard_path(shard, release.version | default(release) ) }}{%- endmacro %}
 
 {% macro repo_link(repo_ref, owner=none) %}
   <a href="{{ repo_ref.to_uri }}" class="repo-ref repo-ref--{{ repo_ref.resolver }}">

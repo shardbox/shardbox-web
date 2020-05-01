@@ -11,6 +11,7 @@
         <a href="{{ release_path(shard, release) }}/"{% if page.name == "readme" %} class="current"{% endif %}>{{ icon("book") }} Readme</a>
         <a href="{{ release_path(shard, release) }}/dependencies"{% if page.name == "dependencies" %} class="current"{% endif %}>{{ icon("workflow") }} Dependencies</a>
         <a href="{{ shard_path(shard) }}/releases"{% if page.name == "releases" %} class="current"{% endif %}>{{ icon("versions") }} Releases</a>
+        <a href="{{ shard_path(shard) }}/activity"{% if page.name == "activity" %} class="current"{% endif %}>{{ icon("watch") }} Activity</a>
       </nav>
       <div class="release-body">
         {% block release_main %}
