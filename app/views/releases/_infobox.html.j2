@@ -4,18 +4,36 @@
   <span class="token key atrule">version</span>: ~> {{ release.version }}</pre>
 
   <script>
-  document.querySelector(".shards-spec").addEventListener("click", function(event){
-    var elem = event.currentTarget;
-    selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.selectAllChildren(elem);
-    document.execCommand("copy");
-    elem.classList.add("copied")
-    selection.removeAllRanges();
-    setTimeout(function(){
-      elem.classList.remove("copied");
+  shardsSpec = document.querySelectorAll(".shards-spec")
+  shardsSpec.forEach(function($elem) {
+    $a = document.createElement("a")
+    $a.classList.add("copy-code")
+    $a.classList.add("btn")
+    $a.classList.add("btn-inverted")
+    $a.setAttribute("title", "Copy code")
+    $a.setAttribute("href", "#copy-code")
+    $svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+    $svg.classList.add("icon")
+    $use = document.createElementNS("http://www.w3.org/2000/svg", "use")
+    $use.setAttribute("href", "#icon-copy")
+    $svg.append($use)
+    $a.append($svg)
+    $elem.append($a)
+    console.log($elem)
+    console.log($svg)
 
-    }, 1000);
+    $svg.addEventListener("click", function(event){
+      console.log($elem)
+      selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.selectAllChildren($elem);
+      document.execCommand("copy");
+      $elem.classList.add("copied")
+      selection.removeAllRanges();
+      setTimeout(function(){
+        $elem.classList.remove("copied");
+      }, 1000);
+    })
   })
   </script>
 

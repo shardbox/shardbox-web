@@ -83,9 +83,16 @@
   color: var(--color-light)
   word-break: break-word
   white-space: pre-wrap
-  cursor: copy
   position: relative
   font-family: monospace
+
+  > .copy-code
+    position: absolute
+    top: 0
+    right: 0
+
+    &:hover
+
 
   .infobox > &
     background-color: #e4e4e4
@@ -104,9 +111,11 @@
     color: #ddd
     opacity: 0
     transition: opacity .2s ease-in-out
+    display: none
 
   &.copied::before
       opacity: 1
+      display: block
       transition: opacity .4s ease-in-out
 
   .token.atrule
