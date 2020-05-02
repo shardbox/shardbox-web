@@ -14,7 +14,7 @@ shards:
 
   db:
     github: crystal-lang/crystal-db
-    version: 0.8.0
+    version: 0.9.0
 
   exception_page:
     github: crystal-loot/exception_page
@@ -38,7 +38,7 @@ shards:
 
   i18n_plural_rules:
     github: mamantoha/i18n_plural_rules
-    version: 0.1.0
+    version: 0.1.1
 
   kemal:
     github: kemalcr/kemal
@@ -50,7 +50,7 @@ shards:
 
   markd:
     github: icyleaf/markd
-    commit: 83dff3bcd8d27a22038121114a0eba19dbb2b4af
+    commit: d1456d336f3906474cdd18f8fc14a6aa2671f434
 
   molinillo:
     github: crystal-lang/crystal-molinillo
@@ -58,7 +58,7 @@ shards:
 
   pg:
     github: will/crystal-pg
-    commit: c6448b7577bd0db5e5a578f73cab93b63a48055a
+    commit: cafee448dc09ef487bd3941febce8796830f1bd7
 
   radix:
     github: luislavena/radix
@@ -74,9 +74,9 @@ shards:
 
   shardbox-core:
     github: shardbox/shardbox-core
-    commit: 543919fa1ddd13e78a62a0bdbd213261af417614
+    commit: 4b8220f6d48e1ad0fe5f3183e15bb97f3354d8d0
 
   shards:
     github: crystal-lang/shards
-    version: 0.10.0
+    commit: 5666481ea1b304944adcf9eabce0b24ff9badeb9
 
