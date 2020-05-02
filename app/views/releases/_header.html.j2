@@ -82,6 +82,9 @@
     {% if documentation %}
     <a href="{{ documentation }}" class="btn">{{ icon("mortar-board") }} Docs</a>
     {% endif %}
+    {% if source_url %}
+    <a href="{{ source_url }}" class="btn">{{ icon("file") }} Source</a>
+    {% endif %}
   </div>
 </header>
 

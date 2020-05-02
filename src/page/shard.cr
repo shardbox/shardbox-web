@@ -48,7 +48,9 @@ struct Page::Shard
     context["dependents"] = dependents.first(NUM_DEPENDENTS_SHOWN)
     context["remaining_dependents_count"] = Math.max(0, dependents.size - NUM_DEPENDENTS_SHOWN)
 
-    context["repo"] = db.find_canonical_repo(shard.id)
+    repo = db.find_canonical_repo(shard.id)
+    context["repo"] = repo
+    context["source_url"] = repo.ref.base_url_source(release.revision_info.commit.sha)
     context["metrics"] = db.get_current_metrics(shard.id)
     context["mirrors"] = db.find_mirror_repos(shard.id)
 
