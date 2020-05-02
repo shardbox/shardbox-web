@@ -51,16 +51,11 @@ jobs:
     - make -C ./lib/shardbox-core test_db
     script: ./.travis/integration-spec.sh
 
-  - stage: build
-    name: docker image
+  - stage: deploy
+    name: dokku
     language: generic
-    services:
-    - docker
     addons:
       ssh_known_hosts: shardbox.org
-    env:
-      DEPLOY_IMAGE: dokku/shardbox
-    script: docker build -t $DEPLOY_IMAGE:b$TRAVIS_BUILD_NUMBER .
     deploy:
       provider: script
       script: .travis/deploy.sh
