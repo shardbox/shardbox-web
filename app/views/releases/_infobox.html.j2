@@ -54,10 +54,12 @@
     </div>
   {% endif %}
 
-  <div class="container">
-    <h3>{{ icon("law") }} License</h3>
-    {{ release.license }}
-  </div>
+  {% if release.license %}
+    <div class="container">
+      <h3>{{ icon("law") }} License</h3>
+      <a href="http://opensource.org/licenses/{{ release.license }}">{{ release.license }}</a>
+    </div>
+  {% endif %}
 
   <div class="container">
     <h3>{{ icon("crystal") }} Crystal</h3>
