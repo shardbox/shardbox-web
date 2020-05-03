@@ -43,7 +43,7 @@
       <ul>
       {% for author in release.spec_authors %}
         <li class="author">
-          <img src="https://www.gravatar.com/avatar/{{ author.email | gravatar_hash }}?d=mp" class="author_image" />
+          <img src="https://www.gravatar.com/avatar/{{ author.email | default('') | gravatar_hash }}?d=mp" class="author_image" />
           <span class="author_name">{{ author.name }}</span>
           {% if author.email %}
             <a href="mailto:{{author.email}}" class="author_mail">{{ author.email }}</a>
