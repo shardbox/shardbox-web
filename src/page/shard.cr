@@ -106,3 +106,30 @@ struct Page::Shard
     return shard, releases, release
   end
 end
+
+class Release
+  def spec_authors
+    authors = [] of Author
+    specs = spec["authors"]?.try(&.as_a?)
+    return authors unless specs
+
+    specs.each do |s|
+      authors << Author.new(s.as_s)
+    end
+
+    authors
+  end
+end
+
+struct Author
+  getter name : String
+  getter email : String?
+
+  def initialize(@name : String)
+    if name =~ /\A\s*(.+?)\s*<+(\s*.+?\s*)>/
+      @name, @email = $1, $2
+    else
+      @name = name
+    end
+  end
+end

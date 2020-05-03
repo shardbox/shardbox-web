@@ -1,5 +1,6 @@
 require "markd"
 require "./util/html_resolve_links"
+require "digest"
 
 Crinja.filter({base_url: nil}, "markdown") do
   options = Markd::Options.new
@@ -30,4 +31,9 @@ private def uri_from_value(value)
   else
     URI.parse(value.as_s!)
   end
+end
+
+Crinja.filter("gravatar_hash") do
+  mail = target.as_s!
+  Digest::MD5.hexdigest(mail.strip.downcase)
 end

@@ -123,3 +123,8 @@ struct Activity
     previous_def
   end
 end
+
+@[Crinja::Attributes]
+struct Author
+  include Crinja::Object::Auto
+end
