@@ -2,7 +2,7 @@
 
 <header class="release-header">
   <h1 class="shard-title shard-name">
-    {{ shard_name(shard) }}
+    <a href="{{ shard_path(shard) }}">{{ shard_name(shard) }}</a>
   </h1>
 
   {% set description = shard.description | default(release.description) | default(repo.metadata.description) %}
