@@ -1,0 +1,28 @@
+.metrics
+  display: grid
+  grid-template-rows: 1fr 1fr
+  grid-template-columns: auto
+  padding: .5em
+
+  > .metric
+    display: contents
+    text-align: center
+
+    > .metric-label
+      grid-row: 1
+      font-size: 70%
+      color: var(--color-lighter)
+      font-weight: 100
+
+    > .metric-value
+      grid-row: 2
+      font-weight: 400
+      color: var(--color-light)
+      font-size: 110%
+
+    > .metric-label, > .metric-value
+      padding: 0 .4em
+
+    + .metric
+      > .metric-label, > .metric-value
+        border-left: 1px solid #eee

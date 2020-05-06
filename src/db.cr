@@ -27,7 +27,7 @@ class ShardsDB
       id, name, qualifier, description, archived_at, version, released_at, categories = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, archived_at, id: id), version: version, released_at: released_at, categoires: categories}
+      {shard: Shard.new(name, qualifier, description, archived_at, id: id), version: version, released_at: released_at, categories: categories}
     end
   end
 
@@ -60,10 +60,10 @@ class ShardsDB
 
   def dependent_shards(scope : Dependency::Scope = :runtime)
     column_name = scope.development? ? "dev_dependents_count" : "dependents_count"
-    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Time?, Int32, Array(Array(String))?, String, Time}
+    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Time?, Int32, Int32, Int32, Array(Array(String))?, String, Time}
       SELECT
         shards.id, name::text, qualifier::text, shards.description, archived_at,
-        metrics.#{column_name},
+        metrics.dependents_count, metrics.dev_dependents_count, metrics.transitive_dependents_count,
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id]),
         releases.version, releases.released_at
       FROM shards
@@ -74,18 +74,26 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      id, name, qualifier, description, archived_at, num_dependencies, categories, version, released_at = result
+      id, name, qualifier, description, archived_at, dependents_count, dev_dependents_count, transitive_dependents_count, categories, version, released_at = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, archived_at, id: id), num_dependencies: num_dependencies, categories: categories, version: version, released_at: released_at}
+      {
+        shard:                       Shard.new(name, qualifier, description, archived_at, id: id),
+        dependents_count:            dependents_count,
+        dev_dependents_count:        dev_dependents_count,
+        transitive_dependents_count: transitive_dependents_count,
+        categories:                  categories,
+        version:                     version,
+        released_at:                 released_at,
+      }
     end
   end
 
   def popular_shards
-    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Time?, Int32, Array(Array(String))?, String, Time}
+    results = connection.query_all <<-SQL % (), as: {Int64, String, String, String?, Time?, Int32, Int32, Int32, Array(Array(String))?, String, Time}
       SELECT
         shards.id, name::text, qualifier::text, shards.description, archived_at,
-        metrics.dependents_count,
+        metrics.dependents_count, metrics.dev_dependents_count, metrics.transitive_dependents_count,
         (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id]),
         releases.version, releases.released_at
       FROM shards
@@ -96,10 +104,18 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      id, name, qualifier, description, archived_at, num_dependencies, categories, version, released_at = result
+      id, name, qualifier, description, archived_at, dependents_count, dev_dependents_count, transitive_dependents_count, categories, version, released_at = result
       categories ||= [] of Array(String)
       categories = categories.map { |(name, slug)| Category.new(name, slug) }
-      {shard: Shard.new(name, qualifier, description, archived_at, id: id), num_dependencies: num_dependencies, categories: categories, version: version, released_at: released_at}
+      {
+        shard:                       Shard.new(name, qualifier, description, archived_at, id: id),
+        dependents_count:            dependents_count,
+        dev_dependents_count:        dev_dependents_count,
+        transitive_dependents_count: transitive_dependents_count,
+        categories:                  categories,
+        version:                     version,
+        released_at:                 released_at,
+      }
     end
   end
 

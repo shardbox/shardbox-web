@@ -37,6 +37,21 @@
   })
   </script>
 
+  <div class="metrics">
+    {% if release.license %}
+      <div class="metric">
+        <span class="metric-label">{{ icon("law") }} License</span>
+        <span class="metric-value">
+          <a href="http://opensource.org/licenses/{{ release.license }}" class="external">{{ release.license }}</a>
+        </span>
+      </div>
+    {% endif %}
+    <div class="metric">
+      <span class="metric-label">{{ icon("crystal") }} Crystal</span>
+      <span class="metric-value">{{ release.crystal }}</span>
+    </div>
+  </div>
+
   {% if release.spec.authors %}
     <div class="container">
       <h3>{{ icon("person") }} Authors</h3>
@@ -54,18 +69,5 @@
     </div>
   {% endif %}
 
-  {% if release.license %}
-    <div class="container">
-      <h3>{{ icon("law") }} License</h3>
-      <a href="http://opensource.org/licenses/{{ release.license }}">{{ release.license }}</a>
-    </div>
-  {% endif %}
-
-  <div class="container">
-    <h3>{{ icon("crystal") }} Crystal</h3>
-    {{ release.crystal }}
-  </div>
-
   {% include "releases/_dependencies.html.j2" %}
 </div>
-

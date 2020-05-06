@@ -16,13 +16,6 @@
     {% endif %}
 
     <div class="shard-infos">
-      <div class="shard-info">
-        {% if show_dependents | default(true) %}
-          <span class="datapoint datapoint--dependencies">{{ data.num_dependencies }} dependents</span>
-        {% elif dev_dependents %}
-          <span class="datapoint datapoint--dependencies">{{ item.num_dependencies }} dev dependents</span>
-        {% endif %}
-      </div>
       <div class="version-info">
         {% if released_at and version %}
           {{ icon("tag") }}
@@ -33,15 +26,6 @@
           {{ icon("tag") }}
           <span class="version">{{ data.version }}</span>
           <span class="created_at">{{ release_date(data.created_at) }}</span>
-        {% endif %}
-      </div>
-      <div class="shard-info">
-        {% if shard.archived %}
-          <span class="datapoint datapoint--archived">Archived {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}</span>
-        {% endif %}
-
-        {% if repo and repo.sync_failed_at %}
-          <span class="datapoint datapoint--sync_failed">Sync failed</span>
         {% endif %}
       </div>
     </div>
@@ -56,6 +40,40 @@
       {% for category in categories %}
         <a href="/categories/{{ category.slug }}" class="category-link">{{ category.name }}</a>
       {% endfor %}
+    </div>
+
+    <div class="metrics">
+      {% if show_dependents | default(data.dependents_count is defined) %}
+        <div class="metric">
+          <span class="metric-label">dependents</span>
+          <span class="metric-value">{{ icon("package-dependents") }} {{ data.dependents_count }}</span>
+        </div>
+      {% endif %}
+      {% if show_transitive_dependents | default(data.transitive_dependents_count is defined) %}
+        <div class="metric">
+          <span class="metric-label">total dependents</span>
+          <span class="metric-value">{{ icon("package-dependents") }} {{ icon("plus") }}  {{ item.transitive_dependents_count }}</span>
+        </div>
+      {% endif %}
+      {% if show_dev_dependents | default(data.dev_dependents_count is defined) %}
+        <div class="metric">
+          <span class="metric-label">dev dependents</span>
+          <span class="metric-value">{{ icon("package-dependents") }} {{ icon("code-square") }} {{ item.dev_dependents_count }}</span>
+        </div>
+      {% endif %}
+      {% if shard.archived %}
+        <div class="metric">
+          <span class="metric-label">Archived</span>
+          <span class="metric-value">{{ icon("time") }} {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}</span>
+        </div>
+      {% endif %}
+
+      {% if repo and repo.sync_failed_at %}
+        <div class="metric">
+          <span class="metric-label">Sync failed</span>
+          <span class="metric-value">{{ time_date(repo.sync_failed_at, title = "Sync failed on {{date}}")}}</span>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endmacro %}
