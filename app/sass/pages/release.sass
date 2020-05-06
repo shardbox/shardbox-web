@@ -273,20 +273,11 @@
   align-items: flex-start
 
 .author
-  display: grid
-  grid-template-columns: 3em 1fr
+  @extend .with-image
+  margin-top: .4em
 
   &_image
-    width: 2.5em
     border-radius: 50%
-    grid-column: 1
-    grid-row: 1 / 3
-    align-self: center
-
-  &_name
-    display: block
-    grid-column: 2
 
   &_mail
     font-size: 90%
-    grid-column: 2
