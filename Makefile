@@ -5,9 +5,9 @@ WORKER_TARGET ::= bin/worker
 BUILD_TARGETS ::= $(BUILD_TARGET) $(WORKER_TARGET)
 
 # The shards command to use
-SHARDS ::= shards
+SHARDS ?= shards
 # The crystal command to use
-CRYSTAL ::= crystal
+CRYSTAL ?= crystal
 
 SRC_SOURCES ::= $(shell find src -name '*.cr' 2>/dev/null)
 LIB_SOURCES ::= $(shell find lib -name '*.cr' 2>/dev/null)

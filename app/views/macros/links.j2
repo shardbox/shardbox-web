@@ -13,3 +13,12 @@
 {% macro shard_name(shard) %}
 {{ shard.name }}{% if shard.qualifier != "" %}<span class="qualifier">~{{ shard.qualifier }}</span>{% endif %}
 {% endmacro %}
+
+{% macro owner_path(owner) %}/owners/{{ owner.resolver }}/{{ owner.slug }}{% endmacro %}
+{% macro owner_ext_url(owner) %}/owners/{{ owner.resolver }}/{{ owner.slug }}{% endmacro %}
+
+{% macro owner_image(owner) %}
+  <img src="https://www.gravatar.com/avatar/{{ owner.email | default('') | gravatar_hash }}?d={{ owner.extra.avatar_url | default('mp') }}" class="owner_image" />
+{% endmacro %}
+
+{% macro nice_url(url) %}{{ url | replace("https://", "") | replace("http://", "") }}{% endmacro %}

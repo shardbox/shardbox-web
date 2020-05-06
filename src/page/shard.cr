@@ -50,6 +50,7 @@ struct Page::Shard
 
     repo = db.find_canonical_repo(shard.id)
     context["repo"] = repo
+    context["repo_owner"] = db.get_owner?(repo.ref)
     context["source_url"] = repo.ref.base_url_source(release.revision_info.commit.sha)
     context["metrics"] = db.get_current_metrics(shard.id)
     context["mirrors"] = db.find_mirror_repos(shard.id)

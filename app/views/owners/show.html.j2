@@ -1,0 +1,69 @@
+{% extends "layout.html.j2" %}
+{% import "macros/date.j2" %}
+{% import "macros/links.j2" %}
+{% import "macros/shard-card.j2" %}
+
+{% block page_title %}{{ owner.name | default(owner.slug) }} on Shardbox{% endblock %}
+{% block main %}
+  <header>
+    <div class="breadcrumbs">
+      <a href="/owners" class="breadcrumb">Owners</a>
+    </div>
+    <hgroup class="owner-title with-image">
+      {{ owner_image(owner) }}
+      <h1>
+        {{ owner.name | default(owner.slug) }}
+      </h1>
+      <h2>
+        {% if owner.resolver == "github" %}
+          <a href="https://github.com/{{ owner.slug }}" class="external">
+            @{{ owner.slug }}
+          </a>
+        {% else %}
+          @{{ owner.slug }}
+        {% endif %}
+      </h2>
+    </hgroup>
+
+    {% if owner.description %}
+      <p class="description">{{ owner.description | markdown }}</p>
+    {% endif %}
+
+    {% if owner.website_url %}
+      <p>
+        <a href="{{ owner.website_url }}" class="external">{{ icon("globe") }} {{ nice_url(owner.website_url) }}</a>
+      </p>
+    {% endif %}
+  </header>
+
+  {% if metrics %}
+    <div class="metrics metrics--owner">
+      <span class="metric">
+        <span class="metric-label">shards</span>
+        <span class="metric-value">{{ icon("package") }} {{ metrics.shards_count }}</span>
+      </span>
+      <span class="metric">
+        <span class="metric-label">direct dependents</span>
+        <span class="metric-value">{{ icon("package-dependents") }} {{ metrics.dependents_count}}</span>
+      </span>
+      <span class="metric">
+        <span class="metric-label">total dependents</span>
+        <span class="metric-value">{{ icon("package-dependents") }} {{ icon("plus") }} {{ metrics.transitive_dependents_count }}</span>
+      </span>
+      <span class="metric">
+        <span class="metric-label">dev dependents</span>
+        <span class="metric-value">{{ icon("package-dependents") }} {{ icon("code-square") }} {{ metrics.dev_dependents_count }}</span>
+      </span>
+    </div>
+  {% endif %}
+
+  <h2>Shards <span class="count">{{ shards | length }}</span></h2>
+
+  <div class="shards-list">
+    {% for item in shards %}
+      {{ shard_card(item.shard, item, item.categories,
+        version = item.version,
+        released_at = item.released_at) }}
+    {% endfor %}
+  </div>
+{% endblock %}

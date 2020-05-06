@@ -119,6 +119,95 @@ class ShardsDB
     end
   end
 
+  def shards_owned_by(owner_id : Int64)
+    results = connection.query_all <<-SQL, owner_id, as: {Int64, String, String, String?, Time?, Int32, Int32, Int32, Array(Array(String))?, String, Time}
+      SELECT
+        shards.id, name::text, qualifier::text, shards.description, archived_at,
+        metrics.dependents_count, metrics.dev_dependents_count, metrics.transitive_dependents_count,
+        (SELECT array_agg(ARRAY[categories.slug::text, categories.name::text]) FROM categories WHERE shards.categories @> ARRAY[categories.id]),
+        releases.version, releases.released_at
+      FROM shards
+      JOIN repos
+        ON repos.shard_id = shards.id
+        AND repos.role = 'canonical'
+      JOIN releases
+        ON releases.shard_id = shards.id AND latest
+      JOIN shard_metrics_current AS metrics
+        ON metrics.shard_id = shards.id
+      WHERE owner_id = $1
+      ORDER BY popularity DESC
+      SQL
+
+    results.map do |result|
+      id, name, qualifier, description, archived_at, dependents_count, dev_dependents_count, transitive_dependents_count, categories, version, released_at = result
+      categories ||= [] of Array(String)
+      categories = categories.map { |(name, slug)| Category.new(name, slug) }
+      {
+        shard:                       Shard.new(name, qualifier, description, archived_at, id: id),
+        dependents_count:            dependents_count,
+        dev_dependents_count:        dev_dependents_count,
+        transitive_dependents_count: transitive_dependents_count,
+        version:                     version,
+        released_at:                 released_at,
+        categories:                  categories,
+      }
+    end
+  end
+
+  def get_owner_metrics(owner_id : Int64)
+    result = connection.query_one? <<-SQL, owner_id, as: {Int32, Int32, Int32, Int32, Int32, Int32, Int32, Float32}
+      SELECT
+        shards_count,
+        dependents_count,
+        transitive_dependents_count,
+        dev_dependents_count,
+        transitive_dependencies_count,
+        dev_dependencies_count,
+        dependencies_count,
+        popularity
+      FROM
+        owners
+      WHERE id = $1
+        AND shards_count IS NOT NULL
+      SQL
+
+    return unless result
+    Repo::Owner::Metrics.new(*result, nil)
+  end
+
+  def get_owners
+    results = connection.query_all <<-SQL, as: {String, String, String?, String?, JSON::Any, Int64, Int32, Int32, Int32, Int32, Int32, Int32, Int32, Float32}
+      SELECT
+        owners.resolver::text,
+        owners.slug::text,
+        owners.name,
+        owners.description,
+        owners.extra,
+        owners.id,
+        shards_count,
+        dependents_count,
+        transitive_dependents_count,
+        dev_dependents_count,
+        transitive_dependencies_count,
+        dev_dependencies_count,
+        dependencies_count,
+        popularity
+      FROM owners
+      WHERE popularity IS NOT NULL
+      ORDER BY popularity DESC
+      LIMIT 100
+      SQL
+
+    results.map do |result|
+      resolver, slug, name, description, extra, id, shards_count, dependents_count, transitive_dependents_count, dev_dependents_count, transitive_dependencies_count, dev_dependencies_count, dependencies_count, popularity = result
+
+      {
+        owner:   Repo::Owner.new(resolver, slug, name, description, extra.as_h, id: id),
+        metrics: Repo::Owner::Metrics.new(shards_count, dependents_count, transitive_dependents_count, dev_dependents_count, transitive_dependencies_count, dev_dependencies_count, dependencies_count, popularity),
+      }
+    end
+  end
+
   # SHARD
 
   def find_shard?(name : String, qualifier : String)

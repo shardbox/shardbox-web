@@ -1,0 +1,37 @@
+{% extends "layout.html.j2" %}
+{% import "macros/links.j2" %}
+
+{% block page_title %}Owners on Shardbox{% endblock %}
+{% block main %}
+  <header>
+    <h1>{{ icon("people") }} Owners</h1>
+  </header>
+
+  <div class="categories-list">
+    {% for item in owners %}
+      <div class="owner-item">
+        <div class="owner with-image">
+          {{ owner_image(item.owner) }}
+          <a href="/owners/{{ item.owner.resolver }}/{{ item.owner.slug }}">{{ item.owner.name | default(item.owner.slug) }}</a>
+          @{{ item.owner.slug }}
+        </div>
+        {% if item.metrics %}
+          <div class="metrics">
+            <span class="metric">
+              <span class="metric-label">shards</span>
+              <span class="metric-value">{{ icon("package") }} {{ item.metrics.shards_count }}</span>
+            </span>
+            <span class="metric">
+              <span class="metric-label">direct dependents</span>
+              <span class="metric-value">{{ icon("package-dependents") }} {{ item.metrics.dependents_count}}</span>
+            </span>
+            <span class="metric">
+              <span class="metric-label">total dependents</span>
+              <span class="metric-value">{{ icon("package-dependents") }} {{ icon("plus") }} {{ item.metrics.transitive_dependents_count }}</span>
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

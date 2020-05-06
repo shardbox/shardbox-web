@@ -4,8 +4,8 @@
   border-bottom: .2rem solid #333
   background: #fff
   display: grid
-  grid-template-columns: 1fr min-content
-  grid-template-areas: "categories repo-info" "name repo-info" "description description" "shard-info links"
+  grid-template-columns: auto max-content
+  grid-template-areas: "categories repo-pane" "name repo-pane" "description repo-pane" "shard-info links"
 
   > .shard-title
     grid-area: name
@@ -23,9 +23,12 @@
     grid-area: categories
     margin-bottom: .7rem
 
-  > .repo-info
-    grid-area: repo-info
-    text-align: right
+  > .repo-pane
+    grid-area: repo-pane
+    display: flex
+    align-items: flex-end
+    flex-direction: column
+    max-width: 20em
 
   > .shard-info
     grid-area: shard-info
@@ -41,6 +44,26 @@
     > a
       margin: 0 .1em
       white-space: nowrap
+
+.repo-info
+  display: flex
+  align-items: flex-end
+  flex-direction: column
+
+.owner-link
+  display: inline-flex
+  margin-top: 1em
+  align-items: center
+
+  > .owner_image
+    width: 1.5em
+    border-radius: 50%
+    margin-right: .4em
+    flex-shrink: 0
+
+  > .owner_name
+    white-space: nowrap
+
 
 .release-wrapper
   display: flex

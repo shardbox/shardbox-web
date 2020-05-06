@@ -36,37 +36,46 @@
     </span>
   </div>
 
-  <div class="repo-info">
-    {{ repo_link(repo.ref) }}
+  <div class="repo-pane">
+    <div class="repo-info">
+      {{ repo_link(repo.ref) }}
 
-    {% set latest_activity = repo.metadata.pushed_at %}
-    {% if latest_activity %}
-    <div class="repo-activity">
-      {{ time_date(latest_activity, title="Latest activity on {{date}}") }}
+      {% set latest_activity = repo.metadata.pushed_at %}
+      {% if latest_activity %}
+      <div class="repo-activity">
+        {{ time_date(latest_activity, title="Latest activity on {{date}}") }}
+      </div>
+      {% endif %}
+      <div class="community-stats">
+        {% set stargazers_count = repo.metadata.stargazers_count %}
+        {% if stargazers_count %}
+        <span title="Stars">
+          {{ stargazers_count }} {{ icon("star") }}
+        </span>
+        {% endif %}
+
+        {% set forks_count = repo.metadata.forks_count %}
+        {% if forks_count %}
+        <span title="Forks">
+          {{ forks_count }} {{ icon("repo-forked" ) }}
+        </span>
+        {% endif %}
+
+        {% set open_issues_count = repo.metadata.open_issues_count %}
+        {% if open_issues_count %}
+        <span title="Open Issues">
+          {{ open_issues_count }} {{ icon("issue") }}
+        </span>
+        {% endif %}
+      </div>
     </div>
+
+    {% if repo_owner %}
+      <a href="{{ owner_path(repo_owner) }}" class="owner-link">
+        {{ owner_image(repo_owner) }}
+        <span class="owner_name">{{ repo_owner.name | default(repo_owner.slug) }}</span>
+      </a>
     {% endif %}
-    <div class="community-stats">
-      {% set stargazers_count = repo.metadata.stargazers_count %}
-      {% if stargazers_count %}
-      <span title="Stars">
-        {{ stargazers_count }} {{ icon("star") }}
-      </span>
-      {% endif %}
-
-      {% set forks_count = repo.metadata.forks_count %}
-      {% if forks_count %}
-      <span title="Forks">
-        {{ forks_count }} {{ icon("repo-forked" ) }}
-      </span>
-      {% endif %}
-
-      {% set open_issues_count = repo.metadata.open_issues_count %}
-      {% if open_issues_count %}
-      <span title="Open Issues">
-        {{ open_issues_count }} {{ icon("issue") }}
-      </span>
-      {% endif %}
-    </div>
   </div>
 
   <div class="links">

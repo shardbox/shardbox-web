@@ -106,6 +106,16 @@ struct Repo::Metadata
 end
 
 @[Crinja::Attributes]
+class Repo::Owner
+  include Crinja::Object::Auto
+end
+
+@[Crinja::Attributes]
+struct Repo::Owner::Metrics
+  include Crinja::Object::Auto
+end
+
+@[Crinja::Attributes]
 struct ShardsDB::Stats
   include Crinja::Object::Auto
 end

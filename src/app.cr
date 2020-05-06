@@ -144,6 +144,30 @@ get "/shards/:name/releases/:version/dependencies" do |context|
   end
 end
 
+get "/owners/" do |context|
+  ShardsDB.connect do |db|
+    template = crinja.get_template("owners/index.html.j2")
+    template.render({
+      "owners" => db.get_owners,
+    })
+  end
+end
+
+get "/owners/:resolver/:slug" do |context|
+  ShardsDB.connect do |db|
+    page = Page::Owner.new(db, context)
+    case page
+    when String
+      halt context, 404, page
+    when Nil
+      next
+    when Page
+      page.render(context.response)
+      nil
+    end
+  end
+end
+
 get "/style.css" do |context|
   context.response.headers["Content-Type"] = "text/css"
   Sass.compile_file("app/sass/main.sass", is_indented_syntax_src: true, include_path: "app/sass/")
