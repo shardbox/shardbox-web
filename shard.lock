@@ -74,7 +74,7 @@ shards:
 
   shardbox-core:
     github: shardbox/shardbox-core
-    commit: 386d52401ed3eb680bc095df8e5b1d32124b201b
+    commit: 40de6080e8cf0323216be0f9d6d2bca7b95a0225
 
   shards:
     github: crystal-lang/shards
