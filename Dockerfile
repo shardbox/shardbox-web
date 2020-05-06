@@ -24,6 +24,8 @@ RUN mkdir -p bin && shards build app \
   --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a' \
   1>&2
 
+RUN bin/app assets:precompile
+
 FROM alpine:3.11 AS runtime
 RUN apk add --no-cache --update-cache  \
 # bash needed for dokku enter

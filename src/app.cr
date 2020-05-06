@@ -1,7 +1,6 @@
 require "kemal"
 require "crinja"
 require "baked_file_system"
-require "sass"
 require "humanize_time"
 require "shardbox-core/db"
 require "shardbox-core/repo"
@@ -11,6 +10,7 @@ require "./crinja_models"
 require "./crinja_lib"
 require "./page"
 require "./page/*"
+require "./assets"
 
 def crinja
   Page.crinja
@@ -166,11 +166,6 @@ get "/owners/:resolver/:slug" do |context|
       nil
     end
   end
-end
-
-get "/style.css" do |context|
-  context.response.headers["Content-Type"] = "text/css"
-  Sass.compile_file("app/sass/main.sass", is_indented_syntax_src: true, include_path: "app/sass/")
 end
 
 get "/deploy_status" do

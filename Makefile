@@ -51,6 +51,10 @@ lib: shard.lock
 shard.lock: shard.yml
 	$(SHARDS) update
 
+.PHONY: public/assets
+public/assets: $(BUILD_TARGET)
+	$(BUILD_TARGET) assets:precompile
+
 .PHONY: DATABASE_URL
 DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
@@ -63,6 +67,7 @@ TEST_DATABASE_URL:
 clean: ## Remove application binary
 clean:
 	@rm -rf $(BUILD_TARGETS)
+	@rm -rf public/assets/css/style.css
 
 .PHONY: help
 help: ## Show this help

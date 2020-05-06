@@ -5,3 +5,4 @@
 *.dwarf
 .env
 /catalog/*
+/public/assets/css/style.css
