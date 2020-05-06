@@ -35,7 +35,7 @@ a
     padding: .3em .5em
     display: inline-block
     border: 2px solid transparent
-    border-radius: 3px
+    border-radius: .3em
     background-color: var(--color-light)
     color: #fff
     font-weight: 100
@@ -76,6 +76,10 @@ a
     --color-link: var(--color-light-hover)
     --color-link-hover: var(--color-light-link)
     font-weight: 300
+
+  &.external
+    --color-link: var(--color-light-link)
+    --color-link-hover: var(--color-light-hover)
 
 h1
   font-weight: 500
@@ -174,7 +178,7 @@ h3
   white-space: nowrap
   font-weight: 500
 
-  > .qualifier
+  .qualifier
     font-weight: 300
     color: var(--color-light)
     font-size: 95%
