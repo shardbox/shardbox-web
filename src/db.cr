@@ -155,7 +155,7 @@ class ShardsDB
   end
 
   def get_owner_metrics(owner_id : Int64)
-    result = connection.query_one? <<-SQL, owner_id, as: {Int32, Int32, Int32, Int32, Int32, Int32, Int32, Float32}
+    result = connection.query_one? <<-SQL, owner_id, as: {Int32, Int32?, Int32?, Int32?, Int32?, Int32?, Int32?, Float32}
       SELECT
         shards_count,
         dependents_count,
