@@ -1,7 +1,7 @@
 <div class="infobox">
   <pre class="shards-spec"><span class="token key atrule">{{ shard.name }}</span>:
   <span class="token key atrule">{{ repo.ref.resolver }}</span>: {{ repo.ref.url }}
-  <span class="token key atrule">version</span>: ~> {{ release.version }}</pre>
+  {% if release.version != "HEAD" %}<span class="token key atrule">version</span>: ~> {{ release.version }}{% endif %}</pre>
 
   <script>
   shardsSpec = document.querySelectorAll(".shards-spec")
