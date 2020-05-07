@@ -87,6 +87,12 @@ struct Page::Shard
       end
     end
 
+    if merged_with = shard.merged_with
+      main_shard = db.get_shard(merged_with)
+      context.redirect "/shards/#{main_shard.display_name}", 301
+      return
+    end
+
     releases = db.all_releases(shard.id)
 
     version = context.params.url["version"]?

@@ -211,8 +211,8 @@ class ShardsDB
   # SHARD
 
   def find_shard?(name : String, qualifier : String)
-    result = connection.query_one? <<-SQL, name, qualifier, as: {Int64, String, String, String?, Time?}
-      SELECT id, name::text, qualifier::text, description, archived_at
+    result = connection.query_one? <<-SQL, name, qualifier, as: {Int64, String, String, String?, Time?, Int64?}
+      SELECT id, name::text, qualifier::text, description, archived_at, merged_with
       FROM shards
       WHERE
         name = $1 AND qualifier = $2;
@@ -220,8 +220,8 @@ class ShardsDB
 
     return unless result
 
-    id, name, qualifier, description, archived_at = result
-    Shard.new(name, qualifier, description, archived_at, id: id)
+    id, name, qualifier, description, archived_at, merged_with = result
+    Shard.new(name, qualifier, description, archived_at, merged_with, id: id)
   end
 
   def find_homonymous_shards(name : String)
