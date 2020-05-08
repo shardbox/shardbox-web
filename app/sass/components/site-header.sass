@@ -1,15 +1,20 @@
 .site-header
+  margin: 0
   background: #333
   color: #ddd
+
+  @media(min-width: 1024px)
+    padding: 0 $main-margin / 3
+  @media(min-width: 1200px)
+    padding: 0 2rem
+
+.site-header_items
+  @extend %max-width
+  margin: 0 auto
   display: flex
   flex-direction: row
   align-items: center
-  margin: 0
-  border: 0 solid transparent
   min-height: 4rem
-
-  @media(min-width: 1200px)
-    border-width: 0 2rem
 
   a
     text-decoration: none
