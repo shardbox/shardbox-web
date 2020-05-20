@@ -1,6 +1,6 @@
 .metrics
   display: grid
-  grid-template-rows: 1fr 1fr
+  grid-template-rows: minmax(1.5em, auto) minmax(1.5em, auto)
   grid-template-columns: auto
   padding: .5em
 
@@ -19,9 +19,15 @@
       font-weight: 400
       color: var(--color-light)
       font-size: 110%
+      white-space: nowrap
+
+      > time
+        font-size: 90%
 
     > .metric-label, > .metric-value
-      padding: 0 .4em
+      padding: 0.2em .4em
+      align-self: stretch
+      vertical-align: middle
 
     + .metric
       > .metric-label, > .metric-value
