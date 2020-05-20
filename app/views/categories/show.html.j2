@@ -29,7 +29,7 @@
         released_at = result.release.released_at,
         version = result.release.version,
         show_topics = true,
-        show_dependents = false, show_description = true, show_created_at = false) }}
+        show_description = true, show_created_at = false) }}
       {% if uncategorized -%}
         <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}
   description: {{ result.release.description | default(result.repo.metadata.description) }}</div>

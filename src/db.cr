@@ -7,6 +7,8 @@ record Activity,
   id : Int64? = nil do
 end
 
+require "shardbox-core/db"
+
 class ShardsDB
   # self.statement_timeout = "30s"
 
@@ -415,7 +417,10 @@ class ShardsDB
     Category.new(slug, name, description, entries_count, id: id)
   end
 
-  record CategoryResult, shard : Shard, repo : Repo, release : Release
+  record CategoryResult, shard : Shard, repo : Repo, release : Release,
+    dependents_count : Int32?,
+    dev_dependents_count : Int32?,
+    transitive_dependents_count : Int32?
 
   def shards_in_category_with_releases(category_id : Int64?)
     if category_id
@@ -426,10 +431,11 @@ class ShardsDB
       where = "categories = '{}'::bigint[]"
     end
 
-    results = connection.query_all <<-SQL, args: args, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Time?, Time?, Int64}
+    results = connection.query_all <<-SQL, args: args, as: {Int64, String, String, String?, Time?, String, Time, Int32?, Int32?, Int32?, String, String, String, Time?, Time?, Int64}
       SELECT
         shards.id, name::text, qualifier::text, shards.description, archived_at,
         releases.version, releases.released_at,
+        metrics.dependents_count, metrics.dev_dependents_count, metrics.transitive_dependents_count,
         repos.resolver::text, repos.url::text, repos.metadata::text, repos.synced_at, repos.sync_failed_at, repos.id
       FROM
         shards
@@ -446,7 +452,7 @@ class ShardsDB
       SQL
 
     results.map do |result|
-      shard_id, name, qualifier, description, archived_at, version, released_at, resolver, url, metadata, synced_at, sync_failed_at, repo_id = result
+      shard_id, name, qualifier, description, archived_at, version, released_at, dependents_count, dev_dependents_count, transitive_dependents_count, resolver, url, metadata, synced_at, sync_failed_at, repo_id = result
       CategoryResult.new(
         shard: Shard.new(name, qualifier, description, archived_at, id: shard_id),
         repo: Repo.new(resolver, url, shard_id,
@@ -455,6 +461,9 @@ class ShardsDB
           sync_failed_at: sync_failed_at,
           id: repo_id),
         release: Release.new(version, released_at),
+        dependents_count: dependents_count,
+        dev_dependents_count: dev_dependents_count,
+        transitive_dependents_count: transitive_dependents_count,
       )
     end
   end

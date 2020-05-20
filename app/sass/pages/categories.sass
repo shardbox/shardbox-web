@@ -50,7 +50,10 @@
     > .shard-card
       display: grid
       grid-template-columns: 1fr min-content
-      grid-template-areas: "name repo-info" "description description" "shard-info shard-info"
+      grid-template-areas: "name repo-info" "description description" "shard-info shard-info" "metrics metrics"
+
+      > .metrics
+        margin-top: .5rem
 
     > .shards-spec
 
