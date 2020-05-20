@@ -13,7 +13,7 @@
         <div class="owner with-image">
           {{ owner_image(item.owner) }}
           <a href="/owners/{{ item.owner.resolver }}/{{ item.owner.slug }}">{{ item.owner.name | default(item.owner.slug) }}</a>
-          @{{ item.owner.slug }}
+          <span class="owner_slug">@{{ item.owner.slug }}</span>
         </div>
         {% if item.metrics %}
           <div class="metrics">

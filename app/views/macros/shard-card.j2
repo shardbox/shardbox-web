@@ -30,7 +30,12 @@
       </div>
     </div>
 
-    {% if repo_ref %}
+    {% if repo_owner %}
+      <a href="{{ owner_path(repo_owner) }}" class="owner-link">
+        {{ owner_image(repo_owner) }}
+        <span class="owner_name">{{ repo_owner.name | default(repo_owner.slug) }}</span>
+      </a>
+    {% elif repo_ref %}
     <div class="repo-info">
       <a href="{{ repo_ref.to_uri }}" class="repo-ref repo-ref--{{ repo_ref.resolver }}">{{ icon(repo_ref.resolver) }} {{ repo_ref.url }}</a>
     </div>
