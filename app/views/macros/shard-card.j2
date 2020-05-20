@@ -87,7 +87,7 @@
   {% if topics %}
     <span class="topics">
       {% for topic in topics if topic != 'crystal' and topic != 'crystal-lang' and topic != 'crystal-language' %}
-        <a href="/search/?q={{ topic }}" class="topic">{{ topic }}</a>
+        <a href="/search/?q=%23{{ topic }}" class="topic">{{ topic }}</a>
       {% endfor %}
     </span>
   {% endif %}
