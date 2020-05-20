@@ -33,7 +33,7 @@
 </div>
 
 <div class="container">
-  <h3>{{ icon("package-dependencies") }}{{ icon("code-square") }} Development Dependencies <span class="count">{{ dev_dependencies | length }}</span></h3>
+  <h3>{{ icon("package-dependencies") }}{{ icon("code") }} Development Dependencies <span class="count">{{ dev_dependencies | length }}</span></h3>
   <ul class="dependencies dependencies--development dependencies--infobox">
   {% for dep in dev_dependencies %}
     <li>

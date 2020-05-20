@@ -52,19 +52,19 @@
       {% if show_transitive_dependents | default(data.transitive_dependents_count is defined) %}
         <div class="metric">
           <span class="metric-label">total dependents</span>
-          <span class="metric-value">{{ icon("package-dependents") }} {{ icon("plus") }}  {{ item.transitive_dependents_count }}</span>
+          <span class="metric-value">{{ icon("package-dependents") }}{{ icon("plus") }}  {{ data.transitive_dependents_count }}</span>
         </div>
       {% endif %}
       {% if show_dev_dependents | default(data.dev_dependents_count is defined) %}
         <div class="metric">
           <span class="metric-label">dev dependents</span>
-          <span class="metric-value">{{ icon("package-dependents") }} {{ icon("code-square") }} {{ item.dev_dependents_count }}</span>
+          <span class="metric-value">{{ icon("package-dependents") }}{{ icon("code") }} {{ data.dev_dependents_count }}</span>
         </div>
       {% endif %}
       {% if shard.archived %}
         <div class="metric">
           <span class="metric-label">Archived</span>
-          <span class="metric-value">{{ icon("time") }} {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}</span>
+          <span class="metric-value">{{ time_date(shard.archived_at, title = "Archived on {{date}}")}}</span>
         </div>
       {% endif %}
 
