@@ -4,7 +4,7 @@
 
     {% if show_description | default(true) and shard.description %}
       <div class="description">
-        {{ shard.description | markdown }}
+        {{ shard.description | markdown_inline }}
         {% if show_topics %}
           {{ list_topics(repo.metadata.topics) }}
         {% endif %}

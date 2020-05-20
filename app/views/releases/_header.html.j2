@@ -8,7 +8,7 @@
   {% set description = shard.description | default(release.description) | default(repo.metadata.description) %}
   {% if description %}
     <div class="shard-description description">
-      {{description | markdown}}
+      {{description | markdown_inline }}
 
       {{ list_topics(repo.metadata.topics) }}
     </div>

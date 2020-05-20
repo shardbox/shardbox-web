@@ -32,7 +32,7 @@ fooo
         {% endif %}
 
         {% if dep.shard.description %}
-          <span class="shard-description">{{ dep.shard.description | markdown }}</span>
+          <span class="shard-description">{{ dep.shard.description | markdown_inline }}</span>
         {% endif %}
 
         <pre>{{ dep.dependency.spec }}</pre>
@@ -70,7 +70,7 @@ fooo
         {% endif %}
 
         {% if dep.shard.description %}
-          <span class="shard-description">{{ dep.shard.description | markdown }}</span>
+          <span class="shard-description">{{ dep.shard.description | markdown_inline }}</span>
         {% endif %}
 
         <pre>{{ dep.dependency.spec }}</pre>
@@ -96,7 +96,7 @@ fooo
           <span class="recursive_dependents">({{item.dependents_count}} dependents)</span>
         {% endif %}
         {% if item.shard.description %}
-          <span class="shard-description">{{ item.shard.description | markdown }}</span>
+          <span class="shard-description">{{ item.shard.description | markdown_inline }}</span>
         {% endif %}
       </li>
     {% else %}

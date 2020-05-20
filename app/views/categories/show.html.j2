@@ -15,7 +15,7 @@
   </header>
 
   {% if category.description %}
-    <p>{{ category.description | markdown }}</p>
+    <p>{{ category.description | markdown_inline }}</p>
   {% endif %}
 
   <h2>{{ entries_count }} shards</h2>

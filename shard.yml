@@ -30,3 +30,5 @@ dependencies:
   markd:
     github: icyleaf/markd
     branch: master
+  sanitize:
+    github: straight-shoota/sanitize

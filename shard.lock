@@ -68,6 +68,10 @@ shards:
     github: Sija/raven.cr
     version: 1.6.0
 
+  sanitize:
+    github: straight-shoota/sanitize
+    commit: ea4f0256390a522438e22cf8842c19f3f365860c
+
   sass:
     github: straight-shoota/sass.cr
     version: 0.5.0

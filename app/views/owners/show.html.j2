@@ -26,7 +26,7 @@
     </hgroup>
 
     {% if owner.description %}
-      <p class="description">{{ owner.description | markdown }}</p>
+      <p class="description">{{ owner.description | markdown_inline }}</p>
     {% endif %}
 
     {% if owner.website_url %}
