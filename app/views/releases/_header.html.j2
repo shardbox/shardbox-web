@@ -97,32 +97,34 @@
   </div>
 </header>
 
-{% if shard.archived %}
-  <div class="shard-notice shard-notice__archived">
-    <p class="large">Archived shard</p>
-    <p>
-      This shard has been archived {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}.
-      It is no longer maintained or has been discontinued for other reasons.
-    </p>
-  </div>
-{% endif %}
+<div class="release-notices">
+  {% if shard.archived %}
+    <div class="shard-notice shard-notice__archived">
+      <p class="large">Archived shard</p>
+      <p>
+        This shard has been archived {{ time_date(shard.archived_at, title = "Archived on {{date}}")}}.
+        It is no longer maintained or has been discontinued for other reasons.
+      </p>
+    </div>
+  {% endif %}
 
-{% if repo.sync_failed_at %}
-  <div class="shard-notice shard-notice__sync_failed_at">
-    <p class="large">
-      This repo seems to be {% if repo.synced_at %}no longer{% else %}not{% endif %} available at {{ repo_link(repo.ref) }}.
-    </p>
+  {% if repo.sync_failed_at %}
+    <div class="shard-notice shard-notice__sync_failed_at">
+      <p class="large">
+        This repo seems to be {% if repo.synced_at %}no longer{% else %}not{% endif %} available at {{ repo_link(repo.ref) }}.
+      </p>
 
-    <p>
-      {% if repo.synced_at %}
-        Git synchronization failed {{ time_date(repo.sync_failed_at, title = "Synchronization failed on {{date}}") }}.
-        Last successful sync was {{ time_date(repo.synced_at, title = "Last successful sync on {{date}}") }}.
-      {% else %}
-        This repo could never be reached at the given location.
-        First unsuccessful sync was {{ time_date(repo.sync_failed_at, title = "Synchronization failed on {{date}}") }}.
-      {% endif %}
-    </p>
+      <p>
+        {% if repo.synced_at %}
+          Git synchronization failed {{ time_date(repo.sync_failed_at, title = "Synchronization failed on {{date}}") }}.
+          Last successful sync was {{ time_date(repo.synced_at, title = "Last successful sync on {{date}}") }}.
+        {% else %}
+          This repo could never be reached at the given location.
+          First unsuccessful sync was {{ time_date(repo.sync_failed_at, title = "Synchronization failed on {{date}}") }}.
+        {% endif %}
+      </p>
 
-    <a class="btn help-cta" href="/contribute">Help find it again!</a> &hellip; or have it archived.
-  </div>
-{% endif %}
+      <a class="btn help-cta" href="/contribute">Help find it again!</a> &hellip; or have it archived.
+    </div>
+  {% endif %}
+</div>
