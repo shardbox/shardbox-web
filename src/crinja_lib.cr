@@ -30,7 +30,6 @@ Crinja.filter({base_url: nil}, "markdown") do
 end
 
 Crinja.filter({repo_ref: Crinja::UNDEFINED, revision: nil}, "markdown_repo_content") do
-
   repo_ref = arguments["repo_ref"].raw.as(Repo::Ref)
   refname = arguments["revision"].as_s?
 
@@ -51,6 +50,7 @@ class ReadmeSanitizer < Sanitize::Policy::HTMLSanitizer
       src_sanitizer = Sanitize::URISanitizer.new
       src_sanitizer.base_url = src_url
       instance.src_uri_sanitizer = src_sanitizer
+      instance.valid_classes << /language-.+/
     end
   end
 
