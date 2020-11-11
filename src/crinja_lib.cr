@@ -74,6 +74,6 @@ class ReadmeSanitizer < Sanitize::Policy::HTMLSanitizer
 end
 
 Crinja.filter("gravatar_hash") do
-  mail = target.as_s!
+  mail = target.as_s
   Digest::MD5.hexdigest(mail.strip.downcase)
 end

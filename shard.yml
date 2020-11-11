@@ -10,17 +10,19 @@ targets:
   worker:
     main: lib/shardbox-core/src/worker.cr
 
-crystal: 0.32.1
+crystal: ">= 0.35.1"
 
 license: MIT
 
 dependencies:
   shardbox-core:
     github: shardbox/shardbox-core
+    branch: update
   humanize_time:
     github: mamantoha/humanize_time
   kemal:
     github: kemalcr/kemal
+    branch: master
   crinja:
     github: straight-shoota/crinja
   baked_file_system:
