@@ -34,19 +34,11 @@
   margin-top: 3rem
 
 .category-entries
-  display: flex
-  flex-wrap: wrap
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(25em, 1fr))
+  grid-gap: 1rem
 
   > .category-entry
-    margin-bottom: .5rem
-
-    @media(min-width: 1200px)
-      width: 50%
-      padding: .6rem
-    @media(max-width: 1200px)
-      width: 100%
-      margin-bottom: .6rem
-
     > .shard-card
       display: grid
       grid-template-columns: 1fr min-content
