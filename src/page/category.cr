@@ -2,14 +2,13 @@
 struct Page::Category
   include Page
 
-  getter db : ShardsDB
   getter category : ::Category
-  getter entries : Array(ShardsDB::CategoryResult)
+  getter entries : Array(::Shard)
   getter? uncategorized : Bool
 
-  def initialize(@db, @category)
+  def initialize(@category)
     @uncategorized = category.slug == "Uncategorized"
-    @entries = @db.shards_in_category_with_releases(uncategorized? ? nil : category.id)
+    @entries = @category.shards.with_basic_info.to_a(fetch_columns: true)
   end
 
   private def initialize_context(context)
@@ -24,12 +23,12 @@ struct Page::Category
   end
 
   private def initialize_context_uncategorized(context)
-    context["entries_count"] = @db.uncategorized_count
-    context["homonymous_shards"] = homonymous_shards
+    context["entries_count"] = entries.size
+    #context["homonymous_shards"] = homonymous_shards
   end
 
   private def homonymous_shards
-    db.find_homonymous_shards(entries.map(&.shard.name))
+    #db.find_homonymous_shards(entries.map(&.shard.name))
   end
 
   def render(io)

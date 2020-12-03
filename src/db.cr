@@ -36,7 +36,8 @@ class ShardsDB
   def new_shards
     results = connection.query_all <<-SQL, as: {Int64, String, String, String?, Time?, String, Time, String, String}
       WITH newest_shards AS (
-        SELECT shard_id, MIN(released_at) AS released_at FROM releases WHERE version <> 'HEAD' GROUP BY shard_id ORDER BY MIN(released_at) DESC LIMIT 10
+        SELECT shard_id, MIN(released_at) AS released_at FROM releases
+        WHERE version <> 'HEAD' GROUP BY shard_id ORDER BY MIN(released_at) DESC LIMIT 10
       )
       SELECT
         shards.id, name::text, qualifier::text, shards.description, archived_at,

@@ -34,3 +34,8 @@ dependencies:
     branch: master
   sanitize:
     github: straight-shoota/sanitize
+  clear:
+    github: anykeyh/clear
+    branch: master
+  memory_cache:
+    github: kostya/memory_cache

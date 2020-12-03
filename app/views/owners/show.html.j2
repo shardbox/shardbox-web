@@ -60,10 +60,10 @@
   <h2>Shards <span class="count">{{ shards | length }}</span></h2>
 
   <div class="shards-list">
-    {% for item in shards %}
-      {{ shard_card(item.shard, item, item.categories,
-        version = item.version,
-        released_at = item.released_at) }}
+    {% for shard in shards %}
+      {{ shard_card(shard, shard, shard.categories,
+        version = shard.version,
+        released_at = shard.released_at) }}
     {% endfor %}
   </div>
 {% endblock %}

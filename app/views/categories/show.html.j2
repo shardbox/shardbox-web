@@ -21,23 +21,23 @@
   <h2>{{ entries_count }} shards</h2>
 
   <div class="category-entries">
-  {% for result in shards %}
+  {% for shard in shards %}
     <div class="category-entry">
-      {{ shard_card(result.shard, result, result.categories,
-        repo_ref = result.repo.ref,
-        repo = result.repo,
-        released_at = result.release.released_at,
-        version = result.release.version,
+      {{ shard_card(shard, shard, shard.categories,
+        repo_ref = shard.canonical_repo.ref,
+        repo = shard.canonical_repo,
+        released_at = shard.released_at,
+        version = shard.version,
         show_topics = true,
         show_description = true, show_created_at = false) }}
       {% if uncategorized -%}
-        <div class="shards-spec">- {{ result.repo.ref.resolver }}: {{ result.repo.ref.url }}
-  description: {{ result.release.description | default(result.repo.metadata.description) }}</div>
-        {% set homonymous = homonymous_shards[result.shard.name] %}
+        <div class="shards-spec">- {{ shard.canonical_repo.ref.resolver }}: {{ shard.canonical_repo.ref.url }}
+  description: {{ shard.description | default(shard.canonical_repo.metadata.description) }}</div>
+        {% set homonymous = homonymous_shards[shard.name] %}
         {% if homonymous and homonymous | length > 1 %}
           <div class="homonymous_shards">
             <small>Similar:</small>
-            {% for entry in homonymous if entry.qualifier != result.shard.qualifier %}
+            {% for entry in homonymous if entry.qualifier != shard.qualifier %}
               <a class="shard-name" href="{{ shard_path(entry) }}">
                 {{ shard_name(entry) }}
               </a>

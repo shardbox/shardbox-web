@@ -77,3 +77,8 @@ Crinja.filter("gravatar_hash") do
   mail = target.as_s
   Digest::MD5.hexdigest(mail.strip.downcase)
 end
+
+@[Crinja::Attributes]
+class URI
+  include Crinja::Object::Auto
+end

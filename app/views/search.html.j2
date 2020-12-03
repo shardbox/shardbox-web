@@ -10,10 +10,10 @@
   </header>
 
   <div class="search-results">
-  {% for result in shards %}
-    {{ shard_card(result.shard, result, result.categories,
+  {% for shard in shards %}
+    {{ shard_card(shard, shard, shard.categories,
       show_description = true,
-      repo_ref = result.repo.ref
+      repo_ref = shard.canonical_repo.ref
     ) }}
   {% else %}
     <p class="large fat">There were no results for your search ;-(</p>

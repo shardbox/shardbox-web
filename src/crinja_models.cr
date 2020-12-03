@@ -1,3 +1,5 @@
+require "crinja"
+
 @[Crinja::Attributes]
 class URI
   include Crinja::Object::Auto

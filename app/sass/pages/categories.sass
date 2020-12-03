@@ -1,15 +1,11 @@
 .categories-list
-  margin: 0 -1em
-  padding: 0
-  display: flex
-  flex-wrap: wrap
+  @include shards-list()
 
 .category-item
   flex-basis: 20em
   border: 1px solid #ddd
   background-color: #fff
   padding: 1em
-  margin: 1em
   flex-grow: 1
 
   > .category-title
@@ -34,15 +30,13 @@
   margin-top: 3rem
 
 .category-entries
-  display: grid
-  grid-template-columns: repeat(auto-fit, minmax(25em, 1fr))
-  grid-gap: 1rem
+  @include shards-list()
 
   > .category-entry
     > .shard-card
       display: grid
       grid-template-columns: 1fr min-content
-      grid-template-areas: "name repo-info" "description description" "shard-info shard-info" "metrics metrics"
+      grid-template-areas: "name repo-info" "description description" "shard-info shard-info" "metrics metrics" "categories categories"
 
       > .metrics
         margin-top: .5rem

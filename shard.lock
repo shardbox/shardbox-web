@@ -1,5 +1,9 @@
 version: 2.0
 shards:
+  admiral:
+    git: https://github.com/jwaldrip/admiral.cr.git
+    version: 1.11.2+git.commit.c3c3467953654554b72c24e7b853d6fbb23f10c0
+
   any_hash:
     git: https://github.com/sija/any_hash.cr.git
     version: 0.2.3
@@ -7,6 +11,10 @@ shards:
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
     version: 0.9.8
+
+  clear:
+    git: https://github.com/anykeyh/clear.git
+    version: 0.9+git.commit.b98e23311eb3ef9086958e25e8e87f6789cc765d
 
   crinja:
     git: https://github.com/straight-shoota/crinja.git
@@ -19,6 +27,10 @@ shards:
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
     version: 0.1.4
+
+  generate:
+    git: https://github.com/anykeyh/generate.cr.git
+    version: 0.1.0+git.commit.27a59d663ded8ce39a361e3a88b8dd747f59ce42
 
   git:
     git: https://github.com/smacker/libgit2.cr.git
@@ -36,9 +48,13 @@ shards:
     git: https://github.com/TechMagister/i18n.cr.git
     version: 0.3.1+git.commit.635e05dd5e9fb8bc99c46c12497689221644d9e4
 
+  inflector:
+    git: https://github.com/phoffer/inflector.cr.git
+    version: 0.1.8
+
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 0.26.1+git.commit.a819d4792bbc63d993d6dd2b15f9af5efb0c2d8c
+    version: 0.27.0+git.commit.bf9f627ac789d2ebe573629904f02beb9e4089d5
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
@@ -47,6 +63,10 @@ shards:
   markd:
     git: https://github.com/icyleaf/markd.git
     version: 0.2.1+git.commit.033aeaf067ddae21ac7872af3a935fc17cd01080
+
+  memory_cache:
+    git: https://github.com/kostya/memory_cache.git
+    version: 0.3
 
   molinillo:
     git: https://github.com/crystal-lang/crystal-molinillo.git
@@ -74,9 +94,9 @@ shards:
 
   shardbox-core:
     git: https://github.com/shardbox/shardbox-core.git
-    version: 0.2.0+git.commit.73d9d308d94d22d4ece69c33874c346e2c34b391
+    version: 0.2.0+git.commit.93ef0d18b2acbb6a28fee7616c52e0de39848f8d
 
   shards:
     git: https://github.com/crystal-lang/shards.git
-    version: 0.10.0+git.commit.5666481ea1b304944adcf9eabce0b24ff9badeb9
+    version: 0.12.0+git.commit.1ad3b68f472d3bfade8aaa1cf18a81efad683a86
 

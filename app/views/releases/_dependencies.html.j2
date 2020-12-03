@@ -17,17 +17,17 @@
   {% for dep in dependencies %}
     <li>
       <a href="{{ shard_path(dep.shard) }}" class="shard-name shard-name--dependency">{{ shard_name(dep.shard) }}</a>
-      {% if dep.dependency.version_reference %}
-        <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
-          {{ dep.dependency.version_reference[1] }}
+      {% if dep.version_reference %}
+        <span class="dependency-version" title="{{ dep.version_reference[0] }}: {{ dep.version_reference[1] }}">
+          {{ dep.version_reference[1] }}
         </span>
       {% endif %}
 
-      <pre>{{ dep.dependency.spec }}</pre>
+      <pre>{{ dep.spec }}</pre>
     </li>
   {% endfor %}
   {% if dependencies | length > 0 %}
-  {#<a href="{{ release_path(shard, release) }/dependencies">Show recursive dependencies</a>#}
+  <a href="{{ release_path(shard, release) }}/dependencies">Show recursive dependencies</a>
   {% endif %}
   </ul>
 </div>
@@ -40,22 +40,22 @@
       {% if dep.shard %}
         <a href="{{ shard_path(dep.shard) }}" class="shard-name shard-name--dependency">{{ shard_name(dep.shard) }}</a>
       {% else %}
-        <span  class="shard-name shard-name--dependency">{{ dep.dependency.name }}</span>
+        <span  class="shard-name shard-name--dependency">{{ dep.name }}</span>
       {% endif %}
-      {% if dep.dependency.version_reference %}
-        <span class="dependency-version" title="{{ dep.dependency.version_reference[0] }}: {{ dep.dependency.version_reference[1] }}">
-          {{ dep.dependency.version_reference[1] }}
+      {% if dep.version_reference %}
+        <span class="dependency-version" title="{{ dep.version_reference[0] }}: {{ dep.version_reference[1] }}">
+          {{ dep.version_reference[1] }}
         </span>
       {% endif %}
 
       {% if not dep.shard %}
-        {% set repo_ref = dep.dependency.repo_ref %}
+        {% set repo_ref = dep.repo_ref %}
         {% if repo_ref %}
           <span class="dependency-reference">{{ repo_ref.resolver }}: {{ repo_ref.url }}</span>
         {% endif %}
       {% endif %}
 
-      <pre>{{ dep.dependency.spec }}</pre>
+      <pre>{{ dep.spec }}</pre>
     </li>
   {% endfor %}
   </ul>
@@ -69,7 +69,7 @@
       <a href="{{ shard_path(item.shard) }}" class="shard-name shard-name--dependency"{% if item.shard.description %} title="{{ item.shard.description }}"{% endif %}>
         {{ shard_name(item.shard) }}
       </a>
-      {% if item.dependents_count > 0 %}
+      {% if item.dependents_count | default(0) > 0 %}
         <span class="recursive_dependents">({{item.dependents_count}} dependents)</span>
       {% endif %}
     </li>
@@ -106,10 +106,10 @@
 <div class="container">
   <h3>Similar shards</h3>
   <ul>
-  {% for item in homonymous_shards %}
+  {% for shard in homonymous_shards %}
     <li class="homonymous-shard">
-      <a href="/shards/{{ item.shard.slug }}" class="shard-name">{{ item.shard.display_name}}</a>
-      {{ repo_link(item.repo_ref) }}
+      <a href="/shards/{{ shard.slug }}" class="shard-name">{{ shard.display_name}}</a>
+      {{ repo_link(shard.repo_ref) }}
     </li>
   {% endfor %}
   </ul>

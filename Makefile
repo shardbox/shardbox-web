@@ -21,6 +21,10 @@ TEST_DATABASE_NAME ::= $(shell echo $(TEST_DATABASE_URL) | grep -o -P '[^/]+$$')
 build: ## Build the application binary
 build: $(BUILD_TARGETS)
 
+bin/web: $(SRC_SOURCES) $(LIB_SOURCES) lib
+	mkdir -p $(shell dirname $(@))
+	$(CRYSTAL) build src/web.cr -o $(@)
+
 $(BUILD_TARGET): $(SRC_SOURCES) $(LIB_SOURCES) lib
 	mkdir -p $(shell dirname $(@))
 	$(CRYSTAL) build src/cli.cr -o $(@)

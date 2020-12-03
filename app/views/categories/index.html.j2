@@ -8,19 +8,18 @@
   </header>
 
   <div class="categories-list">
-    {% for item in categories %}
+    {% for category in categories %}
       <div class="category-item">
         <span class="category-title">
-          <a href="/categories/{{ item.slug }}">{{ item.name }}</a>
-          <span class="count">{{ item.entries_count }}</span>
+          <a href="/categories/{{ category.slug }}">{{ category.name }}</a>
+          <span class="count">{{ category.entries_count }}</span>
         </span>
 
         <div class="category__top-shards">
-          {# TODO: For some reason this accessor doesn't work: top_shards[item.id] #}
-          {% for shard in top_shards[item.id] %}
+          {% for shard in category.top_shards %}
             <span class="top-shard-link">
               <a href="{{ shard_path(shard) }}">
-                {{- shard.display_name -}}
+                {{- shard.slug -}}
               </a>
             </span>
           {% endfor %}

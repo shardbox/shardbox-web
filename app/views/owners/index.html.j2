@@ -8,26 +8,26 @@
   </header>
 
   <div class="categories-list">
-    {% for item in owners %}
+    {% for owner in owners %}
       <div class="owner-item">
         <div class="owner with-image">
-          {{ owner_image(item.owner) }}
-          <a href="/owners/{{ item.owner.resolver }}/{{ item.owner.slug }}">{{ item.owner.name | default(item.owner.slug) }}</a>
-          <span class="owner_slug">@{{ item.owner.slug }}</span>
+          {{ owner_image(owner) }}
+          <a href="/owners/{{ owner.resolver }}/{{ owner.slug }}">{{ owner.name | default(owner.slug) }}</a>
+          <span class="owner_slug">@{{ owner.slug }}</span>
         </div>
-        {% if item.metrics %}
+        {% if owner %}
           <div class="metrics">
             <span class="metric">
               <span class="metric-label">shards</span>
-              <span class="metric-value">{{ icon("package") }} {{ item.metrics.shards_count }}</span>
+              <span class="metric-value">{{ icon("package") }} {{ owner.shards_count }}</span>
             </span>
             <span class="metric">
               <span class="metric-label">direct dependents</span>
-              <span class="metric-value">{{ icon("package-dependents") }} {{ item.metrics.dependents_count}}</span>
+              <span class="metric-value">{{ icon("package-dependents") }} {{ owner.dependents_count}}</span>
             </span>
             <span class="metric">
               <span class="metric-label">total dependents</span>
-              <span class="metric-value">{{ icon("package-dependents") }} {{ icon("plus") }} {{ item.metrics.transitive_dependents_count }}</span>
+              <span class="metric-value">{{ icon("package-dependents") }} {{ icon("plus") }} {{ owner.transitive_dependents_count }}</span>
             </span>
           </div>
         {% endif %}

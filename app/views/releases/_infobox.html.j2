@@ -38,17 +38,19 @@
   </script>
 
   <div class="metrics">
-    {% if release.license %}
-      <div class="metric">
-        <span class="metric-label">{{ icon("law") }} License</span>
-        <span class="metric-value">
+    <div class="metric">
+      <span class="metric-label">{{ icon("law") }} License</span>
+      <span class="metric-value">
+        {% if release.license %}
           <a href="http://opensource.org/licenses/{{ release.license }}" class="external">{{ release.license }}</a>
-        </span>
-      </div>
-    {% endif %}
+        {% else %}
+          ?
+        {% endif %}
+      </span>
+    </div>
     <div class="metric">
       <span class="metric-label">{{ icon("crystal") }} Crystal</span>
-      <span class="metric-value">{{ release.crystal }}</span>
+      <span class="metric-value">{{ release.crystal | default("?") }}</span>
     </div>
   </div>
 
@@ -60,7 +62,7 @@
         <li class="author">
           <img src="https://www.gravatar.com/avatar/{{ author.email | default('') | gravatar_hash }}?d=mp" class="author_image" />
           <span class="author_name">{{ author.name }}</span>
-          {% if author.email %}
+          {% if author.is_valid_email %}
             <a href="mailto:{{author.email}}" class="author_mail external">{{ author.email }}</a>
           {% endif %}
         </li>

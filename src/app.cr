@@ -168,9 +168,6 @@ get "/owners/:resolver/:slug" do |context|
   end
 end
 
-get "/deploy_status" do
-  "OK"
-end
 
 get "/contribute" do
   template = crinja.get_template("pages/contribute.html.j2")

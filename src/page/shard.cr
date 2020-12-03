@@ -1,24 +1,16 @@
-@[Crinja::Attributes]
+#@[Crinja::Attributes]
 struct Page::Shard
   include Page
 
   NUM_RELEASES_SHOWN   =  8
   NUM_DEPENDENTS_SHOWN = 10
 
-  def self.new(db, context, name)
-    result = find_release(db, context)
-    return result if result.nil? || result.is_a?(String)
-
-    new db, *result, name
-  end
-
-  getter db : ShardsDB
   getter shard : ::Shard
   getter all_releases : Array(Release)
   getter name : String
   @release : Release?
 
-  def initialize(@db, @shard, @all_releases, @release, @name)
+  def initialize(@shard, @all_releases, @release, @name)
   end
 
   def release?
@@ -30,7 +22,7 @@ struct Page::Shard
   end
 
   def default_release
-    all_releases.find(&.latest?) || all_releases.last?
+    all_releases.find(&.latest) || all_releases.last
   end
 
   private def initialize_context(context)
@@ -40,30 +32,30 @@ struct Page::Shard
     context["all_releases"] = all_releases
     context["remaining_releases_count"] = Math.max(0, all_releases.size - NUM_RELEASES_SHOWN)
 
-    context["dependencies"] = db.dependencies(release.id, :runtime)
-    context["dev_dependencies"] = db.dependencies(release.id, :development)
+    context["dependencies"] = release.dependencies.runtime.to_a
+    context["dev_dependencies"] = release.dependencies.development.to_a
 
-    dependents = db.dependents(shard.id)
+    dependents = shard.dependents.to_a
     context["all_dependents"] = dependents
     context["dependents"] = dependents.first(NUM_DEPENDENTS_SHOWN)
     context["remaining_dependents_count"] = Math.max(0, dependents.size - NUM_DEPENDENTS_SHOWN)
 
-    repo = db.find_canonical_repo(shard.id)
+    repo = shard.canonical_repo
     context["repo"] = repo
-    context["repo_owner"] = db.get_owner?(repo.ref)
+    context["repo_owner"] = repo.owner
     context["source_url"] = repo.ref.base_url_source(release.revision_info.commit.sha)
-    context["metrics"] = db.get_current_metrics(shard.id)
-    context["mirrors"] = db.find_mirror_repos(shard.id)
+    context["metrics"] = shard.metrics
+    context["mirrors"] = shard.mirrors.to_a
 
-    context["homonymous_shards"] = db.find_homonymous_shards(shard.name).reject { |s| s[:shard].id == shard.id }
+    context["homonymous_shards"] = ::Shard.homonymous(shard).to_a(fetch_columns: true)
 
-    context["categories"] = db.find_categories(shard.id)
+    context["categories"] = shard.categories
 
-    case @name
-    when "activity"
-      context["activities"] = db.get_activity(shard.id).group_by(&.created_at).values.reverse
-    else
-    end
+    # case @name
+    # when "activity"
+    #   context["activities"] = db.get_activity(shard.id).group_by(&.created_at).values.reverse
+    # else
+    # end
   end
 
   def render(io)
@@ -125,18 +117,5 @@ class Release
     end
 
     authors
-  end
-end
-
-struct Author
-  getter name : String
-  getter email : String?
-
-  def initialize(@name : String)
-    if name =~ /\A\s*(.+?)\s*<+(\s*.+?\s*)>/
-      @name, @email = $1, $2
-    else
-      @name = name
-    end
   end
 end

@@ -1,3 +1,5 @@
+require "humanize_time"
+
 module Page
   class_getter crinja : Crinja = initialize_crinja
 
@@ -43,3 +45,7 @@ module Page
     template.render(io, context)
   end
 end
+
+require "./page/category"
+require "./page/owner"
+require "./page/shard"
