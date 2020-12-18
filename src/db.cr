@@ -506,7 +506,7 @@ class ShardsDB
       LEFT JOIN
         shard_metrics_current AS metrics ON metrics.shard_id = shards.id
       WHERE
-        name LIKE $1 OR qualifier LIKE $1 OR shards.description LIKE $1 OR releases.spec->>'description' = $1 OR repos.metadata->>'description' = $1
+        name ILIKE $1 OR qualifier ILIKE $1 OR shards.description ILIKE $1 OR releases.spec->>'description' = $1 OR repos.metadata->>'description' = $1
       ORDER BY
         metrics.popularity DESC
       LIMIT 100
