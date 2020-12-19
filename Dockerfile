@@ -1,4 +1,4 @@
-FROM crystallang/crystal:0.34.0-alpine AS builder
+FROM crystallang/crystal:0.35.1-alpine AS builder
 
 RUN apk add --no-cache --update-cache \
       libgit2-dev libsass-dev libssh2-static
