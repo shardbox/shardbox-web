@@ -51,6 +51,12 @@ jobs:
     - make -C ./lib/shardbox-core test_db
     script: ./.travis/integration-spec.sh
 
+  - stage: test
+    name: build docker container
+    services:
+    - docker
+    script: docker build .
+
   - stage: deploy
     name: dokku
     language: generic
