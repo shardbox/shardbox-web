@@ -1,11 +1,11 @@
-FROM crystallang/crystal:0.35.1-alpine AS builder
+FROM crystallang/crystal:1.0.0-alpine AS builder
 
 RUN apk add --no-cache --update-cache \
-      libgit2-dev libsass-dev libssh2-static
+      libgit2-dev libsass-dev libssh2-static yaml-static
 
 WORKDIR /src
 ADD shard.yml shard.lock ./
-RUN shards install --production
+RUN shards install --production --ignore-crystal-version
 
 ADD . ./
 
@@ -14,19 +14,19 @@ ADD . ./
 #RUN shards build \
 #  --production \
 RUN mkdir -p bin && shards build app \
-  --progress\
-  --stats \
+  --release \
   --link-flags='/usr/lib/libyaml.a /usr/lib/libpcre.a /usr/lib/libm.a /usr/lib/libgc.a' \
   --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a' \
   1>&2 \
   && shards build worker \
+  --release \
   --link-flags='/usr/lib/libyaml.a /usr/lib/libpcre.a /usr/lib/libm.a /usr/lib/libgc.a' \
   --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a' \
   1>&2
 
 RUN bin/app assets:precompile
 
-FROM alpine:3.11 AS runtime
+FROM alpine:3.13 AS runtime
 RUN apk add --no-cache --update-cache  \
 # bash needed for dokku enter
       bash \

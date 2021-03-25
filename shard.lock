@@ -1,20 +1,25 @@
+# NOTICE: This lockfile contains some overrides from shard.override.yml
 version: 2.0
 shards:
   any_hash:
-    git: https://github.com/sija/any_hash.cr.git
-    version: 0.2.3
+    git: https://github.com/Sija/any_hash.cr.git
+    version: 0.2.5
+
+  backtracer:
+    git: https://github.com/Sija/backtracer.cr.git
+    version: 1.2.1
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
-    version: 0.9.8
+    version: 0.9.8+git.commit.fd6ba88eb227400954c430bb946382de85809240
 
   crinja:
     git: https://github.com/straight-shoota/crinja.git
-    version: 0.6.1
+    version: 0.7.0+git.commit.20f613435a117f25a819d0dc89ac954c25e81d6f
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
-    version: 0.10.0
+    version: 0.10.1
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
@@ -30,53 +35,53 @@ shards:
 
   humanize_time:
     git: https://github.com/mamantoha/humanize_time.git
-    version: 0.7.0
+    version: 0.9.0
 
   i18n:
-    git: https://github.com/TechMagister/i18n.cr.git
-    version: 0.3.1+git.commit.635e05dd5e9fb8bc99c46c12497689221644d9e4
+    git: https://github.com/crystal-i18n/i18n.git
+    version: 0.1.4
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 0.27.0
+    version: 1.0.0
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
-    version: 0.4.0
+    version: 0.4.1
 
   markd:
     git: https://github.com/icyleaf/markd.git
-    version: 0.2.1+git.commit.033aeaf067ddae21ac7872af3a935fc17cd01080
+    version: 0.4.0
 
   molinillo:
     git: https://github.com/crystal-lang/crystal-molinillo.git
-    version: 0.1.0
+    version: 0.2.0
 
-  pg:
+  pg: # Overridden
     git: https://github.com/will/crystal-pg.git
-    version: 0.22.1
+    version: 0.23.1+git.commit.cafe039cfd6340a271e81603943bb1975f5a91f5
 
   radix:
     git: https://github.com/luislavena/radix.git
-    version: 0.3.9
+    version: 0.4.1
 
   raven:
     git: https://github.com/Sija/raven.cr.git
-    version: 1.8.1
+    version: 1.9.1
 
   sanitize:
     git: https://github.com/straight-shoota/sanitize.git
-    version: 0.1.0+git.commit.0d23c912fff4db243eaf921a33e5960e016257cc
+    version: 0.1.0+git.commit.38c73669b274b77020025562549c6abf026001c6
 
   sass:
     git: https://github.com/straight-shoota/sass.cr.git
-    version: 0.5.0
+    version: 0.6.0
 
   shardbox-core:
     git: https://github.com/shardbox/shardbox-core.git
-    version: 0.2.0+git.commit.19fb582433bbd914ba31295c76cf411d322c2a71
+    version: 0.2.0+git.commit.cbb9aba6d6f5e2c5d2c7d3b9484ae00be575b9c3
 
   shards:
     git: https://github.com/crystal-lang/shards.git
-    version: 0.12.0+git.commit.e10d477390a29eddb65f62df41187d200940cd1f
+    version: 0.14.1+git.commit.addc26a3f22fee9fccb01cbb3e8878bef02d4295
 

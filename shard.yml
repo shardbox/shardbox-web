@@ -23,12 +23,13 @@ dependencies:
     github: kemalcr/kemal
   crinja:
     github: straight-shoota/crinja
+    branch: master
   baked_file_system:
     github: schovi/baked_file_system
+    branch: master
   sass:
     github: straight-shoota/sass.cr
   markd:
     github: icyleaf/markd
-    branch: master
   sanitize:
     github: straight-shoota/sanitize
