@@ -76,7 +76,7 @@
   {% endfor %}
   </ul>
   {% if remaining_dependents_count > 0 %}
-  <a href="{{ release_path(shard, release) }}/dependents">Show all {{ all_dependents | length }} dependents</a>
+  <a href="{{ release_path(shard, release) }}/dependencies#dependents">Show all {{ all_dependents | length }} dependents</a>
   {% endif %}
 </div>
 
