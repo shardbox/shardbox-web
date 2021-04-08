@@ -19,6 +19,7 @@ dependencies:
     github: shardbox/shardbox-core
   humanize_time:
     github: mamantoha/humanize_time
+    version: 0.7.0
   kemal:
     github: kemalcr/kemal
   crinja:

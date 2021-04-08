@@ -35,11 +35,11 @@ shards:
 
   humanize_time:
     git: https://github.com/mamantoha/humanize_time.git
-    version: 0.9.0
+    version: 0.7.0
 
   i18n:
-    git: https://github.com/crystal-i18n/i18n.git
-    version: 0.1.4
+    git: https://github.com/TechMagister/i18n.cr.git
+    version: 0.3.1+git.commit.635e05dd5e9fb8bc99c46c12497689221644d9e4
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
