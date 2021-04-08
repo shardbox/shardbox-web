@@ -26,7 +26,7 @@ RUN mkdir -p bin && shards build app \
 
 RUN bin/app assets:precompile
 
-FROM alpine:3.13 AS runtime
+FROM alpine:3.12 AS runtime
 RUN apk add --no-cache --update-cache  \
 # bash needed for dokku enter
       bash \
