@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: shardbox
+      POSTGRES_PASSWORD: shardbox
+      POSTGRES_DB: shardbox_dev
+    volumes:
+      - "postgres-data:/var/lib/postgresql/data"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: local.dockerfile
+    depends_on:
+    - postgres
+    environment:
+      KEMAL_ENV: development
+      DATABASE_URL: postgres://shardbox:shardbox@postgres/shardbox_dev
+    command: bin/app
+    ports:
+      - 3000
+
+  worker:
+    build:
+      context: .
+      dockerfile: local.dockerfile
+    depends_on:
+    - postgres
+    environment:
+      DATABASE_URL: postgres://shardbox:shardbox@postgres/shardbox_dev
+      GITHUB_TOKEN: "${GITHUB_TOKEN}"
+    command: bin/worker sync_repos
+
+volumes:
+  postgres-data:
