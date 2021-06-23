@@ -184,14 +184,16 @@ end
 
 get "/search" do |context|
   query = context.request.query_params["q"]? || ""
+  license = context.request.query_params["license"]?
 
   ShardsDB.connect do |db|
-    shards = db.search(query)
+    shards = db.search(query, license)
 
     template = crinja.get_template("search.html.j2")
     template.render({
-      "query"  => query,
-      "shards" => shards,
+      "query"   => query,
+      "shards"  => shards,
+      "license" => license,
     })
   end
 end

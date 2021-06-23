@@ -34,7 +34,7 @@
         <tr><th>Licenses</th><td>
           <table class="counts">
           {% for name, count in stats.license_counts %}
-            <tr><td>{{ count }}</td><td>{{ percent(count / stats.shards_count) }}</td><th>{{ name }}</th></tr>
+            <tr><td>{{ count }}</td><td>{{ percent(count / stats.shards_count) }}</td><th><a href="/search?license={{ name }}">{{ name }}</a></th></tr>
           {% endfor %}
           </table>
         </td>
