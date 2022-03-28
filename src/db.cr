@@ -21,6 +21,7 @@ class ShardsDB
       FROM shards
       JOIN releases ON releases.shard_id = shards.id
       WHERE releases.latest = true
+        AND shards.archived_at IS NULL
       ORDER BY releases.released_at DESC
       LIMIT 11
       SQL
@@ -50,6 +51,7 @@ class ShardsDB
         repos ON repos.shard_id = shards.id AND repos.role = 'canonical'
       JOIN
         newest_shards ON newest_shards.shard_id = shards.id AND newest_shards.released_at = releases.released_at
+      WHERE shards.archived_at IS NULL
       ORDER BY released_at DESC
       LIMIT 11
       SQL
@@ -71,6 +73,7 @@ class ShardsDB
       FROM shards
       JOIN releases ON releases.shard_id = shards.id AND latest
       JOIN shard_metrics_current AS metrics ON metrics.shard_id = shards.id
+      WHERE shards.archived_at IS NULL
       ORDER BY #{column_name} DESC
       LIMIT 11
       SQL
@@ -101,6 +104,7 @@ class ShardsDB
       FROM shards
       JOIN releases ON releases.shard_id = shards.id AND latest
       JOIN shard_metrics_current AS metrics ON metrics.shard_id = shards.id
+      WHERE shards.archived_at IS NULL
       ORDER BY popularity DESC
       LIMIT 11
       SQL
