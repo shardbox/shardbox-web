@@ -33,6 +33,38 @@ struct Page::Shard
     all_releases.find(&.latest?) || all_releases.last?
   end
 
+  def canonical_repo
+    db.find_canonical_repo(shard.id)
+  end
+
+  def mirrors
+    db.find_mirror_repos(shard.id)
+  end
+
+  def categories
+    db.find_categories(shard.id)
+  end
+
+  def dependencies
+    db.dependencies(release.id, :runtime)
+  end
+
+  def dev_dependencies
+    db.dependencies(release.id, :development)
+  end
+
+  def owner
+    db.get_owner?(canonical_repo.ref)
+  end
+
+  def source_url
+    canonical_repo.ref.base_url_source(release.revision_info.commit.sha)
+  end
+
+  def path
+    "/shards/#{shard.slug}"
+  end
+
   private def initialize_context(context)
     context["release"] = release
     context["shard"] = shard
@@ -40,24 +72,24 @@ struct Page::Shard
     context["all_releases"] = all_releases
     context["remaining_releases_count"] = Math.max(0, all_releases.size - NUM_RELEASES_SHOWN)
 
-    context["dependencies"] = db.dependencies(release.id, :runtime)
-    context["dev_dependencies"] = db.dependencies(release.id, :development)
+    context["dependencies"] = dependencies
+    context["dev_dependencies"] = dev_dependencies
 
     dependents = db.dependents(shard.id)
     context["all_dependents"] = dependents
     context["dependents"] = dependents.first(NUM_DEPENDENTS_SHOWN)
     context["remaining_dependents_count"] = Math.max(0, dependents.size - NUM_DEPENDENTS_SHOWN)
 
-    repo = db.find_canonical_repo(shard.id)
+    repo = canonical_repo
     context["repo"] = repo
-    context["repo_owner"] = db.get_owner?(repo.ref)
-    context["source_url"] = repo.ref.base_url_source(release.revision_info.commit.sha)
+    context["repo_owner"] = owner
+    context["source_url"] = source_url
     context["metrics"] = db.get_current_metrics(shard.id)
-    context["mirrors"] = db.find_mirror_repos(shard.id)
+    context["mirrors"] = mirrors
 
     context["homonymous_shards"] = db.find_homonymous_shards(shard.name).reject { |s| s[:shard].id == shard.id }
 
-    context["categories"] = db.find_categories(shard.id)
+    context["categories"] = categories
 
     case @name
     when "activity"
@@ -68,6 +100,46 @@ struct Page::Shard
 
   def render(io)
     render(io, "releases/#{name}.html.j2")
+  end
+
+  def to_json(json : JSON::Builder)
+    json.object do
+      json.field "name", shard.name
+      json.field "qualifier", shard.qualifier
+      json.field "display_name", shard.display_name
+      json.field "canonical_repo", canonical_repo.ref.to_uri.to_s
+      json.field "description", shard.description
+      json.field "categories" do
+        json.array do
+          categories.each do |category|
+            category.slug.to_json(json)
+          end
+        end
+      end
+      json.field "archived_at", shard.archived_at if shard.archived_at
+      if owner = self.owner
+        json.field "owner" do
+          json.object do
+            json.field "resolver", owner.resolver
+            json.field "slug", owner.slug
+            json.field "name", owner.name
+            json.field "description", owner.description if owner.description.presence
+            json.field "website_url", owner.website_url if owner.website_url
+          end
+        end
+      end
+      json.field "latest_release" do
+        default_release.to_json(json)
+      end
+      json.field "source_url", source_url.to_s if source_url
+      json.field "mirrors" do
+        json.array do
+          mirrors.each do |mirror|
+            mirror.ref.to_uri.to_s.to_json(json)
+          end
+        end
+      end
+    end
   end
 
   def self.find_release(db, context)
@@ -126,6 +198,28 @@ class Release
 
     authors
   end
+
+  def to_json(json : JSON::Builder)
+    json.object do
+      json.field "version", version
+      json.field "released_at", released_at
+      json.field "revision_identifier", revision_identifier
+      json.field "commit_hash", commit_hash
+      json.field "revision_info", revision_info
+      json.field "spec" do
+        json.object do
+          json.field "description", description
+          json.field "license", license
+          json.field "crystal", crystal
+          json.field "authors", spec_authors
+        end
+      end
+    end
+  end
+
+  def commit_hash : String?
+    revision_info.try(&.commit.sha)
+  end
 end
 
 struct Author
@@ -137,6 +231,13 @@ struct Author
       @name, @email = $1, $2
     else
       @name = name
+    end
+  end
+
+  def to_json(json : JSON::Builder)
+    json.object do
+      json.field "name", name
+      json.field "email", email if email
     end
   end
 end

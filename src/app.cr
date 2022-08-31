@@ -11,6 +11,7 @@ require "./crinja_lib"
 require "./page"
 require "./page/*"
 require "./assets"
+require "./api"
 
 def crinja
   Page.crinja
