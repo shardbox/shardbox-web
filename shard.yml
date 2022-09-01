@@ -10,7 +10,7 @@ targets:
   worker:
     main: lib/shardbox-core/src/worker.cr
 
-crystal: ">= 0.35.1"
+crystal: ">= 1.0"
 
 license: MIT
 

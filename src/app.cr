@@ -1,5 +1,6 @@
 require "kemal"
 require "crinja"
+require "crinja/json"
 require "baked_file_system"
 require "humanize_time"
 require "shardbox-core/db"
