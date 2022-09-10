@@ -1,11 +1,11 @@
-FROM crystallang/crystal:1.0.0-alpine AS builder
+FROM crystallang/crystal:1.5.0-alpine AS builder
 
 RUN apk add --no-cache --update-cache \
       libgit2-dev libsass-dev libssh2-static yaml-static
 
 WORKDIR /src
 ADD shard.yml shard.lock ./
-RUN shards install --production --ignore-crystal-version
+RUN shards install --production
 
 ADD . ./
 
@@ -13,16 +13,11 @@ ADD . ./
 # specifying the static libraries available
 #RUN shards build \
 #  --production \
-RUN mkdir -p bin && shards build app \
+RUN mkdir -p bin && shards build app worker \
   --release \
-  --link-flags='/usr/lib/libyaml.a /usr/lib/libpcre.a /usr/lib/libm.a /usr/lib/libgc.a' \
-  --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a' \
-  1>&2 \
-  && shards build worker \
-  --release \
-  --link-flags='/usr/lib/libyaml.a /usr/lib/libpcre.a /usr/lib/libm.a /usr/lib/libgc.a' \
-  --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a' \
-  1>&2
+  --progress \
+  --link-flags='/usr/lib/libyaml.a /usr/lib/libpcre.a /usr/lib/libm.a' \
+  --link-flags='/usr/lib/libpthread.a /usr/lib/libevent.a /usr/lib/librt.a /usr/lib/libxml2.a /usr/lib/liblzma.a'
 
 RUN bin/app assets:precompile
 

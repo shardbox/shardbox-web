@@ -10,7 +10,7 @@ targets:
   worker:
     main: lib/shardbox-core/src/worker.cr
 
-crystal: ">= 0.35.1"
+crystal: ">= 1.0"
 
 license: MIT
 
@@ -24,10 +24,10 @@ dependencies:
     github: kemalcr/kemal
   crinja:
     github: straight-shoota/crinja
-    branch: master
+    version: 0.8.0
   baked_file_system:
     github: schovi/baked_file_system
-    branch: master
+    version: 0.10.0
   sass:
     github: straight-shoota/sass.cr
   markd:

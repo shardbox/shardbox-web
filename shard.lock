@@ -10,11 +10,11 @@ shards:
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
-    version: 0.10.0+git.commit.f086b45c52bac364e67b4b4c0b5698f2407215e2
+    version: 0.10.0
 
   crinja:
     git: https://github.com/straight-shoota/crinja.git
-    version: 0.8.0+git.commit.0160fa392b2bf12b475130af127f63bf389eba7a
+    version: 0.8.0
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git

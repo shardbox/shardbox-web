@@ -63,6 +63,12 @@ DATABASE_URL:
 TEST_DATABASE_URL:
 	@test "${$@}" || (echo "$@ is undefined" && false)
 
+.PHONY: deploy
+deploy:
+	@test "$(DEPLOY_HOST)" || (echo "$$DEPLOY_HOST is undefined" && false)
+	docker build . -t dokku/shardbox:latest
+	docker save dokku/shardbox:latest | ssh $(DEPLOY_HOST) "sudo docker load && dokku git:from-image shardbox dokku/shardbox:latest && dokku ps:rebuild shardbox"
+
 .PHONY: clean
 clean: ## Remove application binary
 clean:
