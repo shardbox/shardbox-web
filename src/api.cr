@@ -1,4 +1,5 @@
 get "/api/v1/search" do |context|
+  context.response.content_type = "application/json"
   query = context.request.query_params["q"]? || ""
 
   ShardsDB.connect do |db|
@@ -42,6 +43,7 @@ get "/api/v1/search" do |context|
 end
 
 get "/api/v1/shards/:name" do |context|
+  context.response.content_type = "application/json"
   ShardsDB.connect do |db|
     page = Page::Shard.new(db, context, "json")
     case page
@@ -57,6 +59,7 @@ get "/api/v1/shards/:name" do |context|
 end
 
 get "/api/v1/shards/:name/releases" do |context|
+  context.response.content_type = "application/json"
   ShardsDB.connect do |db|
     page = Page::Shard.new(db, context, "releases")
     case page
