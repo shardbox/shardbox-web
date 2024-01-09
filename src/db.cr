@@ -534,6 +534,7 @@ class ShardsDB
           ON repos.id = log.repo_id
         WHERE
           log.shard_id = $1
+        ORDER BY log.created_at DESC
         SQL
     results.map do |result|
       id, repo_id, event, metadata, created_at, shard_id, url, resolver = result
