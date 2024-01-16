@@ -493,9 +493,18 @@ class ShardsDB
     results
   end
 
-  def search(query)
+  def search(query, license)
     query = "%#{query}%"
-    results = connection.query_all <<-SQL, query, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Array(Array(String))?}
+    args = [query]
+    if license
+      if license == "none"
+        license_sql = "AND spec->'license' is NULL"
+      else
+        args.push(license)
+        license_sql = "AND spec->>'license' = $2"
+      end
+    end
+    results = connection.query_all <<-SQL, args: args, as: {Int64, String, String, String?, Time?, String, Time, String, String, String, Array(Array(String))?}
       SELECT
         shards.id, name::text, qualifier::text, shards.description, archived_at,
         releases.version, releases.released_at,
@@ -510,7 +519,8 @@ class ShardsDB
       LEFT JOIN
         shard_metrics_current AS metrics ON metrics.shard_id = shards.id
       WHERE
-        name ILIKE $1 OR qualifier ILIKE $1 OR shards.description ILIKE $1 OR releases.spec->>'description' = $1 OR repos.metadata->>'description' = $1
+        (name ILIKE $1 OR qualifier ILIKE $1 OR shards.description ILIKE $1 OR releases.spec->>'description' = $1 OR repos.metadata->>'description' = $1)
+         #{license_sql}
       ORDER BY
         metrics.popularity DESC
       LIMIT 100

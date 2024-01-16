@@ -6,7 +6,7 @@
 {% block page_title %}"{{ query }}" Search on Shardbox{% endblock %}
 {% block main %}
   <header>
-    <h1>Search for <code>"{{ query }}"</code></h1>
+    <h1>Search for <code>"{{ query }}"</code> {% if license %} with license <code>{{ license }}</code>{% endif %}</h1>
   </header>
 
   <div class="search-results">
