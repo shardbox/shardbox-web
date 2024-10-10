@@ -37,11 +37,11 @@ test: lib
 .PHONY: format
 format: ## Apply source code formatting
 format: $(SRC_SOURCES) $(SPEC_SOURCES)
-	$(CRYSTAL) tool format src spec
+	$(CRYSTAL) tool format src
 
 docs: ## Generate API docs
 docs: $(SRC_SOURCES) lib
-	$(CRYSTAL) docs -o docs
+	$(CRYSTAL) docs -o docs src/cli.cr
 
 lib: shard.lock
 	$(SHARDS) install
