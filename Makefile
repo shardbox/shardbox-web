@@ -22,11 +22,11 @@ build: ## Build the application binary
 build: $(BUILD_TARGETS)
 
 $(BUILD_TARGET): $(SRC_SOURCES) $(LIB_SOURCES) lib
-	mkdir -p $(shell dirname $(@))
+	mkdir -p $(@D)
 	$(CRYSTAL) build src/cli.cr -o $(@)
 
 $(WORKER_TARGET): $(SRC_SOURCES) $(LIB_SOURCES) lib
-	mkdir -p $(shell dirname $(@))
+	mkdir -p $(@D)
 	$(CRYSTAL) build lib/shardbox-core/src/worker.cr -o $(@)
 
 .PHONY: test
