@@ -1,32 +1,32 @@
 -include Makefile.local # for optional local options
 
-BUILD_TARGET ::= bin/app
-WORKER_TARGET ::= bin/worker
-BUILD_TARGETS ::= $(BUILD_TARGET) $(WORKER_TARGET)
+BUILD_TARGET := bin/app
+WORKER_TARGET := bin/worker
+BUILD_TARGETS := $(BUILD_TARGET) $(WORKER_TARGET)
 
 # The shards command to use
 SHARDS ?= shards
 # The crystal command to use
 CRYSTAL ?= crystal
 
-SRC_SOURCES ::= $(shell find src -name '*.cr' 2>/dev/null)
-LIB_SOURCES ::= $(shell find lib -name '*.cr' 2>/dev/null)
-SPEC_SOURCES ::= $(shell find spec -name '*.cr' 2>/dev/null)
+SRC_SOURCES := $(shell find src -name '*.cr' 2>/dev/null)
+LIB_SOURCES := $(shell find lib -name '*.cr' 2>/dev/null)
+SPEC_SOURCES := $(shell find spec -name '*.cr' 2>/dev/null)
 
-PG_USER ::= postgres
-DATABASE_NAME ::= $(shell echo $(DATABASE_URL) | grep -o -P '[^/]+$$')
-TEST_DATABASE_NAME ::= $(shell echo $(TEST_DATABASE_URL) | grep -o -P '[^/]+$$')
+PG_USER := postgres
+DATABASE_NAME := $(shell echo $(DATABASE_URL) | grep -o -P '[^/]+$$')
+TEST_DATABASE_NAME := $(shell echo $(TEST_DATABASE_URL) | grep -o -P '[^/]+$$')
 
 .PHONY: build
 build: ## Build the application binary
 build: $(BUILD_TARGETS)
 
 $(BUILD_TARGET): $(SRC_SOURCES) $(LIB_SOURCES) lib
-	mkdir -p $(shell dirname $(@))
+	mkdir -p $(@D)
 	$(CRYSTAL) build src/cli.cr -o $(@)
 
 $(WORKER_TARGET): $(SRC_SOURCES) $(LIB_SOURCES) lib
-	mkdir -p $(shell dirname $(@))
+	mkdir -p $(@D)
 	$(CRYSTAL) build lib/shardbox-core/src/worker.cr -o $(@)
 
 .PHONY: test
@@ -37,11 +37,11 @@ test: lib
 .PHONY: format
 format: ## Apply source code formatting
 format: $(SRC_SOURCES) $(SPEC_SOURCES)
-	$(CRYSTAL) tool format src spec
+	$(CRYSTAL) tool format src
 
 docs: ## Generate API docs
 docs: $(SRC_SOURCES) lib
-	$(CRYSTAL) docs -o docs
+	$(CRYSTAL) docs -o docs src/cli.cr
 
 lib: shard.lock
 	$(SHARDS) install
