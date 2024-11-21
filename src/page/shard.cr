@@ -241,3 +241,24 @@ struct Author
     end
   end
 end
+
+struct Repo::Ref
+  def crystaldoc_info_url(release)
+    uri = to_uri
+
+    org_repo_path = self.class.extract_org_repo_url(uri) || return
+
+    # This is the hostname transformation from crystaldoc.info
+    # https://github.com/nobodywasishere/crystaldoc.info/blob/ee083b9b1f1800c63e73862ecafe44bb17fc6709/src/crystaldoc/vcs.cr#L72
+    service = uri.host.try &.rchop(".com").sub('.', '-') || return
+
+    "https://crystaldoc.info/#{service}/#{org_repo_path}/v#{release.version}"
+  end
+
+  def self.extract_org_repo_url(uri)
+    path = uri.path.not_nil!.strip('/').rchop(".git")
+    if path.count('/') == 1
+      path
+    end
+  end
+end
