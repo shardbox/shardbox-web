@@ -41,6 +41,13 @@ Crinja.filter({repo_ref: Crinja::UNDEFINED, revision: nil}, "markdown_repo_conte
   Crinja::SafeString.new(sanitized)
 end
 
+Crinja.function({repo_ref: Crinja::UNDEFINED, release: Crinja::UNDEFINED}, "crystaldoc_info_url") do
+  repo_ref = arguments["repo_ref"].raw.as(Repo::Ref)
+  release = arguments["release"].raw.as(Release)
+
+  repo_ref.crystaldoc_info_url(release)
+end
+
 class ReadmeSanitizer < Sanitize::Policy::HTMLSanitizer
   property src_uri_sanitizer : Sanitize::URISanitizer?
 

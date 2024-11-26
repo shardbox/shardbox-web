@@ -91,6 +91,10 @@
     {% if documentation %}
     <a href="{{ documentation }}" class="btn">{{ icon("mortar-board") }} Docs</a>
     {% endif %}
+    {% set crystaldocs_info_url = crystaldoc_info_url(repo.ref, release) %}
+    {% if crystaldocs_info_url %}
+    <a href="{{ crystaldocs_info_url }}" class="btn">{{ icon("mortar-board") }} CrystalDocs.info</a>
+    {% endif %}
     {% if source_url %}
     <a href="{{ source_url }}" class="btn">{{ icon("file") }} Source</a>
     {% endif %}
